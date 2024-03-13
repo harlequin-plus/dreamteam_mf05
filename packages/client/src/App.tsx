@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import './App.css'
-import LoginForm from './components/login-form/login-form'
+import LoginPage from './pages/Login-page'
 
 function App() {
   useEffect(() => {
@@ -16,7 +16,7 @@ function App() {
   return (
     <div className="App">
       Вот тут будет жить ваше приложение :)
-      <LoginForm />
+      <LoginPage />
     </div>
   )
 }
