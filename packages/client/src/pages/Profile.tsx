@@ -1,51 +1,61 @@
-import { Box } from '@mui/material'
+import { Box, Divider, Stack } from '@mui/material'
 import ChangeAvatar from '../components/ChangeAvatar/ChangeAvatar'
 import BasicModal, {
   DataBasicModalForm,
 } from '../components/BasicModal/BasicModal'
-import InputProfile from '../components/InputProfile/InputProfile'
-import { useEffect } from 'react'
+import ProfileField from '../components/ProfileField'
+import { useEffect, useState } from 'react'
+import authApi from '../api/auth'
+
+const defaultUser = {
+  login: '',
+  email: '',
+  first_name: '',
+  second_name: '',
+  display_name: '',
+  phone: '',
+}
 
 const Profile = () => {
+  const [userInfo, setUserInfo] = useState(defaultUser)
+
   useEffect(() => {
     document.title = 'Мой профиль'
+    authApi.me().then(res => setUserInfo(res))
   }, [])
-  const handleChangePassword = (data: DataBasicModalForm) => {
-    console.log(data)
+
+  const handleChangePassword = async (data: DataBasicModalForm) => {
+    const me = await authApi.me()
+    console.log(userInfo)
   }
+
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
+    <Box display="flex" flexDirection="column" alignItems="center" my={15}>
       <ChangeAvatar />
-      <Box
-        component={'form'}
-        my={4}
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
+      <Stack
+        my={6}
         gap={2}
-        p={2}>
-        <InputProfile id="email" value="test@test.com" label="Почта" />
-        <InputProfile id="login" value="Test" label="Логин" />
-        <InputProfile id="first_name" value="Иван" label="Имя" />
-        <InputProfile id="second_name" value="Сидоров" label="Фамилия" />
-        <InputProfile
-          id="display_name"
-          value="Картман"
-          label="Отображаемое имя"
-        />
-        <InputProfile id="phone" value="89876543120" label="Телефон" />
-      </Box>
+        p={2}
+        sx={{ width: '35rem' }}
+        divider={<Divider flexItem />}>
+        <ProfileField value={userInfo.email} label="Почта" />
+        <ProfileField value={userInfo.login} label="Логин" />
+        <ProfileField value={userInfo.first_name} label="Имя" />
+        <ProfileField value={userInfo.second_name} label="Фамилия" />
+        <ProfileField value={userInfo.display_name} label="Отображаемое имя" />
+        <ProfileField value={userInfo.phone} label="Телефон" />
+      </Stack>
       <BasicModal
         handleSubmitForm={handleChangePassword}
         modalTitle="Изменить пароль"
         inputs={[
           {
-            id: 'oldPassword',
+            id: 'old_password',
             name: 'Старый пароль',
             type: 'password',
           },
           {
-            id: 'newPassword',
+            id: 'new_password',
             name: 'Новый пароль',
             type: 'password',
           },

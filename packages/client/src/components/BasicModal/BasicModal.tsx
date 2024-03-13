@@ -8,8 +8,8 @@ import {
   OutlinedInput,
   Typography,
 } from '@mui/material'
-import { FC, useState } from 'react'
-import InputPassword from '../InputPassword/InputPassword'
+import { FC, HTMLAttributes, useState } from 'react'
+import InputPassword from '../InputPassword'
 
 const style = {
   position: 'absolute',
@@ -33,9 +33,11 @@ type OwnProps = {
   modalTitle: string
   inputs: ModalInput[]
   handleSubmitForm: (data: DataBasicModalForm) => void
-}
-export type DataBasicModalForm = Record<string, string>
+} & HTMLAttributes<HTMLDivElement>
+
 type Props = FC<OwnProps>
+
+export type DataBasicModalForm = Record<string, string>
 
 const BasicModal: Props = ({ ...otherProps }) => {
   const [open, setOpen] = useState(false)
