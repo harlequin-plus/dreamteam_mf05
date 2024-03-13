@@ -1,10 +1,10 @@
 type SignUpDataType = {
-  first_name: 'string'
-  second_name: 'string'
-  login: 'string'
-  email: 'string'
-  password: 'string'
-  phone: 'string'
+  first_name: string
+  second_name: string
+  login: string
+  email: string
+  password: string
+  phone: string
 }
 type SignUpResponse = {
   id: number
@@ -14,8 +14,8 @@ type APIError = {
 }
 
 type SignInDataType = {
-  login: 'string'
-  password: 'string'
+  login: string
+  password: string
 }
 type User = {
   id: 123
@@ -58,15 +58,25 @@ export default class AuthApi {
       },
       body: JSON.stringify(data),
     })
-      .then(response => response.json())
+      .then(response => {
+        if (response.ok) {
+          return
+        } else {
+          return response.json()
+        }
+      })
       .then(data => {
+        if (!data) return
         console.log('AuthApi.signIn', data)
         return data
       })
     return signIn
   }
   async getUser(): Promise<User | APIError> {
-    const getUser = await fetch(`${baseURL}/auth/user`)
+    const getUser = await fetch(`${baseURL}/auth/user`, {
+      credentials: 'include',
+      mode: 'cors',
+    })
       .then(response => response.json())
       .then(data => {
         console.log('AuthApi.getUser', data)
@@ -78,6 +88,8 @@ export default class AuthApi {
   async logout(): Promise<number | Error> {
     const logOut = await fetch(`${baseURL}/auth/logout`, {
       method: 'POST',
+      credentials: 'include',
+      mode: 'cors',
     })
     if (logOut.status === 200) {
       return logOut.status
@@ -116,6 +128,34 @@ const signIn = async (data: SignInDataType) => {
       throw Error(signInResponse.reason)
     }
     console.log('вход выполнен')
+  } catch (error) {
+    console.log('Ошибка в signIn:', error)
+    console.log('переходим на страницу ошибки')
+    return
+  }
+}
+
+const getUser = async () => {
+  try {
+    const userResponse = await authApi.getUser()
+    if ('reason' in userResponse) {
+      throw Error(userResponse.reason)
+    }
+    return userResponse
+  } catch (error) {
+    console.log(error)
+    console.log('переходим на страницу ошибки')
+    return
+  }
+}
+
+const logout = async () => {
+  try {
+    const status = await authApi.logout()
+    if (status === 200) {
+      console.log('устанавливаем в сторе user:null')
+      console.log('переходим на страницу LogIn')
+    }
   } catch (error) {
     console.log(error)
     console.log('переходим на страницу ошибки')
@@ -161,7 +201,7 @@ import { useState, useEffect } from 'react'
 //   return state
 // }
 
-const useGetUser = (data: User) => {
+const useGetUser = () => {
   //     const navigate = useNavigate();
   const [state, setState] = useState({
     isLoading: true,
@@ -190,3 +230,5 @@ const useGetUser = (data: User) => {
 
   return state
 }
+
+export { signUp, signIn, getUser, logout, useGetUser }
