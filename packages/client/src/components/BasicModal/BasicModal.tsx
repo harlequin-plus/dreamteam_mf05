@@ -26,27 +26,37 @@ const style = {
 interface ModalInput {
   id: string
   name: string
-  type: 'text' | 'password'
-  isPassword?: boolean
+  type?: 'text' | 'password'
 }
 
 type OwnProps = {
-  title: string
+  modalTitle: string
   inputs: ModalInput[]
+  handleSubmitForm: (data: DataBasicModalForm) => void
 }
-
+export type DataBasicModalForm = Record<string, string>
 type Props = FC<OwnProps>
 
 const BasicModal: Props = ({ ...otherProps }) => {
   const [open, setOpen] = useState(false)
+  const [data, setData]: [
+    DataBasicModalForm,
+    React.Dispatch<React.SetStateAction<DataBasicModalForm>>
+  ] = useState({})
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const { title, inputs } = otherProps
+  const handleOnChange = (value: string, id: string) => {
+    data[id] = value
+    setData(data)
+  }
+
+  const { modalTitle, inputs, handleSubmitForm } = otherProps
+
   return (
     <div>
       <Button variant="contained" onClick={handleOpen}>
-        {title}
+        {modalTitle}
       </Button>
       <Modal
         open={open}
@@ -54,13 +64,21 @@ const BasicModal: Props = ({ ...otherProps }) => {
         aria-labelledby="modal-modal-title">
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {title}
+            {modalTitle}
           </Typography>
-          <Box component={'form'}>
+          <Box
+            component={'form'}
+            onSubmit={event => {
+              event.preventDefault()
+              handleSubmitForm(data)
+              handleClose()
+            }}>
             {inputs.map(input => {
-              if (input.isPassword) {
+              input.type = input.type ? input.type : 'text'
+              if (input.type === 'password') {
                 return (
                   <InputPassword
+                    onChange={handleOnChange}
                     key={input.id}
                     label={input.name}
                     id={input.id}
@@ -72,12 +90,10 @@ const BasicModal: Props = ({ ...otherProps }) => {
                   key={input.id}
                   sx={{ m: 1, width: '25rem' }}
                   variant="outlined">
-                  <InputLabel htmlFor="login-in-loginform">
-                    {input.name}
-                  </InputLabel>
+                  <InputLabel htmlFor={input.id}>{input.name}</InputLabel>
                   <OutlinedInput
                     sx={{ fontSize: '1.2rem' }}
-                    id="login-in-loginform"
+                    id={input.id}
                     type={input.type}
                     label={input.name}
                   />
@@ -85,6 +101,10 @@ const BasicModal: Props = ({ ...otherProps }) => {
                 </FormControl>
               )
             })}
+            <Button type="submit" variant="contained">
+              Изменить
+            </Button>
+            <Button onClick={handleClose}>Отменить</Button>
           </Box>
         </Box>
       </Modal>

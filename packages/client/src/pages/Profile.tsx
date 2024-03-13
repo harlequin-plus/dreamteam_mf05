@@ -1,9 +1,18 @@
 import { Box } from '@mui/material'
 import ChangeAvatar from '../components/ChangeAvatar/ChangeAvatar'
-import BasicModal from '../components/BasicModal/BasicModal'
+import BasicModal, {
+  DataBasicModalForm,
+} from '../components/BasicModal/BasicModal'
 import InputProfile from '../components/InputProfile/InputProfile'
+import { useEffect } from 'react'
 
 const Profile = () => {
+  useEffect(() => {
+    document.title = 'Мой профиль'
+  }, [])
+  const handleChangePassword = (data: DataBasicModalForm) => {
+    console.log(data)
+  }
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
       <ChangeAvatar />
@@ -27,13 +36,18 @@ const Profile = () => {
         <InputProfile id="phone" value="89876543120" label="Телефон" />
       </Box>
       <BasicModal
-        title="Изменить пароль"
+        handleSubmitForm={handleChangePassword}
+        modalTitle="Изменить пароль"
         inputs={[
           {
             id: 'oldPassword',
             name: 'Старый пароль',
             type: 'password',
-            isPassword: true,
+          },
+          {
+            id: 'newPassword',
+            name: 'Новый пароль',
+            type: 'password',
           },
         ]}></BasicModal>
     </Box>

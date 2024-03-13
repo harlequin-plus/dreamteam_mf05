@@ -12,17 +12,19 @@ import { FC, useState } from 'react'
 type OwnProps = {
   label: string
   id: string
+  onChange: (value: string, id: string) => void
 }
 
 type Props = FC<OwnProps>
 
 const InputPassword: Props = ({ ...otherProps }) => {
   const [showPassword, setShowPassword] = useState(false)
-  const { label, id } = otherProps
+  const { label, id, onChange } = otherProps
   return (
     <FormControl sx={{ m: 1, width: '25rem' }} variant="outlined">
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <OutlinedInput
+        onChange={event => onChange(event.target.value, id)}
         sx={{ fontSize: '1.2rem' }}
         id={id}
         type={showPassword ? 'text' : 'password'}
