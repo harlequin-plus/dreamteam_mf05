@@ -1,5 +1,5 @@
-import { FormWrapper } from '../components/form-wrapper/form-wrapper'
-import LoginForm from '../components/login-form/login-form'
+import { FormWrapper } from '../components/FormWrapper'
+import { LoginForm } from '../components/LoginForm'
 
 export default function LoginPage() {
   return (

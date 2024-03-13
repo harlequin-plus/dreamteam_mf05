@@ -1,10 +1,10 @@
 import { useState, SyntheticEvent } from 'react'
-import { CustomFormControl } from '../custom-formcontrol/customFormControl'
+import { CustomFormControl } from '../CustomFormControl'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 
-export default function LoginForm() {
+export function LoginForm() {
   const [loginValue, setLoginValue] = useState('')
   const [loginError, setLoginError] = useState(false)
   const [passwordValue, setPasswordValue] = useState('')
