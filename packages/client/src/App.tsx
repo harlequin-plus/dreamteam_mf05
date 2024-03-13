@@ -1,19 +1,6 @@
 import { useEffect } from 'react'
 import './App.css'
-import { signIn, signUp, logout, getUser, useGetUser } from './api/authApi'
-
-const testData = {
-  first_name: 'Vasss',
-  second_name: 'Vasssfamily',
-  login: 'vassabra',
-  email: 'abra@vas.ru',
-  password: '12345678910FVB',
-  phone: '+74447777790',
-}
-// signUp(testData)
-// logout()
-// getUser()
-// signIn({ login: 'vassabra', password: '12345678910FVB' })
+import LoginPage from './pages/LoginPage'
 
 function App() {
   useEffect(() => {
@@ -24,9 +11,14 @@ function App() {
       console.log(data)
     }
 
-  //     fetchServerData()
-  //   }, [])
-  return <div className="App">Вот тут будет жить ваше приложение :)</div>
+    fetchServerData()
+  }, [])
+  return (
+    <div className="App">
+      Вот тут будет жить ваше приложение :)
+      <LoginPage />
+    </div>
+  )
 }
 
 export default App

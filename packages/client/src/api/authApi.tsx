@@ -232,16 +232,3 @@ const useGetUser = () => {
 }
 
 export { signUp, signIn, getUser, logout, useGetUser }
-
-// const testData = {
-//     first_name: 'Vasss',
-//     second_name: 'Vasssfamily',
-//     login: 'vassabra',
-//     email: 'abra@vas.ru',
-//     password: '12345678910FVB',
-//     phone: '+74447777790',
-//   }
-//   // signUp(testData)
-//   // logout()
-//   // getUser()
-//   // signIn({ login: 'vassabra', password: '12345678910FVB' })
