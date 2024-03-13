@@ -1,9 +1,8 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import IndexPage from './pages/IndexPage'
-import NotFoundPage from './pages/NotFoundPage'
 import { useEffect } from 'react'
+import HeaderMenu from './components/HeaderMenu'
+import { BrowserRouter as Router } from 'react-router-dom'
+import AppRouter from './app/Router'
 import './App.css'
-import LoginPage from './pages/LoginPage'
 
 function App() {
   useEffect(() => {
@@ -20,24 +19,10 @@ function App() {
   return (
     <Router>
       <main>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Главная</Link>
-            </li>
-            <li>
-              <Link to="/auth">Авторизация</Link>
-            </li>
-          </ul>
-        </nav>
-
+        <HeaderMenu />
         <div className="App">
           <p>Вот тут будет жить ваше приложение :)</p>
-          <Routes>
-            <Route path="/" element={<IndexPage />} />
-            <Route path="/auth" element={<LoginPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+          <AppRouter />
         </div>
       </main>
     </Router>
