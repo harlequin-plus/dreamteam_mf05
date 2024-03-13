@@ -1,4 +1,6 @@
-type SignUpDataType = {
+import { baseURL } from '../constants'
+
+export type SignUpDataType = {
   first_name: string
   second_name: string
   login: string
@@ -13,7 +15,7 @@ type APIError = {
   reason: string
 }
 
-type SignInDataType = {
+export type SignInDataType = {
   login: string
   password: string
 }
@@ -27,8 +29,6 @@ type User = {
   avatar: string
   email: string
 }
-
-const baseURL = 'https://ya-praktikum.tech/api/v2'
 
 export default class AuthApi {
   async signUp(data: SignUpDataType): Promise<SignUpResponse | APIError> {
@@ -98,137 +98,3 @@ export default class AuthApi {
     }
   }
 }
-
-// **************************services*****************************
-const authApi = new AuthApi()
-
-const signUp = async (data: SignUpDataType) => {
-  //  const navigate = useNavigate();
-  try {
-    const signUpResponse = await authApi.signUp(data)
-    if ('reason' in signUpResponse) {
-      throw Error(signUpResponse.reason)
-    }
-    const getUserResponse = await authApi.getUser()
-    if ('reason' in getUserResponse) {
-      throw Error(getUserResponse.reason)
-    }
-    console.log('устанавливаем в стор', getUserResponse)
-    console.log('переходим на страницу...')
-  } catch (error) {
-    console.log(error)
-    console.log('переходим на страницу ошибки')
-    return
-  }
-}
-const signIn = async (data: SignInDataType) => {
-  try {
-    const signInResponse = await authApi.signIn(data)
-    if (signInResponse && 'reason' in signInResponse) {
-      throw Error(signInResponse.reason)
-    }
-    console.log('вход выполнен')
-  } catch (error) {
-    console.log('Ошибка в signIn:', error)
-    console.log('переходим на страницу ошибки')
-    return
-  }
-}
-
-const getUser = async () => {
-  try {
-    const userResponse = await authApi.getUser()
-    if ('reason' in userResponse) {
-      throw Error(userResponse.reason)
-    }
-    return userResponse
-  } catch (error) {
-    console.log(error)
-    console.log('переходим на страницу ошибки')
-    return
-  }
-}
-
-const logout = async () => {
-  try {
-    const status = await authApi.logout()
-    if (status === 200) {
-      console.log('устанавливаем в сторе user:null')
-      console.log('переходим на страницу LogIn')
-    }
-  } catch (error) {
-    console.log(error)
-    console.log('переходим на страницу ошибки')
-    return
-  }
-}
-// **************************hooks*****************************
-import { useState, useEffect } from 'react'
-
-// const authApi = new AuthApi()
-
-// const useSignUp = (data: SignUpDataType) => {
-//   //     const navigate = useNavigate();
-//   const [state, setState] = useState({
-//     isLoading: true,
-//     user: {},
-//     error: false,
-//   })
-
-//   const signUp = async () => {
-//     try {
-//       const signUpResponse = await authApi.signUp(data)
-//       if ('reason' in signUpResponse) {
-//         throw Error(signUpResponse.reason)
-//       }
-//       const getUserResponse = await authApi.getUser()
-//       if ('reason' in getUserResponse) {
-//         throw Error(getUserResponse.reason)
-//       }
-//       setState({ ...state, isLoading: false, user: getUserResponse })
-//       console.log('устанавливаем в стор', getUserResponse)
-//       console.log('переходим на страницу...')
-//     } catch (error) {
-//       console.log('переходим на страницу ошибки')
-//       setState({ ...state, isLoading: false, error: true })
-//     }
-//   }
-
-//   useEffect(() => {
-//     signUp()
-//   }, [])
-
-//   return state
-// }
-
-const useGetUser = () => {
-  //     const navigate = useNavigate();
-  const [state, setState] = useState({
-    isLoading: true,
-    user: {},
-    error: false,
-  })
-
-  const getUser = async () => {
-    try {
-      const getUserResponse = await authApi.getUser()
-      if ('reason' in getUserResponse) {
-        throw Error(getUserResponse.reason)
-      }
-      setState({ ...state, isLoading: false, user: getUserResponse })
-      console.log('User:', getUserResponse)
-    } catch (error) {
-      console.log(error)
-      console.log('переходим на страницу ошибки')
-      setState({ ...state, isLoading: false, error: true })
-    }
-  }
-
-  useEffect(() => {
-    getUser()
-  }, [])
-
-  return state
-}
-
-export { signUp, signIn, getUser, logout, useGetUser }
