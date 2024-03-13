@@ -32,6 +32,7 @@ function App() {
         </nav>
 
         <div className="App">
+          <p>Вот тут будет жить ваше приложение :)</p>
           <Routes>
             <Route path="/" element={<IndexPage />} />
             <Route path="/auth" element={<AuthPage />} />
