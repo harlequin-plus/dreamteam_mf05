@@ -7,7 +7,13 @@ import {
   OutlinedInput,
   Typography,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, {
+  Dispatch,
+  FC,
+  HTMLAttributes,
+  SetStateAction,
+  useState,
+} from 'react'
 
 const style = {
   position: 'absolute',
@@ -21,18 +27,32 @@ const style = {
   p: 4,
 }
 
-const ChangeAvatar = () => {
-  const [avatar, setAvatar] = useState('')
+type OwnProps = {
+  avatar: string | null
+  handleChangeAvatar: (data: File) => void
+} & HTMLAttributes<HTMLDivElement>
+
+type Props = FC<OwnProps>
+
+const ChangeAvatar: Props = ({ ...otherProps }) => {
   const [open, setOpen] = useState(false)
+  const [data, setData]: [
+    File | undefined,
+    Dispatch<SetStateAction<File | undefined>>
+  ] = useState()
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const handleSubmitForm = () => {
-    console.log(avatar)
-  }
+  const { avatar, handleChangeAvatar } = otherProps
+
   return (
     <>
-      <Avatar src={avatar} onClick={handleOpen} />
+      <Avatar
+        alt="avatar"
+        src={avatar ? avatar : ''}
+        onClick={handleOpen}
+        sx={{ width: 120, height: 120 }}
+      />
       <Modal
         open={open}
         onClose={handleClose}
@@ -43,7 +63,10 @@ const ChangeAvatar = () => {
           component={'form'}
           onSubmit={event => {
             event.preventDefault()
-            handleSubmitForm()
+            if (!data) {
+              return
+            }
+            handleChangeAvatar(data)
             handleClose()
           }}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -51,7 +74,12 @@ const ChangeAvatar = () => {
           </Typography>
           <FormControl>
             <OutlinedInput
-              onChange={event => setAvatar(event.target.value)}
+              onChange={event => {
+                const files = (event.target as HTMLInputElement).files
+                if (files) {
+                  setData(files[0])
+                }
+              }}
               margin="none"
               inputProps={{ accept: 'image/png, image/jpeg' }}
               type="file"
