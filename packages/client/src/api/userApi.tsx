@@ -1,7 +1,6 @@
 import { baseURL } from '../constants'
-import { User } from './authApi'
 
-import { APIError, ChangePass } from './type'
+import { APIError, ChangePass, User } from './type'
 const userHost = `${baseURL}/user`
 
 export default class UserApi {
