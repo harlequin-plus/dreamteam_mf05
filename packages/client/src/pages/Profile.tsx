@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { ChangePass, User } from '../api/type'
 import { getUser } from '../services/apiService'
 import { changeAvatar, changePassword } from '../services/user'
+import { resourceURL } from '../constants'
 
 const defaultUser: User = {
   id: 0,
@@ -53,7 +54,7 @@ const Profile = () => {
     <Box display="flex" flexDirection="column" alignItems="center" my={13}>
       <ChangeAvatar
         handleChangeAvatar={handleChangeAvatar}
-        avatar={`https://ya-praktikum.tech/api/v2/resources${userInfo.avatar}`}
+        avatar={`${resourceURL}${userInfo.avatar}`}
       />
       <Stack
         my={6}
@@ -72,6 +73,7 @@ const Profile = () => {
         <ProfileField value={userInfo.phone} label="Телефон" />
       </Stack>
       <BasicModal
+        successText="Пароль успешно изменен!"
         handleSubmitForm={handleChangePassword}
         modalTitle="Изменить пароль"
         inputs={[

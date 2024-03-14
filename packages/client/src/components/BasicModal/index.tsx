@@ -33,6 +33,7 @@ type OwnProps = {
   modalTitle: string
   inputs: ModalInput[]
   handleSubmitForm: (data: DataBasicModalForm) => void
+  successText?: string
 } & HTMLAttributes<HTMLDivElement>
 
 type Props = FC<OwnProps>
@@ -40,6 +41,7 @@ type Props = FC<OwnProps>
 export type DataBasicModalForm = Record<string, string>
 
 const BasicModal: Props = ({ ...otherProps }) => {
+  const [openSucces, setOpenSucces] = useState(false)
   const [open, setOpen] = useState(false)
   const [data, setData]: [
     DataBasicModalForm,
@@ -47,13 +49,15 @@ const BasicModal: Props = ({ ...otherProps }) => {
   ] = useState({})
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
+  const handleOpenSucces = () => setOpenSucces(true)
+  const handleCloseSucces = () => setOpenSucces(false)
 
   const handleOnChange = (value: string, id: string) => {
     data[id] = value
     setData(data)
   }
 
-  const { modalTitle, inputs, handleSubmitForm } = otherProps
+  const { modalTitle, successText, inputs, handleSubmitForm } = otherProps
 
   return (
     <div>
@@ -73,6 +77,7 @@ const BasicModal: Props = ({ ...otherProps }) => {
             onSubmit={event => {
               event.preventDefault()
               handleSubmitForm(data)
+              handleOpenSucces()
               handleClose()
             }}>
             {inputs.map(input => {
@@ -110,8 +115,22 @@ const BasicModal: Props = ({ ...otherProps }) => {
           </Box>
         </Box>
       </Modal>
+      <Modal open={openSucces} onClose={handleCloseSucces}>
+        <Box sx={style}>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            sx={{ m: 1 }}>
+            {modalTitle}
+          </Typography>
+          <Typography color="secondary">{successText}</Typography>
+
+          <Button onClick={handleCloseSucces}>Ok</Button>
+        </Box>
+      </Modal>
     </div>
   )
 }
-
+BasicModal.defaultProps = { successText: 'Успешно!' }
 export default BasicModal
