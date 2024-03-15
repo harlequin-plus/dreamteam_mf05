@@ -1,12 +1,12 @@
-import { Box, Divider, Stack } from '@mui/material'
+import { Box, Button, Divider, Stack } from '@mui/material'
 import ChangeAvatar from '../components/ChangeAvatar'
 import BasicModal, { DataBasicModalForm } from '../components/BasicModal'
 import ProfileField from '../components/ProfileField'
 import { useEffect, useState } from 'react'
 import { ChangePass, User } from '../api/type'
-import { getUser } from '../services/apiService'
-import { changeAvatar, changePassword } from '../services/user'
 import { resourceURL } from '../constants'
+import authApi from '../api/authApi'
+import userApi from '../api/userApi'
 
 const defaultUser: User = {
   id: 0,
@@ -27,27 +27,30 @@ const Profile = () => {
 
   useEffect(() => {
     document.title = 'Мой профиль'
-    getUser()
-      .then(res => {
-        setUserInfo(res)
-        console.log(res)
-      })
-      .catch(error => console.log(error)) //TODO перенаправление на страницу авторизации
+
+    const setUserdata = async () => {
+      try {
+        const user = await authApi.getUser()
+        setUserInfo(user)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    setUserdata()
   }, [])
 
   const handleChangePassword = async (data: DataBasicModalForm) => {
-    changePassword(data as ChangePass).catch(error => console.log(error))
+    await userApi.changePassword(data as ChangePass)
   }
 
-  const handleChangeAvatar = (data: File) => {
-    changeAvatar(data)
-      .then(() => {
-        getUser().then(res => {
-          setUserInfo(res)
-          console.log(res)
-        })
-      })
-      .catch(error => console.log(error))
+  const handleChangeAvatar = async (file: File) => {
+    try {
+      const user = await userApi.changeAvatar(file)
+      setUserInfo(user)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

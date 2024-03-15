@@ -74,11 +74,15 @@ const BasicModal: Props = ({ ...otherProps }) => {
           </Typography>
           <Box
             component={'form'}
-            onSubmit={event => {
+            onSubmit={async event => {
               event.preventDefault()
-              handleSubmitForm(data)
-              handleOpenSucces()
-              handleClose()
+              try {
+                await handleSubmitForm(data)
+                handleOpenSucces()
+                handleClose()
+              } catch (error) {
+                console.log(error)
+              }
             }}>
             {inputs.map(input => {
               input.type = input.type ? input.type : 'text'

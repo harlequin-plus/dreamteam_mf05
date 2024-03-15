@@ -61,13 +61,17 @@ const ChangeAvatar: Props = ({ ...otherProps }) => {
         <Box
           sx={style}
           component={'form'}
-          onSubmit={event => {
+          onSubmit={async event => {
             event.preventDefault()
-            if (!data) {
-              return
+            try {
+              if (!data) {
+                return
+              }
+              handleChangeAvatar(data)
+              handleClose()
+            } catch (error) {
+              console.log(error)
             }
-            handleChangeAvatar(data)
-            handleClose()
           }}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Изменить аватар

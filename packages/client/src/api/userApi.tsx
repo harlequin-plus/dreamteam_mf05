@@ -1,51 +1,46 @@
 import { baseURL } from '../constants'
+import axios, { AxiosError } from 'axios'
+import { ChangePass, User } from './type'
 
-import { APIError, ChangePass, User } from './type'
-const userHost = `${baseURL}/user`
+const userAxios = axios.create({
+  baseURL: `${baseURL}/user`,
+})
 
-export default class UserApi {
-  async changePassword(data: ChangePass): Promise<void | APIError> {
-    const response = await fetch(`${userHost}/password`, {
-      method: 'PUT',
-      credentials: 'include',
-      mode: 'cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
-      .then(response => {
-        if (response.ok) {
-          return
-        } else {
-          return response.json()
-        }
-      })
-      .then(data => {
-        if (!data) return
-        console.log('AuthApi.signIn', data)
-        return data
-      })
-    return response
+const avatarAxios = axios.create({
+  baseURL: `${baseURL}/user`,
+})
+avatarAxios.defaults.withCredentials = true
+userAxios.defaults.headers.post = { 'Content-Type': 'application/json' }
+userAxios.defaults.withCredentials = true
+class UserApi {
+  async changePassword(req: ChangePass): Promise<void> {
+    try {
+      await userAxios.put<User>('password', { ...req })
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.data.reason) {
+        throw new Error(error.response?.data.reason)
+      } else {
+        throw error
+      }
+    }
   }
 
-  async changeAvatar(file: FormData): Promise<APIError | User> {
-    const response = await fetch(`${userHost}/profile/avatar`, {
-      method: 'PUT',
-      credentials: 'include',
-      mode: 'cors',
-      body: file,
-    })
-      .then(response => {
-        if (response.ok) {
-          return
-        } else {
-          return response.json()
-        }
+  public async changeAvatar(file: File): Promise<User> {
+    try {
+      const { data } = await avatarAxios.putForm<User>(`profile/avatar`, {
+        avatar: file,
       })
-      .then(data => {
-        if (!data) return
-        console.log('AuthApi.signIn', data)
-        return data
-      })
-    return response
+      return data
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.data.reason) {
+        throw new Error(error.response?.data.reason)
+      } else {
+        throw error
+      }
+    }
   }
 }
+
+const userApi = new UserApi()
+
+export default userApi
