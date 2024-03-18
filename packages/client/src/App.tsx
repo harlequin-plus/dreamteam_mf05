@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
+import HeaderMenu from './components/HeaderMenu'
+import { BrowserRouter as Router } from 'react-router-dom'
+import AppRouter from './app/Router'
 import './App.css'
-import LoginPage from './pages/LoginPage'
 
 function App() {
   useEffect(() => {
@@ -13,11 +15,17 @@ function App() {
 
     fetchServerData()
   }, [])
+
   return (
-    <div className="App">
-      Вот тут будет жить ваше приложение :)
-      <LoginPage />
-    </div>
+    <Router>
+      <main>
+        <HeaderMenu />
+        <div className="App">
+          <p>Вот тут будет жить ваше приложение :)</p>
+          <AppRouter />
+        </div>
+      </main>
+    </Router>
   )
 }
 
