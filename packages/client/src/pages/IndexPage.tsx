@@ -1,8 +1,10 @@
+import GameBoard from '../components/GameBoard/GameBoard'
+
 function IndexPage() {
   return (
-    <div>
-      <h1>Главная страница</h1>
-    </div>
+    <>
+      <GameBoard />
+    </>
   )
 }
 
