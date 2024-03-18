@@ -7,13 +7,8 @@ import {
   OutlinedInput,
   Typography,
 } from '@mui/material'
-import React, {
-  Dispatch,
-  FC,
-  HTMLAttributes,
-  SetStateAction,
-  useState,
-} from 'react'
+import { FC, HTMLAttributes, SyntheticEvent, useState } from 'react'
+import { TupleUseState } from '../../types'
 
 const style = {
   position: 'absolute',
@@ -36,14 +31,31 @@ type Props = FC<OwnProps>
 
 const ChangeAvatar: Props = ({ ...otherProps }) => {
   const [open, setOpen] = useState(false)
-  const [data, setData]: [
-    File | undefined,
-    Dispatch<SetStateAction<File | undefined>>
-  ] = useState()
+  const [data, setData]: TupleUseState<File | undefined> = useState()
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
   const { avatar, handleChangeAvatar } = otherProps
+
+  const handleOnChange = (event: SyntheticEvent) => {
+    const files = (event.target as HTMLInputElement).files
+    if (files) {
+      setData(files[0])
+    }
+  }
+
+  const handleOnSubmit = (event: SyntheticEvent) => {
+    event.preventDefault()
+    try {
+      if (!data) {
+        return
+      }
+      handleChangeAvatar(data)
+      handleClose()
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <>
@@ -58,32 +70,13 @@ const ChangeAvatar: Props = ({ ...otherProps }) => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <Box
-          sx={style}
-          component={'form'}
-          onSubmit={async event => {
-            event.preventDefault()
-            try {
-              if (!data) {
-                return
-              }
-              handleChangeAvatar(data)
-              handleClose()
-            } catch (error) {
-              console.log(error)
-            }
-          }}>
+        <Box sx={style} component={'form'} onSubmit={handleOnSubmit}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Изменить аватар
           </Typography>
           <FormControl>
             <OutlinedInput
-              onChange={event => {
-                const files = (event.target as HTMLInputElement).files
-                if (files) {
-                  setData(files[0])
-                }
-              }}
+              onChange={handleOnChange}
               margin="none"
               inputProps={{ accept: 'image/png, image/jpeg' }}
               type="file"

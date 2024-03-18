@@ -19,7 +19,13 @@ type Props = FC<OwnProps>
 
 const InputPassword: Props = ({ ...otherProps }) => {
   const [showPassword, setShowPassword] = useState(false)
+  const [errorText, derErrorText] = useState('')
+
   const { label, id, onChange } = otherProps
+
+  const handleOnClick = () => {
+    setShowPassword(showPassword => !showPassword)
+  }
   return (
     <FormControl sx={{ m: 1, width: '25rem' }} variant="outlined">
       <InputLabel htmlFor={id}>{label}</InputLabel>
@@ -32,7 +38,7 @@ const InputPassword: Props = ({ ...otherProps }) => {
           <InputAdornment position="end">
             <IconButton
               aria-label="toggle password visibility"
-              onClick={() => setShowPassword(showPassword => !showPassword)}
+              onClick={handleOnClick}
               edge="end">
               {showPassword ? <VisibilityOff /> : <Visibility />}
             </IconButton>

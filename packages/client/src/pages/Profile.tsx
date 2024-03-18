@@ -1,12 +1,13 @@
-import { Box, Button, Divider, Stack } from '@mui/material'
+import { Box, Divider, Stack } from '@mui/material'
 import ChangeAvatar from '../components/ChangeAvatar'
-import BasicModal, { DataBasicModalForm } from '../components/BasicModal'
+import BasicModal from '../components/ModalForm'
 import ProfileField from '../components/ProfileField'
 import { useEffect, useState } from 'react'
 import { ChangePass, User } from '../api/type'
 import { resourceURL } from '../constants'
 import authApi from '../api/authApi'
 import userApi from '../api/userApi'
+import { DataModalForm, TupleUseState } from '../types'
 
 const defaultUser: User = {
   id: 0,
@@ -20,10 +21,7 @@ const defaultUser: User = {
 }
 
 const Profile = () => {
-  const [userInfo, setUserInfo]: [
-    User,
-    React.Dispatch<React.SetStateAction<User>>
-  ] = useState(defaultUser)
+  const [userInfo, setUserInfo]: TupleUseState<User> = useState(defaultUser)
 
   useEffect(() => {
     document.title = 'Мой профиль'
@@ -40,7 +38,7 @@ const Profile = () => {
     setUserdata()
   }, [])
 
-  const handleChangePassword = async (data: DataBasicModalForm) => {
+  const handleChangePassword = async (data: DataModalForm) => {
     await userApi.changePassword(data as ChangePass)
   }
 
@@ -81,14 +79,16 @@ const Profile = () => {
         modalTitle="Изменить пароль"
         inputs={[
           {
-            id: 'oldPassword',
-            name: 'Старый пароль',
+            name: 'oldPassword',
+            label: 'Старый пароль',
             type: 'password',
+            autoComlete: 'password',
           },
           {
-            id: 'newPassword',
-            name: 'Новый пароль',
+            name: 'newPassword',
+            label: 'Новый пароль',
             type: 'password',
+            autoComlete: 'password',
           },
         ]}></BasicModal>
     </Box>

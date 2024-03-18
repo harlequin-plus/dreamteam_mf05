@@ -29,7 +29,7 @@ export function validate(
     const isNorm = regexp.test(value)
     return { isNorm, errorText: 'Проверьте правильность email' }
   }
-  if (name === 'password' || name === 'newPassword') {
+  if (name === 'password' || name === 'newPassword' || name === 'oldPassword') {
     const regexp = /(?=^.{8,40}$)(?=.*\d)(?=.*[A-ZА-ЯЁ])/
     const isNorm = regexp.test(value)
     return {
