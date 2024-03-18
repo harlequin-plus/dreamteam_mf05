@@ -1,9 +1,10 @@
+import { useNavigate } from 'react-router-dom'
 import authApi from '../api/authApi'
-import { SignUpDataType, SignInDataType } from '../api/authApiTypes'
+import { SignUpDataType, SignInDataType, User } from '../api/authApiTypes'
 import { useState, useEffect } from 'react'
 
 const signUp = async (data: SignUpDataType) => {
-  //  const navigate = useNavigate();
+  const navigate = useNavigate()
   try {
     const signUpResponse = await authApi.signUp(data)
     if ('reason' in signUpResponse) {
@@ -14,29 +15,32 @@ const signUp = async (data: SignUpDataType) => {
       throw Error(getUserResponse.reason)
     }
     console.log('устанавливаем в стор', getUserResponse)
-    console.log('переходим на страницу...')
+    navigate('/')
   } catch (error) {
     console.log(error)
-    console.log('переходим на страницу ошибки')
+    navigate('/404')
     return
   }
 }
 
 const signIn = async (data: SignInDataType) => {
+  const navigate = useNavigate()
   try {
     const signInResponse = await authApi.signIn(data)
     if (signInResponse && 'reason' in signInResponse) {
       throw Error(signInResponse.reason)
     }
     console.log('вход выполнен')
+    navigate('/')
   } catch (error) {
     console.log('Ошибка в signIn:', error)
-    console.log('переходим на страницу ошибки')
+    navigate('/404')
     return
   }
 }
 
 const getUser = async () => {
+  const navigate = useNavigate()
   try {
     const userResponse = await authApi.getUser()
     if ('reason' in userResponse) {
@@ -45,32 +49,37 @@ const getUser = async () => {
     return userResponse
   } catch (error) {
     console.log(error)
-    console.log('переходим на страницу ошибки')
+    navigate('/404')
     return
   }
 }
 
 const logout = async () => {
+  const navigate = useNavigate()
   try {
     const status = await authApi.logout()
     if (status === 200) {
       console.log('устанавливаем в сторе user:null')
-      console.log('переходим на страницу LogIn')
+      navigate('/auth')
     }
   } catch (error) {
     console.log(error)
-    console.log('переходим на страницу ошибки')
+    navigate('/404')
     return
   }
 }
 
 // **************************hooks*****************************
+type GetUser = {
+  isLoading: boolean
+  user: null | User
+  error: boolean
+}
 
 const useGetUser = () => {
-  //     const navigate = useNavigate();
-  const [state, setState] = useState({
+  const [state, setState] = useState<GetUser>({
     isLoading: true,
-    user: {},
+    user: null,
     error: false,
   })
 
@@ -84,7 +93,6 @@ const useGetUser = () => {
       console.log('User:', getUserResponse)
     } catch (error) {
       console.log(error)
-      console.log('переходим на страницу ошибки')
       setState({ ...state, isLoading: false, error: true })
     }
   }
