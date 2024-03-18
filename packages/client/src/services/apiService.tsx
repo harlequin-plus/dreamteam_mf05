@@ -1,8 +1,6 @@
-import AuthApi from '../api/authApi'
-import { SignUpDataType, SignInDataType } from '../api/authApi'
+import authApi from '../api/authApi'
+import { SignUpDataType, SignInDataType } from '../api/authApiTypes'
 import { useState, useEffect } from 'react'
-
-const authApi = new AuthApi()
 
 const signUp = async (data: SignUpDataType) => {
   //  const navigate = useNavigate();

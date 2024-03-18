@@ -1,36 +1,13 @@
 import { baseURL } from '../constants'
+import {
+  SignUpDataType,
+  SignUpResponse,
+  APIError,
+  SignInDataType,
+  User,
+} from './authApiTypes'
 
-export type SignUpDataType = {
-  first_name: string
-  second_name: string
-  login: string
-  email: string
-  password: string
-  phone: string
-}
-type SignUpResponse = {
-  id: number
-}
-type APIError = {
-  reason: string
-}
-
-export type SignInDataType = {
-  login: string
-  password: string
-}
-type User = {
-  id: 123
-  first_name: string
-  second_name: string
-  display_name: string
-  phone: string
-  login: string
-  avatar: string
-  email: string
-}
-
-export default class AuthApi {
+class AuthApi {
   async signUp(data: SignUpDataType): Promise<SignUpResponse | APIError> {
     const signUp = await fetch(`${baseURL}/auth/signup`, {
       method: 'POST',
@@ -98,3 +75,6 @@ export default class AuthApi {
     }
   }
 }
+
+const authApi = new AuthApi()
+export default authApi
