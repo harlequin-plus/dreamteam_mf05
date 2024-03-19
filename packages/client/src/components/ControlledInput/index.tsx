@@ -24,7 +24,10 @@ type OwnProps = {
 }
 
 export const ControlledInput = forwardRef(
-  ({ isPassword, type, name, label, autoComplete }: OwnProps, ref) => {
+  (
+    { isPassword = false, type = 'text', name, label, autoComplete }: OwnProps,
+    ref
+  ) => {
     const [value, setValue] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState(false)
@@ -64,10 +67,6 @@ export const ControlledInput = forwardRef(
       setError(false)
       setErrorText('')
     }
-    // const onFocusHandler = (event: SyntheticEvent) => {
-    //   setError(false)
-    //   setErrorText('')
-    // }
 
     return (
       <FormControl
@@ -81,7 +80,6 @@ export const ControlledInput = forwardRef(
           type={isPassword ? (showPassword ? 'text' : 'password') : type}
           name={name}
           onBlur={e => onBlurHandle(e)}
-          //   onFocus={onFocusHandler}
           onChange={onChangeValue}
           value={value}
           endAdornment={
@@ -90,7 +88,6 @@ export const ControlledInput = forwardRef(
                 <IconButton
                   aria-label="toggle password visibility"
                   onClick={() => setShowPassword(showPassword => !showPassword)}
-                  //   onMouseDown={handleMouseDownPassword}
                   edge="end">
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
@@ -105,8 +102,3 @@ export const ControlledInput = forwardRef(
     )
   }
 )
-
-ControlledInput.defaultProps = {
-  type: 'text',
-  isPassword: false,
-}

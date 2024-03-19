@@ -30,11 +30,13 @@ type InputRef = {
 
 type Props = FC<OwnProps>
 
-const Form: Props = ({ ...otherProps }) => {
-  const { inputs, submitButtonText, cancelButtonText, submitData, onCancel } =
-    otherProps
-  //   const [data, setData]: TupleUseState<DataBasicModalForm> = useState({})
-
+const Form: Props = ({
+  inputs,
+  submitButtonText = 'Изменить',
+  cancelButtonText = 'Отмена',
+  submitData,
+  onCancel,
+}) => {
   const refs: Record<string, React.MutableRefObject<InputRef>> = {}
   inputs.map(input => {
     refs[input.name] = useRef() as React.MutableRefObject<InputRef>
@@ -83,8 +85,4 @@ const Form: Props = ({ ...otherProps }) => {
   )
 }
 
-Form.defaultProps = {
-  submitButtonText: 'Изменить',
-  cancelButtonText: 'Отмена',
-}
 export default Form

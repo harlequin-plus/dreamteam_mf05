@@ -10,9 +10,7 @@ class AuthApi {
   }
 
   async signIn(reqData: LoginReqData): Promise<void> {
-    await baseApi.post<User, LoginReqData>(`signin`, {
-      ...reqData,
-    })
+    await baseApi.post<User, LoginReqData>(`signin`, reqData)
   }
 }
 
