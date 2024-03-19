@@ -26,7 +26,14 @@ type OwnProps = {
 
 type Props = FC<OwnProps>
 
-const ModalForm: Props = ({ ...otherProps }) => {
+const ModalForm: Props = ({
+  modalTitle,
+  successText = 'Успешно!',
+  inputs,
+  handleSubmitForm,
+  submitButtonText = 'Изменить',
+  cancelButtonText = 'Отмена',
+}) => {
   const [openSucces, setOpenSucces] = useState(false)
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
@@ -44,15 +51,6 @@ const ModalForm: Props = ({ ...otherProps }) => {
       console.log(error)
     }
   }
-
-  const {
-    modalTitle,
-    successText,
-    inputs,
-    handleSubmitForm,
-    submitButtonText,
-    cancelButtonText,
-  } = otherProps
 
   return (
     <div>
@@ -92,11 +90,6 @@ const ModalForm: Props = ({ ...otherProps }) => {
       </Modal>
     </div>
   )
-}
-ModalForm.defaultProps = {
-  successText: 'Успешно!',
-  submitButtonText: 'Изменить',
-  cancelButtonText: 'Отмена',
 }
 
 export default ModalForm
