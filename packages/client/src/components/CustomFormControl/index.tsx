@@ -61,7 +61,7 @@ export function CustomFormControl({
       setErrorText(errorText)
     }
   }
-  const onFocusHandler = (e: SyntheticEvent) => {
+  const onFocusHandler = () => {
     onSetError(false, name)
     setErrorText('')
   }

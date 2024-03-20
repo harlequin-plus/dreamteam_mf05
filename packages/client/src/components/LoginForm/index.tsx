@@ -3,6 +3,7 @@ import { CustomFormControl } from '../CustomFormControl'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
+import { signIn } from '../../services/apiService'
 
 const userInitValue = {
   login: '',
@@ -14,9 +15,9 @@ const errorInitValue = {
 }
 
 type Props = {
-  isShown: () => void
+  toggleShow: () => void
 }
-export function LoginForm({ isShown }: Props) {
+export function LoginForm({ toggleShow }: Props) {
   const [user, setUser] = useState(userInitValue)
   const [errorValue, setErrorValue] = useState(errorInitValue)
 
@@ -41,7 +42,7 @@ export function LoginForm({ isShown }: Props) {
       return
     }
     if (errorValue.login || errorValue.password) return
-    console.log(user)
+    signIn(user) //запрос на вход
     setUser(userInitValue)
     setErrorValue(errorInitValue)
   }
@@ -93,11 +94,10 @@ export function LoginForm({ isShown }: Props) {
         Войти
       </Button>
       <Button
-        // type="submit"
         variant="text"
         size="medium"
         sx={{ height: '3rem' }}
-        onClick={isShown}>
+        onClick={toggleShow}>
         Зарегистрироваться
       </Button>
       {/* <Typography variant="caption" gutterBottom>

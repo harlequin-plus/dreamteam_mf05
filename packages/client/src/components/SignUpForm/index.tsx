@@ -3,6 +3,7 @@ import { CustomFormControl } from '../CustomFormControl'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
+import { signUp } from '../../services/apiService'
 
 const userInitValue = {
   first_name: '',
@@ -23,10 +24,10 @@ const errorInitValue = {
   repeat_password: false,
 }
 type Props = {
-  isShown: () => void
+  toggleShow: () => void
 }
 
-export function SignUpForm({ isShown }: Props) {
+export function SignUpForm({ toggleShow }: Props) {
   const [user, setUser] = useState(userInitValue)
   const [errorValue, setErrorValue] = useState(errorInitValue)
 
@@ -41,50 +42,36 @@ export function SignUpForm({ isShown }: Props) {
     setErrorValue({ ...errorValue, [name]: value })
   }
 
+  const isEmptyValueError = (obj: typeof user) => {
+    let key: keyof typeof obj
+    const temp: Partial<typeof errorValue> = {}
+    let error = false
+    for (key in obj) {
+      if (obj[key] === '') {
+        temp[key] = true
+        error = true
+      }
+    }
+    if (error) setErrorValue({ ...errorValue, ...temp })
+    return error
+  }
+
   const onSubmitHandler = (e: SyntheticEvent) => {
     e.preventDefault()
     if (user.password !== user.repeat_password) {
       setErrorValue({ ...errorValue, repeat_password: true })
       return
     }
-    if (user.first_name === '') {
-      setErrorValue({ ...errorValue, first_name: true })
-      return
-    }
-    if (user.second_name === '') {
-      setErrorValue({ ...errorValue, second_name: true })
-      return
-    }
-    if (user.login === '') {
-      setErrorValue({ ...errorValue, login: true })
-      return
-    }
-    if (user.email === '') {
-      setErrorValue({ ...errorValue, email: true })
-      return
-    }
-    if (user.phone === '') {
-      setErrorValue({ ...errorValue, phone: true })
-      return
-    }
-    if (user.password === '') {
-      setErrorValue({ ...errorValue, password: true })
-      return
-    }
-
+    if (isEmptyValueError(user)) return
     if (
-      errorValue.email ||
-      errorValue.first_name ||
-      errorValue.login ||
-      errorValue.password ||
-      errorValue.phone ||
-      errorValue.repeat_password ||
-      errorValue.second_name
-    )
-      return
-    console.log(user)
-    setUser(userInitValue)
-    setErrorValue(errorInitValue)
+      Object.keys(errorValue).every(
+        name => errorValue[name as keyof typeof errorValue] === false
+      )
+    ) {
+      signUp(user) //запрос на регистрацию
+      setUser(userInitValue)
+      setErrorValue(errorInitValue)
+    }
   }
 
   return (
@@ -197,7 +184,7 @@ export function SignUpForm({ isShown }: Props) {
         variant="text"
         size="medium"
         sx={{ height: '3rem' }}
-        onClick={isShown}>
+        onClick={toggleShow}>
         уже есть аккаунт, войти
       </Button>
       {/* <Typography variant="caption" gutterBottom>

@@ -5,11 +5,11 @@ import { SignUpForm } from '../components/SignUpForm'
 
 export default function LoginPage() {
   const [shown, setShown] = useState(true)
-  const isShown = () => setShown(shown => !shown)
+  const toggleShow = () => setShown(shown => !shown)
   return (
     <FormWrapper>
-      {shown && <LoginForm isShown={isShown} />}
-      {!shown && <SignUpForm isShown={isShown} />}
+      {shown && <LoginForm toggleShow={toggleShow} />}
+      {!shown && <SignUpForm toggleShow={toggleShow} />}
     </FormWrapper>
   )
 }

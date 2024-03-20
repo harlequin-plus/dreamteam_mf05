@@ -4,7 +4,7 @@ import IndexPage from '../pages/IndexPage'
 import LoginPage from '../pages/LoginPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import LeaderboardPage from '../pages/LeaderboardPage'
-import { useGetUser } from '../services/apiService'
+import useGetUser from '../api/useGetUser'
 
 const AppRouter: React.FC = () => {
   const { isLoading, user, error } = useGetUser()
