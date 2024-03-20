@@ -18,6 +18,9 @@ export function HeaderMenu() {
           <Link to="/auth">Авторизация</Link>
         </li>
         <li>
+          <Link to="/profile">Профиль</Link>
+        </li>
+        <li>
           <Link to="/leaderboard">Страница таблицы лидеров</Link>
         </li>
       </ul>
