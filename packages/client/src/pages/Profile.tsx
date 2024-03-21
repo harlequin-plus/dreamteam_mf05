@@ -5,7 +5,6 @@ import ProfileField from '../components/ProfileField'
 import { useEffect, useState } from 'react'
 import { ChangePass, User } from '../api/type'
 import { resourceURL } from '../constants'
-import authApi from '../api/authApi'
 import userApi from '../api/userApi'
 import { DataModalForm, TupleUseState } from '../types'
 import { getUser } from '../services/apiService'
@@ -30,9 +29,7 @@ const Profile = () => {
     const setUserdata = async () => {
       try {
         const user = await getUser()
-        if (user) {
-          setUserInfo(user)
-        }
+        if (user) setUserInfo(user)
       } catch (e) {
         console.log(e)
       }
@@ -47,7 +44,7 @@ const Profile = () => {
 
   const handleChangeAvatar = async (file: File) => {
     try {
-      const user = await getUser(file)
+      const user = await userApi.changeAvatar(file)
       setUserInfo(user)
     } catch (error) {
       console.log(error)

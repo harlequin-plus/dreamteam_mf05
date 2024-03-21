@@ -18,7 +18,7 @@ export type SignInDataType = {
   password: string
 }
 export type User = {
-  id: string
+  id: number
   first_name: string
   second_name: string
   display_name: string

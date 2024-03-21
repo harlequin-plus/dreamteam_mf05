@@ -52,7 +52,6 @@ const logout = async () => {
     }
   } catch (error) {
     console.log(error)
-    return
   }
 }
 
