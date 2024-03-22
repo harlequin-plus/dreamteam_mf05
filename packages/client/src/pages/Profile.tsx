@@ -2,12 +2,13 @@ import { Box, Divider, Stack } from '@mui/material'
 import ChangeAvatar from '../components/ChangeAvatar'
 import BasicModal from '../components/ModalForm'
 import ProfileField from '../components/ProfileField'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { ChangePass, User } from '../api/type'
 import { resourceURL } from '../constants'
 import userApi from '../api/userApi'
-import { DataModalForm, TupleUseState } from '../types'
-import { getUser } from '../services/apiService'
+import { DataModalForm } from '../types'
+import { useAppDispatch, useAppSelector } from '../hook'
+import { setUserState } from '../store/user'
 
 const defaultUser: User = {
   id: 0,
@@ -21,21 +22,12 @@ const defaultUser: User = {
 }
 
 const Profile = () => {
-  const [userInfo, setUserInfo]: TupleUseState<User> = useState(defaultUser)
-
+  const dipatch = useAppDispatch()
+  const userState = useAppSelector(state => state.userState)
+  const user = userState.item ? userState.item : defaultUser
+  console.log(user)
   useEffect(() => {
     document.title = 'Мой профиль'
-
-    const setUserdata = async () => {
-      try {
-        const user = await getUser()
-        if (user) setUserInfo(user)
-      } catch (e) {
-        console.log(e)
-      }
-    }
-
-    setUserdata()
   }, [])
 
   const handleChangePassword = async (data: DataModalForm) => {
@@ -44,8 +36,8 @@ const Profile = () => {
 
   const handleChangeAvatar = async (file: File) => {
     try {
-      const user = await userApi.changeAvatar(file)
-      setUserInfo(user)
+      const userRes = await userApi.changeAvatar(file)
+      dipatch(setUserState(userRes))
     } catch (error) {
       console.log(error)
     }
@@ -55,7 +47,7 @@ const Profile = () => {
     <Box display="flex" flexDirection="column" alignItems="center" my={13}>
       <ChangeAvatar
         handleChangeAvatar={handleChangeAvatar}
-        avatar={`${resourceURL}${userInfo.avatar}`}
+        avatar={`${resourceURL}${user.avatar}`}
       />
       <Stack
         my={6}
@@ -63,15 +55,15 @@ const Profile = () => {
         p={2}
         sx={{ width: '35rem' }}
         divider={<Divider flexItem />}>
-        <ProfileField value={userInfo.email} label="Почта" />
-        <ProfileField value={userInfo.login} label="Логин" />
-        <ProfileField value={userInfo.first_name} label="Имя" />
-        <ProfileField value={userInfo.second_name} label="Фамилия" />
+        <ProfileField value={user.email} label="Почта" />
+        <ProfileField value={user.login} label="Логин" />
+        <ProfileField value={user.first_name} label="Имя" />
+        <ProfileField value={user.second_name} label="Фамилия" />
         <ProfileField
-          value={userInfo.display_name ? userInfo.display_name : ''}
+          value={user.display_name ? user.display_name : ''}
           label="Отображаемое имя"
         />
-        <ProfileField value={userInfo.phone} label="Телефон" />
+        <ProfileField value={user.phone} label="Телефон" />
       </Stack>
       <BasicModal
         successText="Пароль успешно изменен!"

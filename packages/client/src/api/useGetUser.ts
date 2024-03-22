@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { User } from './authApiTypes'
 import authApi from './authApi'
+import { useAppDispatch } from '../hook'
+import { setUserState } from '../store/user'
 type GetUser = {
   isLoading: boolean
   user: null | User
@@ -12,6 +14,7 @@ const useGetUser = () => {
     user: null,
     error: false,
   })
+  const dispatch = useAppDispatch()
 
   const getUser = async () => {
     try {
@@ -19,6 +22,8 @@ const useGetUser = () => {
       if ('reason' in getUserResponse) {
         throw Error(getUserResponse.reason)
       }
+
+      dispatch(setUserState(getUserResponse))
       setState({ ...state, isLoading: false, user: getUserResponse })
       console.log('User:', getUserResponse)
     } catch (error) {

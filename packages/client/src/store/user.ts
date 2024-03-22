@@ -15,7 +15,7 @@ const initialState: UserState = {
 }
 
 const userSlice = createSlice({
-  name: 'user',
+  name: 'userState',
   initialState,
   reducers: {
     loadSuccess(state) {
@@ -27,11 +27,12 @@ const userSlice = createSlice({
     loadPending(state) {
       state.status = 'pending'
     },
-    setUser(state, action: PayloadAction<UserState>) {
-      state.item = action.payload.item
+    setUserState(state, action: PayloadAction<User>) {
+      state.item = action.payload
     },
   },
 })
 
-export const { setUser } = userSlice.actions
+export const { setUserState, loadSuccess, loadFailed, loadPending } =
+  userSlice.actions
 export default userSlice.reducer
