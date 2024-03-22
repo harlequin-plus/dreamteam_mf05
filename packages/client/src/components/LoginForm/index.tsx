@@ -4,6 +4,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { signIn } from '../../services/apiService'
+import { useNavigate } from 'react-router-dom'
 
 const userInitValue = {
   login: '',
@@ -20,6 +21,7 @@ type Props = {
 export function LoginForm({ toggleShow }: Props) {
   const [user, setUser] = useState(userInitValue)
   const [errorValue, setErrorValue] = useState(errorInitValue)
+  const navigate = useNavigate()
 
   const onChangeUserValue = (e: SyntheticEvent) => {
     const target = e.target as HTMLInputElement
@@ -43,6 +45,7 @@ export function LoginForm({ toggleShow }: Props) {
     }
     if (errorValue.login || errorValue.password) return
     signIn(user) //запрос на вход
+    navigate('/')
     setUser(userInitValue)
     setErrorValue(errorInitValue)
   }
