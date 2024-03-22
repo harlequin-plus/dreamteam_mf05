@@ -3,29 +3,48 @@ import { CustomFormControl } from '../CustomFormControl'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
+import { signIn } from '../../services/apiService'
 
-export function LoginForm() {
-  const [loginValue, setLoginValue] = useState('')
-  const [loginError, setLoginError] = useState(false)
-  const [passwordValue, setPasswordValue] = useState('')
-  const [passwordError, setPasswordError] = useState(false)
+const userInitValue = {
+  login: '',
+  password: '',
+}
+const errorInitValue = {
+  login: false,
+  password: false,
+}
 
-  const onChangeLoginValue = (e: SyntheticEvent) => {
+type Props = {
+  toggleShow: () => void
+}
+export function LoginForm({ toggleShow }: Props) {
+  const [user, setUser] = useState(userInitValue)
+  const [errorValue, setErrorValue] = useState(errorInitValue)
+
+  const onChangeUserValue = (e: SyntheticEvent) => {
     const target = e.target as HTMLInputElement
-    setLoginValue(target.value)
+    const name = target.name
+    const value = target.value
+    setUser({ ...user, [name]: value })
   }
-  const onChangePassValue = (e: SyntheticEvent) => {
-    const target = e.target as HTMLInputElement
-    setPasswordValue(target.value)
+
+  const onChangeErrorValue = (value: boolean, name: string) => {
+    setErrorValue({ ...errorValue, [name]: value })
   }
   const onSubmitHandler = (e: SyntheticEvent) => {
     e.preventDefault()
-    if (loginError || passwordError) return
-    console.log('логин:', loginValue, 'пароль:', passwordValue)
-    setLoginValue('')
-    setPasswordValue('')
-    setLoginError(false)
-    setPasswordError(false)
+    if (user.login === '') {
+      setErrorValue({ ...errorValue, login: true })
+      return
+    }
+    if (user.password === '') {
+      setErrorValue({ ...errorValue, password: true })
+      return
+    }
+    if (errorValue.login || errorValue.password) return
+    signIn(user) //запрос на вход
+    setUser(userInitValue)
+    setErrorValue(errorInitValue)
   }
 
   return (
@@ -37,7 +56,7 @@ export function LoginForm() {
       display="flex"
       flexDirection="column"
       alignItems="center"
-      gap={2}
+      gap={1}
       p={2}
       onSubmit={onSubmitHandler}>
       <Typography variant="h3" gutterBottom>
@@ -50,10 +69,10 @@ export function LoginForm() {
         id="login-in-loginform"
         label="Логин"
         autoComplete="login"
-        value={loginValue}
-        onChangeValue={onChangeLoginValue}
-        isErrorValue={loginError}
-        onSetError={setLoginError}
+        value={user.login}
+        onChangeValue={onChangeUserValue}
+        isErrorValue={errorValue.login}
+        onSetError={onChangeErrorValue}
       />
       <CustomFormControl
         isPassword={true}
@@ -61,11 +80,11 @@ export function LoginForm() {
         name="password"
         id="password-in-loginform"
         label="Пароль"
-        autoComplete="password"
-        value={passwordValue}
-        onChangeValue={onChangePassValue}
-        isErrorValue={passwordError}
-        onSetError={setPasswordError}
+        autoComplete="password_game"
+        value={user.password}
+        onChangeValue={onChangeUserValue}
+        isErrorValue={errorValue.password}
+        onSetError={onChangeErrorValue}
       />
       <Button
         type="submit"
@@ -75,15 +94,15 @@ export function LoginForm() {
         Войти
       </Button>
       <Button
-        type="submit"
         variant="text"
         size="medium"
-        sx={{ height: '3rem' }}>
+        sx={{ height: '3rem' }}
+        onClick={toggleShow}>
         Зарегистрироваться
       </Button>
-      <Typography variant="caption" gutterBottom>
+      {/* <Typography variant="caption" gutterBottom>
         Забыли пароль?
-      </Typography>
+      </Typography> */}
     </Box>
   )
 }

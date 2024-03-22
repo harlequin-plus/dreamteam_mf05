@@ -1,12 +1,20 @@
 import React from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import IndexPage from '../pages/IndexPage'
 import LoginPage from '../pages/LoginPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import Profile from '../pages/Profile'
 import LeaderboardPage from '../pages/LeaderboardPage'
+import useGetUser from '../api/useGetUser'
 
 const AppRouter: React.FC = () => {
+  const { isLoading, user, error } = useGetUser()
+  const navigate = useNavigate()
+
+  if (isLoading) return <div>...loading</div>
+  if (error) navigate('/404')
+  if (!user?.id) navigate('/auth')
+
   return (
     <Routes>
       <Route path="/" element={<IndexPage />} />

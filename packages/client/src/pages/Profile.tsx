@@ -5,9 +5,9 @@ import ProfileField from '../components/ProfileField'
 import { useEffect, useState } from 'react'
 import { ChangePass, User } from '../api/type'
 import { resourceURL } from '../constants'
-import authApi from '../api/authApi'
 import userApi from '../api/userApi'
 import { DataModalForm, TupleUseState } from '../types'
+import { getUser } from '../services/apiService'
 
 const defaultUser: User = {
   id: 0,
@@ -28,8 +28,8 @@ const Profile = () => {
 
     const setUserdata = async () => {
       try {
-        const user = await authApi.getUser()
-        setUserInfo(user)
+        const user = await getUser()
+        if (user) setUserInfo(user)
       } catch (e) {
         console.log(e)
       }

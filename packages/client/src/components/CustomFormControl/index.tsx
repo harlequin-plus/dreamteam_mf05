@@ -13,19 +13,27 @@ type OwnProps = {
   id: string
   isPassword: boolean
   type: 'email' | 'tel' | 'text' | 'password'
-  name: 'first_name' | 'second_name' | 'login' | 'email' | 'password' | 'phone'
+  name:
+    | 'first_name'
+    | 'second_name'
+    | 'login'
+    | 'email'
+    | 'password'
+    | 'phone'
+    | 'repeat_password'
   label: string
   autoComplete:
     | 'email'
-    | 'tel'
-    | 'password'
+    | 'phone'
+    | 'password_game'
     | 'login'
     | 'first_name'
     | 'second_name'
+    | 'repeat_password_game'
   value: string
   onChangeValue: (value: SyntheticEvent) => void
   isErrorValue: boolean
-  onSetError: (isErrorValue: boolean) => void
+  onSetError: (isErrorValue: boolean, name: string) => void
 }
 
 export function CustomFormControl({
@@ -41,20 +49,20 @@ export function CustomFormControl({
   onSetError,
 }: OwnProps) {
   const [showPassword, setShowPassword] = useState(false)
-  //   const [error, setError] = useState(false)
   const [errorText, setErrorText] = useState('')
 
-  const onBlurHandle = (e: SyntheticEvent) => {
+  const onBlurHandler = (e: SyntheticEvent) => {
     const target = e.target as HTMLInputElement
+    const name = target.name
     const { isNorm, errorText } = validate(name, target.value || '')
 
     if (!isNorm) {
-      onSetError(true)
+      onSetError(true, name)
       setErrorText(errorText)
     }
   }
   const onFocusHandler = () => {
-    onSetError(false)
+    onSetError(false, name)
     setErrorText('')
   }
 
@@ -69,7 +77,7 @@ export function CustomFormControl({
         id={id}
         type={isPassword ? (showPassword ? 'text' : 'password') : type}
         name={name}
-        onBlur={e => onBlurHandle(e)}
+        onBlur={e => onBlurHandler(e)}
         onFocus={onFocusHandler}
         onChange={onChangeValue}
         value={value}
