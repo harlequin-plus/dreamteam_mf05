@@ -24,13 +24,15 @@ const userSlice = createSlice({
   reducers: {
     loadSuccess(state) {
       state.loadStatus = 'success'
-      state.isLoading = true
+      state.isLoading = false
     },
     loadFailed(state) {
       state.loadStatus = 'failed'
+      state.isLoading = false
     },
     loadPending(state) {
       state.loadStatus = 'pending'
+      state.isLoading = true
     },
     setUserState(state, action: PayloadAction<User>) {
       state.item = action.payload
