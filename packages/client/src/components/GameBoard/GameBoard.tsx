@@ -2,6 +2,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import { moveDown, moveLeft, moveRight, moveUp } from '../../utils/gameMoves'
 import { addNewTile, drawBoard, drawTiles } from '../../utils/gameDraw'
 import { styles } from './tempStyles'
+import { FullscreenProvider } from '../FullscreenProvider'
+import { Button } from '@mui/material'
+import CloseFullscreenIcon from '../../assets/close_fullscreen.svg'
+import OpenFullscreenIcon from '../../assets/open_fullscreen.svg'
 
 const GameBoard: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -85,13 +89,38 @@ const GameBoard: React.FC = () => {
     }
   }
 
+  const [isFullscreenEnabled, setFullscreenEnabled] = useState<boolean>(false)
   return (
-    <>
+    <FullscreenProvider
+      enabled={isFullscreenEnabled}
+      onChange={(isFullscreenEnabled: boolean) =>
+        setFullscreenEnabled(isFullscreenEnabled)
+      }>
       <div style={styles}>
+        <Button
+          className="fullscreen-btn"
+          aria-label="OpenInFull"
+          onClick={() => setFullscreenEnabled(!isFullscreenEnabled)}
+          sx={{
+            position: 'absolute',
+            right: 0,
+            top: 0,
+            width: 75,
+            height: 75,
+          }}>
+          <img
+            src={isFullscreenEnabled ? CloseFullscreenIcon : OpenFullscreenIcon}
+            alt={
+              isFullscreenEnabled
+                ? 'Close fullscreen button'
+                : 'Open fullscreen button'
+            }
+          />
+        </Button>
         <div> High Score: {highScore}</div>
         <canvas ref={canvasRef} width={400} height={420} />
       </div>
-    </>
+    </FullscreenProvider>
   )
 }
 

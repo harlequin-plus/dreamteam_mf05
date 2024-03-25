@@ -1,5 +1,6 @@
 export const styles: Record<string, string> = {
   display: 'flex',
+  position: 'relative',
   flexDirection: 'column',
 
   width: '100%',
