@@ -36,7 +36,7 @@ const ms = [
   'MSFullscreenError',
 ]
 
-const document: any =
+const document: any = // eslint-disable-line
   typeof window !== 'undefined' && typeof window.document !== 'undefined'
     ? window.document
     : {} // eslint-disable-line
@@ -50,9 +50,11 @@ const vendor =
 
 class fscreen {
   static requestFullscreen(element: any) {
+    // eslint-disable-line
     return element[vendor[key.requestFullscreen]]()
   } // eslint-disable-line
   static requestFullscreenFunction(element: any) {
+    // eslint-disable-line
     return element[vendor[key.requestFullscreen]]
   } // eslint-disable-line
   static get exitFullscreen() {
@@ -61,23 +63,29 @@ class fscreen {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   static addEventListener(type: any, handler: any, options: any) {
+    // eslint-disable-line
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     return document.addEventListener(vendor[key[type]], handler, options)
-  } // eslint-disable-line
+  }
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   static removeEventListener(type: any, handler: any, options: any) {
+    // eslint-disable-line
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     return document.removeEventListener(vendor[key[type]], handler, options)
-  } // eslint-disable-line
+  }
   static get fullscreenEnabled() {
     return Boolean(document[vendor[key.fullscreenEnabled]])
   }
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  static set fullscreenEnabled(val) {}
+  static set fullscreenEnabled(_) {}
   static get fullscreenElement() {
     return document[vendor[key.fullscreenElement]]
   }
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  static set fullscreenElement(val) {}
+  static set fullscreenElement(_) {}
   static get onfullscreenchange() {
     return document[`on${vendor[key.fullscreenchange]}`.toLowerCase()]
   }
