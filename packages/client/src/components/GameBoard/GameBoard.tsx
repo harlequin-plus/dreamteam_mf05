@@ -4,8 +4,8 @@ import { addNewTile, drawBoard, drawTiles } from '../../utils/gameDraw'
 import { styles } from './tempStyles'
 import { FullscreenProvider } from '../FullscreenProvider'
 import { Button } from '@mui/material'
-import CloseFullscreenIcon from '../../assets/close_fullscreen.svg'
-import OpenFullscreenIcon from '../../assets/open_fullscreen.svg'
+import CloseFullscreenIcon from '../../assets/close_fullscreen.svg' // eslint-disable-line
+import OpenFullscreenIcon from '../../assets/open_fullscreen.svg' // eslint-disable-line
 
 const GameBoard: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
