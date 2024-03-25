@@ -8,7 +8,7 @@ import LeaderboardPage from '../pages/LeaderboardPage'
 import useGetUser from '../api/useGetUser'
 
 const AppRouter: React.FC = () => {
-  const { isLoading, user, error } = useGetUser()
+  //const { isLoading, user, error } = useGetUser()
   const navigate = useNavigate()
 
   //   if (isLoading) return <div>...loading</div>
