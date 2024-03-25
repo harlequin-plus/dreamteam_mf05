@@ -4,6 +4,8 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { signUp } from '../../services/apiService'
+import { useAppDispatch } from '../../hook'
+import { fetchUser } from '../../store/userState'
 
 const userInitValue = {
   first_name: '',
@@ -30,6 +32,7 @@ type Props = {
 export function SignUpForm({ toggleShow }: Props) {
   const [user, setUser] = useState(userInitValue)
   const [errorValue, setErrorValue] = useState(errorInitValue)
+  const dispatch = useAppDispatch()
 
   const onChangeUserValue = (e: SyntheticEvent) => {
     const target = e.target as HTMLInputElement
@@ -56,7 +59,7 @@ export function SignUpForm({ toggleShow }: Props) {
     return error
   }
 
-  const onSubmitHandler = (e: SyntheticEvent) => {
+  const onSubmitHandler = async (e: SyntheticEvent) => {
     e.preventDefault()
     if (user.password !== user.repeat_password) {
       setErrorValue({ ...errorValue, repeat_password: true })
@@ -68,7 +71,8 @@ export function SignUpForm({ toggleShow }: Props) {
         name => errorValue[name as keyof typeof errorValue] === false
       )
     ) {
-      signUp(user) //запрос на регистрацию
+      await signUp(user) //запрос на регистрацию
+      dispatch(fetchUser())
       setUser(userInitValue)
       setErrorValue(errorInitValue)
     }

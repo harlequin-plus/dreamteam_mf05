@@ -4,6 +4,8 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { signIn } from '../../services/apiService'
+import { useAppDispatch } from '../../hook'
+import { fetchUser } from '../../store/userState'
 
 const userInitValue = {
   login: '',
@@ -20,6 +22,7 @@ type Props = {
 export function LoginForm({ toggleShow }: Props) {
   const [user, setUser] = useState(userInitValue)
   const [errorValue, setErrorValue] = useState(errorInitValue)
+  const dispatch = useAppDispatch()
 
   const onChangeUserValue = (e: SyntheticEvent) => {
     const target = e.target as HTMLInputElement
@@ -31,7 +34,7 @@ export function LoginForm({ toggleShow }: Props) {
   const onChangeErrorValue = (value: boolean, name: string) => {
     setErrorValue({ ...errorValue, [name]: value })
   }
-  const onSubmitHandler = (e: SyntheticEvent) => {
+  const onSubmitHandler = async (e: SyntheticEvent) => {
     e.preventDefault()
     if (user.login === '') {
       setErrorValue({ ...errorValue, login: true })
@@ -42,7 +45,8 @@ export function LoginForm({ toggleShow }: Props) {
       return
     }
     if (errorValue.login || errorValue.password) return
-    signIn(user) //запрос на вход
+    await signIn(user) //запрос на вход
+    dispatch(fetchUser())
     setUser(userInitValue)
     setErrorValue(errorInitValue)
   }

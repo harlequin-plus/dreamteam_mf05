@@ -8,11 +8,6 @@ const signUp = async (data: SignUpDataType) => {
     if ('reason' in signUpResponse) {
       throw Error(signUpResponse.reason)
     }
-    const getUserResponse = await authApi.getUser()
-    if ('reason' in getUserResponse) {
-      throw Error(getUserResponse.reason)
-    }
-    console.log('устанавливаем в стор', getUserResponse)
   } catch (error) {
     console.log(error)
     return

@@ -8,7 +8,7 @@ import { resourceURL } from '../constants'
 import userApi from '../api/userApi'
 import { DataModalForm } from '../types'
 import { useAppDispatch, useAppSelector } from '../hook'
-import { setUserState } from '../store/user'
+import { setUserState } from '../store/userState'
 
 const defaultUser: User = {
   id: 0,

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { User } from './authApiTypes'
 import authApi from './authApi'
 import { useAppDispatch } from '../hook'
-import { setUserState } from '../store/user'
+import { setUserState } from '../store/userState'
 type GetUser = {
   isLoading: boolean
   user: null | User
