@@ -14,6 +14,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 )
 
 function startServiceWorker() {
+  if (import.meta.env.MODE === 'development') {
+    console.log('ServiceWorker не поддерживается в режиме разработчика')
+    return
+  }
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('/sw.js', { scope: '/' })
