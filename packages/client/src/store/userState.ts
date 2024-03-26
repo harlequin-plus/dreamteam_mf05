@@ -3,7 +3,7 @@ import { User } from '../api/type'
 import { getUser } from '../services/apiService'
 import { AppDispath } from '.'
 
-type LoadStatus = 'success' | 'pending' | 'failed' | 'noloaded'
+type LoadStatus = 'success' | 'loading' | 'failed' | 'noloaded'
 type Nullable<T> = T | null
 
 type UserState = {
@@ -31,7 +31,7 @@ const userSlice = createSlice({
       state.isLoading = false
     },
     loadPending(state) {
-      state.loadStatus = 'pending'
+      state.loadStatus = 'loading'
       state.isLoading = true
     },
     setUserState(state, action: PayloadAction<User>) {
@@ -57,9 +57,9 @@ export const fetchUser = () => async (dispatch: AppDispath) => {
       dispatch(setUserState(user))
       console.log('user added to store')
     }
+    dispatch(loadFailed())
   } catch (error) {
     dispatch(loadFailed())
-    console.log(error)
   }
 }
 export default userSlice.reducer

@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { signIn } from '../../services/apiService'
-import { useAppDispatch } from '../../hook'
+import { useAppDispatch } from '../../hooks/reduxTsHook'
 import { fetchUser } from '../../store/userState'
 
 const userInitValue = {

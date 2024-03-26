@@ -7,7 +7,7 @@ import { ChangePass, User } from '../api/type'
 import { resourceURL } from '../constants'
 import userApi from '../api/userApi'
 import { DataModalForm } from '../types'
-import { useAppDispatch, useAppSelector } from '../hook'
+import { useAppDispatch, useAppSelector } from '../hooks/reduxTsHook'
 import { setUserState } from '../store/userState'
 
 const defaultUser: User = {
