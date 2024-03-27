@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import IndexPage from '../pages/IndexPage'
 import LoginPage from '../pages/LoginPage'
@@ -9,15 +9,12 @@ import useGetUser from '../api/useGetUser'
 
 const AppRouter: React.FC = () => {
   const { isLoading, user, error } = useGetUser()
-  const [isAuth, setIsAuth] = useState(false)
   const navigate = useNavigate()
-  useEffect(() => {
-    if (error) navigate('/404')
-    if (user?.id) setIsAuth(true)
-  }, [isLoading])
 
   if (isLoading) return <div>...loading</div>
-  if (!isAuth) return <LoginPage />
+  if (error) navigate('/404')
+  if (!user?.id) navigate('/auth')
+
   return (
     <Routes>
       <Route path="/" element={<IndexPage />} />
