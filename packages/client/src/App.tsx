@@ -2,8 +2,6 @@ import { useEffect } from 'react'
 import HeaderMenu from './components/HeaderMenu'
 import { BrowserRouter as Router } from 'react-router-dom'
 import AppRouter from './app/Router'
-import { Button } from '@mui/material'
-import { logout } from './services/apiService'
 import './App.css'
 
 function App() {
@@ -16,9 +14,6 @@ function App() {
     // }
     // fetchServerData()
   }, [])
-  const logoutHandler = () => {
-    logout().then(() => window.location.reload())
-  }
 
   return (
     <Router>
@@ -26,9 +21,6 @@ function App() {
         <HeaderMenu />
         <div className="App">
           <p>Вот тут будет жить ваше приложение :)</p>
-          <Button variant="contained" onClick={logoutHandler}>
-            выйти
-          </Button>
           <AppRouter />
         </div>
       </main>
