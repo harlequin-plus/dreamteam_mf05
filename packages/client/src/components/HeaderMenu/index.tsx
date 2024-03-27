@@ -23,6 +23,9 @@ export function HeaderMenu() {
         <li>
           <Link to="/leaderboard">Страница таблицы лидеров</Link>
         </li>
+        <li>
+          <Link to="/forum">Форум</Link>
+        </li>
       </ul>
     </nav>
   )

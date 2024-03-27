@@ -20,7 +20,7 @@ const defaultUser: User = {
   avatar: null,
 }
 
-const Profile = () => {
+const ProfilePage = () => {
   const [userInfo, setUserInfo]: TupleUseState<User> = useState(defaultUser)
 
   useEffect(() => {
@@ -95,4 +95,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default ProfilePage
