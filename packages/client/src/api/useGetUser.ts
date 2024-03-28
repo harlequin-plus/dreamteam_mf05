@@ -19,6 +19,7 @@ const useGetUser = () => {
       if ('reason' in getUserResponse) {
         throw Error(getUserResponse.reason)
       }
+
       setState({ ...state, isLoading: false, user: getUserResponse })
       console.log('User:', getUserResponse)
     } catch (error) {
