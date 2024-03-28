@@ -36,7 +36,7 @@ const GameBoard: React.FC = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [])
+  }, []) // eslint-disable-line
 
   let completed = false // REWORK
 
@@ -93,14 +93,12 @@ const GameBoard: React.FC = () => {
   return (
     <FullscreenProvider
       enabled={isFullscreenEnabled}
-      onChange={(isFullscreenEnabled: boolean) =>
-        setFullscreenEnabled(isFullscreenEnabled)
-      }>
+      onChange={setFullscreenEnabled}>
       <div style={styles}>
         <Button
           className="fullscreen-btn"
           aria-label="OpenInFull"
-          onClick={() => setFullscreenEnabled(!isFullscreenEnabled)}
+          onClick={() => setFullscreenEnabled(prev => !prev)}
           sx={{
             position: 'absolute',
             right: 0,

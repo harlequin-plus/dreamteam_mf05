@@ -1,111 +1,13 @@
-import { useEffect, ReactNode } from 'react'
-
-const key = {
-  fullscreenEnabled: 0,
-  fullscreenElement: 1,
-  requestFullscreen: 2,
-  exitFullscreen: 3,
-  fullscreenchange: 4,
-  fullscreenerror: 5,
-}
-
-const webkit = [
-  'webkitFullscreenEnabled',
-  'webkitFullscreenElement',
-  'webkitRequestFullscreen',
-  'webkitExitFullscreen',
-  'webkitfullscreenchange',
-  'webkitfullscreenerror',
-]
-
-const moz = [
-  'mozFullScreenEnabled',
-  'mozFullScreenElement',
-  'mozRequestFullScreen',
-  'mozCancelFullScreen',
-  'mozfullscreenchange',
-  'mozfullscreenerror',
-]
-
-const ms = [
-  'msFullscreenEnabled',
-  'msFullscreenElement',
-  'msRequestFullscreen',
-  'msExitFullscreen',
-  'MSFullscreenChange',
-  'MSFullscreenError',
-]
-
-const document: any = // eslint-disable-line
-  typeof window !== 'undefined' && typeof window.document !== 'undefined'
-    ? window.document
-    : {} // eslint-disable-line
-
-const vendor =
-  ('fullscreenEnabled' in document && Object.keys(key)) ||
-  (webkit[0] in document && webkit) ||
-  (moz[0] in document && moz) ||
-  (ms[0] in document && ms) ||
-  []
-
-class fscreen {
-  static requestFullscreen(element: any) {
-    // eslint-disable-line
-    return element[vendor[key.requestFullscreen]]()
-  } // eslint-disable-line
-  static requestFullscreenFunction(element: any) {
-    // eslint-disable-line
-    return element[vendor[key.requestFullscreen]]
-  } // eslint-disable-line
-  static get exitFullscreen() {
-    return document[vendor[key.exitFullscreen]].bind(document)
-  }
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  static addEventListener(type: any, handler: any, options: any) {
-    // eslint-disable-line
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return document.addEventListener(vendor[key[type]], handler, options)
-  }
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  static removeEventListener(type: any, handler: any, options: any) {
-    // eslint-disable-line
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return document.removeEventListener(vendor[key[type]], handler, options)
-  }
-  static get fullscreenEnabled() {
-    return Boolean(document[vendor[key.fullscreenEnabled]])
-  }
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  static set fullscreenEnabled(_) {}
-  static get fullscreenElement() {
-    return document[vendor[key.fullscreenElement]]
-  }
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  static set fullscreenElement(_) {}
-  static get onfullscreenchange() {
-    return document[`on${vendor[key.fullscreenchange]}`.toLowerCase()]
-  }
-  static set onfullscreenchange(handler) {
-    document[`on${vendor[key.fullscreenchange]}`.toLowerCase()] = handler
-  }
-  static get onfullscreenerror() {
-    return document[`on${vendor[key.fullscreenerror]}`.toLowerCase()]
-  }
-  static set onfullscreenerror(handler) {
-    document[`on${vendor[key.fullscreenerror]}`.toLowerCase()] = handler
-  }
-}
+import { useEffect, ReactNode, useCallback } from 'react'
+import { fscreen } from './fscreen'
+import './index.css'
 
 type Props = {
   children: ReactNode
-  onChange?: (state: boolean) => void
-  onClose?: () => void
-  onOpen?: () => void
   enabled?: boolean
+  onChange?(state: boolean): void
+  onClose?(): void
+  onOpen?(): void
 }
 
 export const FullscreenProvider = ({
@@ -117,25 +19,16 @@ export const FullscreenProvider = ({
 }: Props) => {
   let fullscreenRef: HTMLElement | null = null
 
-  const handleChange = () => {
-    if (onChange) {
-      onChange(!!fscreen.fullscreenElement)
-    }
-
-    if (onOpen && !!fscreen.fullscreenElement) {
-      onOpen()
-    }
-
-    if (onClose && !fscreen.fullscreenElement) {
-      onClose()
-    }
-  }
+  const handleChange = useCallback(() => {
+    onChange?.(!!fscreen.fullscreenElement)
+    fscreen.fullscreenElement ? onOpen?.() : onClose?.()
+  }, [onChange, onClose, onOpen])
 
   useEffect(() => {
     fscreen.addEventListener('fullscreenchange', handleChange, {})
     return () =>
       fscreen.removeEventListener('fullscreenchange', handleChange, {})
-  }, [])
+  }, [handleChange])
 
   useEffect(() => {
     const enabledEl = fscreen.fullscreenElement
@@ -144,13 +37,10 @@ export const FullscreenProvider = ({
     } else if (!enabledEl && enabled) {
       fscreen.requestFullscreen(fullscreenRef)
     }
-  }, [enabled])
+  }, [enabled, fullscreenRef])
 
   return (
-    <div
-      className="FullScreen"
-      ref={node => (fullscreenRef = node)}
-      style={{ height: '100%', width: '100%' }}>
+    <div className="FullScreen" ref={node => (fullscreenRef = node)}>
       {children}
     </div>
   )
