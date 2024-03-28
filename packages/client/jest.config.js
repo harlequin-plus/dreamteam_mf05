@@ -10,6 +10,7 @@ export default {
   },
   transform: {
     "^.+\\.tsx?$": "ts-jest",
-    "^.+\\.svg$": "<rootDir>/svgTransform.cjs"
+    "^.+\\.svg$": "<rootDir>/svgTransform.cjs",
+    '^.+\\.(css|less|scss)$': '<rootDir>/cssTransform.cjs'
   },
 }
