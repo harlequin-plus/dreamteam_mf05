@@ -11,6 +11,7 @@ const AppRouter: React.FC = () => {
   const { isLoading, user, error } = useGetUser()
   const navigate = useNavigate()
 
+  // TODO: исправить логику авторизации
   //   if (isLoading) return <div>...loading</div>
   //   if (!user?.id) navigate('/auth')
   //   if (error) navigate('/404')

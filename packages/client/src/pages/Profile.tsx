@@ -3,29 +3,17 @@ import ChangeAvatar from '../components/ChangeAvatar'
 import BasicModal from '../components/ModalForm'
 import ProfileField from '../components/ProfileField'
 import { useEffect } from 'react'
-import { ChangePass, User } from '../api/type'
+import { ChangePass } from '../api/type'
 import { resourceURL } from '../constants'
 import userApi from '../api/userApi'
 import { DataModalForm } from '../types'
 import { useAppDispatch, useAppSelector } from '../hooks/reduxTsHook'
 import { setUserState } from '../store/userState'
 
-const defaultUser: User = {
-  id: 0,
-  login: '',
-  email: '',
-  first_name: '',
-  second_name: '',
-  display_name: null,
-  phone: '',
-  avatar: null,
-}
-
 const Profile = () => {
   const dipatch = useAppDispatch()
-  const userState = useAppSelector(state => state.userState)
-  const user = userState.item ? userState.item : defaultUser
-  console.log(user)
+  const user = useAppSelector(state => state.userState.item)
+
   useEffect(() => {
     document.title = 'Мой профиль'
   }, [])

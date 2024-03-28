@@ -1,20 +1,22 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { User } from '../api/type'
 import { getUser } from '../services/apiService'
-import { AppDispath } from '.'
+import { UserState } from '../types'
 
-type LoadStatus = 'success' | 'loading' | 'failed' | 'noloaded'
-type Nullable<T> = T | null
-
-type UserState = {
-  item: Nullable<User>
-  loadStatus: LoadStatus
-  isLoading: boolean
+const defaultUser: User = {
+  id: 0,
+  login: '',
+  email: '',
+  first_name: '',
+  second_name: '',
+  display_name: null,
+  phone: '',
+  avatar: null,
 }
 
 const initialState: UserState = {
   loadStatus: 'noloaded',
-  item: null,
+  item: defaultUser,
   isLoading: false,
 }
 
@@ -39,27 +41,33 @@ const userSlice = createSlice({
     },
     resetUserState(state) {
       state.isLoading = false
-      state.item = null
+      state.item = defaultUser
       state.loadStatus = 'noloaded'
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(fetchUser.pending, state => {
+      state.loadStatus = 'loading'
+    })
+
+    builder.addCase(fetchUser.rejected, state => {
+      state.loadStatus = 'failed'
+    })
+
+    builder.addCase(fetchUser.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.item = action.payload
+      }
+    })
   },
 })
 
 export const { setUserState, loadSuccess, loadFailed, loadPending } =
   userSlice.actions
 
-export const fetchUser = () => async (dispatch: AppDispath) => {
-  try {
-    dispatch(loadPending())
-    const user = await getUser()
-    if (user) {
-      dispatch(loadSuccess())
-      dispatch(setUserState(user))
-      console.log('user added to store')
-    }
-    dispatch(loadFailed())
-  } catch (error) {
-    dispatch(loadFailed())
-  }
-}
+export const fetchUser = createAsyncThunk('userState/fetchStatus', async () => {
+  const user = await getUser()
+  return user
+})
+
 export default userSlice.reducer
