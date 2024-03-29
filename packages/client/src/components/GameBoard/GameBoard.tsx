@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react'
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import { moveDown, moveLeft, moveRight, moveUp } from '../../utils/gameMoves'
 import { addNewTile, drawBoard, drawTiles } from '../../utils/gameDraw'
 import { styles } from './tempStyles'
@@ -14,7 +14,7 @@ const GameBoard: React.FC = () => {
   const [highScore, setScore] = useState<number>(2)
   const [completed, setCompleted] = useState<boolean>(false)
 
-  const findLargestElement = React.useCallback(
+  const findLargestElement = useCallback(
     (matrix: number[][]): number => {
       let largestElement = Number.NEGATIVE_INFINITY
 
@@ -48,7 +48,7 @@ const GameBoard: React.FC = () => {
     []
   )
 
-  const handleKeyDown = React.useCallback(
+  const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       let moved = false
 
