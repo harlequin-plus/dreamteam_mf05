@@ -11,9 +11,10 @@ const AppRouter: React.FC = () => {
   const { isLoading, user, error } = useGetUser()
   const navigate = useNavigate()
 
-  if (isLoading) return <div>...loading</div>
-  if (error) navigate('/404')
-  if (!user?.id) navigate('/auth')
+  // TODO: исправить логику авторизации
+  //   if (isLoading) return <div>...loading</div>
+  //   if (!user?.id) navigate('/auth')
+  //   if (error) navigate('/404')
 
   return (
     <Routes>
