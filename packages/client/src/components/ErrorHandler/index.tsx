@@ -2,7 +2,11 @@ import React from 'react'
 import Typography from '@mui/material/Typography'
 import { Box } from '@mui/material'
 
-export function ErrorHandler(error: { error: { message: string } }) {
+type OwnProps = {
+  error: Error
+}
+
+export function ErrorHandler(error: OwnProps) {
   return (
     <Box
       width="100%"
