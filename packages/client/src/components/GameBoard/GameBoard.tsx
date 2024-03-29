@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { moveDown, moveLeft, moveRight, moveUp } from '../../utils/gameMoves'
 import { addNewTile, drawBoard, drawTiles } from '../../utils/gameDraw'
 import { styles } from './tempStyles'
@@ -12,12 +12,74 @@ const GameBoard: React.FC = () => {
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
 
   const [highScore, setScore] = useState<number>(2)
-  const board: number[][] = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-  ]
+  const [completed, setCompleted] = useState<boolean>(false)
+
+  const findLargestElement = React.useCallback(
+    (matrix: number[][]): number => {
+      let largestElement = Number.NEGATIVE_INFINITY
+
+      for (const row of matrix) {
+        for (const element of row) {
+          if (element > largestElement) {
+            largestElement = element
+          }
+        }
+      }
+
+      if (largestElement === 2048 && !completed) {
+        alert(
+          `Congrats! You are about to score 2048! Continue if you want bigger score`
+        )
+
+        setCompleted(true)
+      }
+      return largestElement
+    },
+    [completed]
+  )
+
+  const board = useMemo(
+    () => [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ],
+    []
+  )
+
+  const handleKeyDown = React.useCallback(
+    (event: KeyboardEvent) => {
+      let moved = false
+
+      switch (event.key) {
+        case 'ArrowUp':
+          moved = moveUp(board)
+          setScore(findLargestElement(board))
+          break
+        case 'ArrowDown':
+          moved = moveDown(board)
+          setScore(findLargestElement(board))
+          break
+        case 'ArrowLeft':
+          moved = moveLeft(board)
+          setScore(findLargestElement(board))
+          break
+        case 'ArrowRight':
+          moved = moveRight(board)
+          setScore(findLargestElement(board))
+          break
+        default:
+          break
+      }
+
+      if (moved) {
+        drawBoard(ctxRef, board)
+        addNewTile(ctxRef, board)
+      }
+    },
+    [board, findLargestElement]
+  )
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -36,58 +98,7 @@ const GameBoard: React.FC = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, []) // eslint-disable-line
-
-  let completed = false // REWORK
-
-  function findLargestElement(matrix: number[][]): number {
-    let largestElement = Number.NEGATIVE_INFINITY
-
-    for (const row of matrix) {
-      for (const element of row) {
-        if (element > largestElement) {
-          largestElement = element
-        }
-      }
-    }
-    if (largestElement === 2048 && !completed) {
-      alert(
-        `Congrats! You are about to score 2048! Continue if you want bigger score`
-      )
-      completed = true
-    }
-    return largestElement
-  }
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    let moved = false
-
-    switch (event.key) {
-      case 'ArrowUp':
-        moved = moveUp(board)
-        setScore(findLargestElement(board))
-        break
-      case 'ArrowDown':
-        moved = moveDown(board)
-        setScore(findLargestElement(board))
-        break
-      case 'ArrowLeft':
-        moved = moveLeft(board)
-        setScore(findLargestElement(board))
-        break
-      case 'ArrowRight':
-        moved = moveRight(board)
-        setScore(findLargestElement(board))
-        break
-      default:
-        break
-    }
-
-    if (moved) {
-      drawBoard(ctxRef, board)
-      addNewTile(ctxRef, board)
-    }
-  }
+  }, [board, handleKeyDown])
 
   const [isFullscreenEnabled, setFullscreenEnabled] = useState<boolean>(false)
   return (
