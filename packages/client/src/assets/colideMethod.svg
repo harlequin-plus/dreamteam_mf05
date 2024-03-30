@@ -1,0 +1,18 @@
+<svg width="1600" height="506" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <title>Layer 1</title>
+  <rect rx="1" fill="#B8874D" stroke="#000" x="85.85182" y="110.3121" width="333" height="313.75221" id="svg_1"/>
+  <path fill="#fff" stroke="#000" opacity="NaN" d="m215.85274,284.06332" id="svg_2"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" x="184.60252" y="352.81381" id="svg_3" font-size="240" font-family="'Asap'" text-anchor="start" xml:space="preserve">2</text>
+  <rect fill="#B8874D" stroke="#000" x="428.35425" y="110.3121" width="333" height="313.75221" id="svg_5"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" x="529.40756" y="348.66902" id="svg_6" font-size="240" font-family="'Asap'" text-anchor="start" xml:space="preserve">2</text>
+  <line fill="none" stroke="#000" x1="822.00288" y1="281.56331" x2="1149.50519" y2="281.56331" id="svg_7" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" x="832.00295" y="184.06262" id="svg_8" font-size="60" font-family="'Asap'" text-anchor="start" xml:space="preserve" font-weight="normal" font-style="italic">right arrow</text>
+  <line fill="none" stroke="#000" x1="986.28972" y1="336.38534" x2="1148.25518" y2="282.81332" id="svg_9" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" x1="980.754" y1="230.31274" x2="1153.25521" y2="279.06329" id="svg_10" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <rect fill="#B8874D" stroke="#000" x="1189.60963" y="115.31213" width="333" height="313.75221" id="svg_12"/>
+  <path fill="#fff" stroke="#000" opacity="NaN" d="m1319.61055,289.06336" id="svg_13"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" x="1304.61045" y="350.31379" id="svg_14" font-size="240" font-family="'Asap'" text-anchor="start" xml:space="preserve">4</text>
+ </g>
+
+</svg>

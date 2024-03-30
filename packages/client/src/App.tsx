@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import HeaderMenu from './components/HeaderMenu'
 import { BrowserRouter as Router } from 'react-router-dom'
 import AppRouter from './app/Router'
-import './App.css'
 
 function App() {
   useEffect(() => {
@@ -19,8 +18,7 @@ function App() {
     <Router>
       <main>
         <HeaderMenu />
-        <div className="App">
-          <p>Вот тут будет жить ваше приложение :)</p>
+        <div id="app">
           <AppRouter />
         </div>
       </main>
