@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Modal, Button, Typography, Box } from '@mui/material'
-import { container, img } from '../ModalForm/styles'
+import { container, img } from './styles'
 
 const InfoModal = () => {
   const [open, setOpen] = useState(true)
