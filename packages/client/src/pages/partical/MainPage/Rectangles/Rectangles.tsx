@@ -1,5 +1,5 @@
 import gsap from 'gsap'
-import ScrollTrigger from 'gsap/ScrollTrigger'
+import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import './style.scss'
 
