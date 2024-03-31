@@ -1,3 +1,5 @@
+import { generalCss } from '../../styles'
+
 export const styles: Record<string, string> = {
   display: 'flex',
   position: 'relative',
@@ -6,10 +8,10 @@ export const styles: Record<string, string> = {
   width: '100%',
   height: '100%',
   minHeight: '80vh',
-  background: '#cdc1b4',
+  background: generalCss.background,
 
-  color: '#776e65',
-  font: 'bold 40px Arial',
+  color: generalCss.color,
+  font: generalCss.font,
   textBaseling: 'middle',
 
   justifyContent: 'center',
