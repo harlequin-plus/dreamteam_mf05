@@ -6,6 +6,8 @@ import NotFoundPage from '../pages/NotFoundPage'
 import Profile from '../pages/Profile'
 import LeaderboardPage from '../pages/LeaderboardPage'
 import useGetUser from '../api/useGetUser'
+import MainPage from '../pages/MainPage'
+import Forum from '../pages/Forum'
 
 const AppRouter: React.FC = () => {
   const { isLoading, user, error } = useGetUser()
@@ -22,6 +24,8 @@ const AppRouter: React.FC = () => {
       <Route path="/auth" element={<LoginPage />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/leaderboard" element={<LeaderboardPage />} />
+      <Route path="/mainpage" element={<MainPage />} />
+      <Route path="/forum" element={<Forum />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )

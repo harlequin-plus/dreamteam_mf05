@@ -1,0 +1,14 @@
+@import url('./global.scss');
+@import url('./variables.scss');
+
+.container {
+  max-width: 1280px;
+  padding: 0 16px;
+  margin: 0 auto;
+  @media(min-width:1280px) {
+    padding: 0;
+  }
+}
+#app {
+  overflow-x: hidden;
+}
