@@ -8,4 +8,9 @@ export default {
   globals: {
     __SERVER_PORT__: process.env.SERVER_PORT,
   },
+  transform: {
+    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.svg$': '<rootDir>/svgTransform.cjs',
+    '^.+\\.(css|less|scss)$': '<rootDir>/cssTransform.cjs',
+  },
 }

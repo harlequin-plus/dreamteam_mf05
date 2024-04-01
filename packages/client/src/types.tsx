@@ -26,6 +26,14 @@ export type InputAutocomlete =
   | 'first_name'
   | 'second_name'
 
+export type LoadStatus = 'success' | 'loading' | 'failed' | 'noloaded'
+
+export type UserState = {
+  item: User
+  loadStatus: LoadStatus
+  isLoading: boolean
+}
+
 export type CommentType = {
   user: User
   content: string
@@ -34,6 +42,8 @@ export type CommentType = {
 }
 
 export type TopicType = {
+  id: number
   comments: CommentType[]
   name: string
+  author: User
 }

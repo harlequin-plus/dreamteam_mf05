@@ -11,7 +11,7 @@ const mockComments: CommentType[] = [
       first_name: 'Freddy',
       second_name: 'Lay',
       display_name: 'Guru',
-      login: 'freddy',
+      login: 'Дмитрий Самолетов',
       avatar: 'https://s00.yaplakal.com/pics/pics_original/5/9/3/13161395.jpg',
       email: 'freddy@lot.fn',
       phone: '98765432155',
@@ -19,9 +19,7 @@ const mockComments: CommentType[] = [
     id: 1,
   },
   {
-    content: `И машиной, едущей сзади
-
-	По теме: у меня катализатор предыдущим хозяином выбит, звук... не нравится.
+    content: `По теме: у меня катализатор предыдущим хозяином выбит, звук... не нравится.
 	Пока катализатор не забит (что выразится в заметном падении мощности), ИМХО, лучше его не трогать.`,
     date: new Date('2021-03-26'),
     user: {
@@ -29,7 +27,7 @@ const mockComments: CommentType[] = [
       first_name: 'Freddy',
       second_name: 'Lay',
       display_name: 'Guru',
-      login: 'freddy',
+      login: 'Дмитрий Самолетов',
       avatar: 'https://s00.yaplakal.com/pics/pics_original/5/9/3/13161395.jpg',
       email: 'freddy@lot.fn',
       phone: '98765432155',
@@ -43,10 +41,10 @@ const mockComments: CommentType[] = [
     date: new Date('2021-08-10'),
     user: {
       id: 278,
-      first_name: 'Freddy',
+      first_name: 'Наталья Морпеховна',
       second_name: 'Lay',
       display_name: 'Guru',
-      login: 'freddy',
+      login: 'Наталья Морпеховна',
       avatar:
         'https://i1.sndcdn.com/artworks-cX44g79njVzhFJPS-lLjMsw-t500x500.jpg',
       email: 'freddy@lot.fn',
@@ -56,10 +54,72 @@ const mockComments: CommentType[] = [
   },
 ]
 
+const mockComments1: CommentType[] = [
+  {
+    content:
+      'За два сезона угробил зимнюю резину. Была Gislaved Nord Frost III, на время покупки была одной из лучших по соотношению цена/качество. Поискал свежих тестов - пока нет. Наверняка лучшей по показателям будет Nokian Hakkapelita 5 (пять - я не ошибся), но и стоить будет за 4000 рублей. А вот собственно и вопрос - кто какую резину планирует приобретать?',
+    user: {
+      id: 278,
+      first_name: 'Freddy',
+      second_name: 'Lay',
+      display_name: 'Guru',
+      login: 'Дмитрий Самолетов',
+      avatar: 'https://s00.yaplakal.com/pics/pics_original/5/9/3/13161395.jpg',
+      email: 'freddy@lot.fn',
+      phone: '98765432155',
+    },
+    id: 1,
+    date: new Date('2023-12-10'),
+  },
+  {
+    content: `NF3 как-то мне после UG500 совсем не понравился. А покупать новомодную (ту же NH5) я бы не стал именно из-за неоптимального цена/качество.`,
+    date: new Date('2023-12-11'),
+    user: {
+      id: 278,
+      first_name: 'Наталья Морпеховна',
+      second_name: 'Lay',
+      display_name: 'Наталья Морпеховна',
+      login: 'Наталья Морпеховна',
+      avatar:
+        'https://i1.sndcdn.com/artworks-cX44g79njVzhFJPS-lLjMsw-t500x500.jpg',
+      email: 'freddy@lot.fn',
+      phone: '98765432155',
+    },
+    id: 2,
+  },
+]
+
 const mockToics: TopicType[] = [
   {
+    id: 1,
     name: 'Как набрать 2048?',
     comments: mockComments,
+    author: {
+      id: 278,
+      first_name: 'Наталья Морпеховна',
+      second_name: 'Lay',
+      display_name: 'Наталья Морпеховна',
+      login: 'Наталья Морпеховна',
+      avatar:
+        'https://i1.sndcdn.com/artworks-cX44g79njVzhFJPS-lLjMsw-t500x500.jpg',
+      email: 'freddy@lot.fn',
+      phone: '98765432155',
+    },
+  },
+  {
+    id: 2,
+    name: 'Выбираем зимнюю резину',
+    comments: mockComments1,
+    author: {
+      id: 277,
+      first_name: 'Freddy',
+      second_name: 'Lay',
+      display_name: 'Дмитрий Самолетов',
+      login: 'Дмитрий Самолетов',
+      avatar: 'https://s00.yaplakal.com/pics/pics_original/5/9/3/13161395.jpg',
+      email: 'freddy@lot.fn',
+      phone: '98765432155',
+    },
   },
 ]
 

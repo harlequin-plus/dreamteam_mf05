@@ -1,28 +1,20 @@
 import { FC } from 'react'
 import { User } from '../../api/type'
 import { Avatar, Box, Grid, Typography } from '@mui/material'
-import { dateLocale } from '../../constants'
+import { formatDate } from '../../utils/formatDate'
 type OwnProps = {
   content: string
-  user?: User
+  user: User
   date: Date
   ordinalNumber: number
 }
 
 const Comment: FC<OwnProps> = ({ content, user, date, ordinalNumber }) => {
   const avatar = user?.avatar ? `${user.avatar}` : ''
+  const display_name = user?.display_name
+    ? user?.display_name
+    : `Пользователь ${user.id}`
 
-  const formatDate = (date: Date) => {
-    const dateFormatter = new Intl.DateTimeFormat(dateLocale)
-    const timeFormatter = new Intl.DateTimeFormat(dateLocale, {
-      hour: 'numeric',
-      minute: 'numeric',
-    })
-    const displayDate = dateFormatter.format(date)
-    const displayTime = timeFormatter.format(date)
-
-    return `${displayDate} ${displayTime}`
-  }
   const displayFullDate = formatDate(date)
 
   return (
@@ -37,7 +29,7 @@ const Comment: FC<OwnProps> = ({ content, user, date, ordinalNumber }) => {
         <Box display={'flex'} alignItems="center" flexDirection="column">
           <Avatar src={avatar} sx={{ width: 56, height: 56 }} />
           <Typography p={1} variant="subtitle1">
-            {user?.login}{' '}
+            {display_name}
           </Typography>
         </Box>
       </Grid>

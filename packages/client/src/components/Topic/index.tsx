@@ -6,10 +6,11 @@ import {
   OutlinedInput,
   Typography,
 } from '@mui/material'
-import { FC, FormEvent, useEffect, useState } from 'react'
+import { FC, FormEvent, useEffect, useState, SyntheticEvent } from 'react'
 import Comment from '../Comment'
 import { CommentType } from '../../types'
 import { getTopics } from '../../mocks/topics.mock'
+import { useAppSelector } from '../../hooks/reduxTsHook'
 
 type OwnProps = {
   name: string
@@ -17,20 +18,32 @@ type OwnProps = {
 
 const Topic: FC<OwnProps> = ({ name }) => {
   const [comments, setComments] = useState<CommentType[]>([])
+  const [comment, setComment] = useState('')
+
+  const user = useAppSelector(state => state.userState.item)
+
+  const onChangeComment = (event: SyntheticEvent) => {
+    event.preventDefault()
+    const target = event.target as HTMLInputElement
+    setComment(target.value)
+  }
 
   useEffect(() => {
     const topics = getTopics() //Имитация получения списка тем из АПИ
     const currentTopic = topics.find(topic => topic.name === name)
     if (currentTopic) setComments(currentTopic.comments)
-  })
+  }, [name])
 
   const addComment = async (event: FormEvent) => {
     event.preventDefault()
-    return true
-  }
-
-  const clear = () => {
-    console.log('jxbcnbnm')
+    const newComment: CommentType = {
+      content: comment,
+      id: comments[comments.length - 1].id + 1,
+      date: new Date(),
+      user,
+    }
+    setComments([...comments, newComment]) // addComment(topicName, newComment) api
+    setComment('')
   }
 
   return (
@@ -56,6 +69,8 @@ const Topic: FC<OwnProps> = ({ name }) => {
             label="Сообщение"
             multiline
             minRows={5}
+            value={comment}
+            onChange={onChangeComment}
           />
           <Button type="submit">Ответить</Button>
         </FormControl>
