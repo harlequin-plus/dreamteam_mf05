@@ -39,6 +39,7 @@ const Form: Props = ({
 }) => {
   const refs: Record<string, React.MutableRefObject<InputRef>> = {}
   inputs.map(input => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     refs[input.name] = useRef() as React.MutableRefObject<InputRef>
   })
 

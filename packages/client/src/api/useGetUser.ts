@@ -1,19 +1,16 @@
 import { useState, useEffect } from 'react'
 import { User } from './authApiTypes'
-import authApi from './authApi'
+import { getUser } from '../services/apiService'
 
 const useGetUser = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [user, setUser] = useState<null | User>(null)
   const [error, setError] = useState(false)
-  const getUser = async () => {
+  const checkUser = async () => {
     try {
-      const getUserResponse = await authApi.getUser()
-      if ('reason' in getUserResponse) {
-        throw Error(getUserResponse.reason)
-      }
+      const getUserResponse = await getUser()
       setIsLoading(false)
-      setUser(getUserResponse)
+      if (getUserResponse) setUser(getUserResponse)
     } catch (error) {
       setIsLoading(false)
       setError(true)
@@ -22,7 +19,7 @@ const useGetUser = () => {
   }
 
   useEffect(() => {
-    getUser()
+    checkUser()
   }, [])
 
   return {

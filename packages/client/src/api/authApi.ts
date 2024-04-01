@@ -15,7 +15,9 @@ class AuthApi {
   }
   async signIn(data: SignInDataType): Promise<undefined | APIError> {
     const response = await makeRequest(`${baseURL}/auth/signin`, { body: data })
-    return response.json()
+    if (response.status !== 200) {
+      return response.json()
+    }
   }
   async getUser(): Promise<User | APIError> {
     const response = await makeRequest(`${baseURL}/auth/user`)
