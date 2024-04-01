@@ -12,7 +12,7 @@ export interface ModalInput {
   label: string
   name: InputName
   type?: InputType
-  autoComlete: InputAutocomlete
+  autoComlete?: InputAutocomlete
 }
 
 type OwnProps = {
