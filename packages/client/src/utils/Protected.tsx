@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../hooks/reduxTsHook'
-
+import { FormWrapper } from '../components/FormWrapper'
+import { CircularProgress } from '@mui/material'
 // import { FC } from 'react'
 
 type OwnProps = {
@@ -11,22 +12,24 @@ type OwnProps = {
 // type Props = FC<OwnProps>
 
 export const Protected = (props: OwnProps) => {
-  const select = useAppSelector(state => ({
-    loadStatus: state.userState.loadStatus,
-  }))
+  const selectLoadStatus = useAppSelector(state => state.userState.loadStatus)
 
   const navigate = useNavigate()
   const location = useLocation()
 
   useEffect(() => {
-    if (select.loadStatus === 'failed' || select.loadStatus === 'noloaded') {
+    if (selectLoadStatus === 'failed') {
       navigate(props.redirect, { state: { back: location.pathname } })
     }
-  }, [select.loadStatus])
+  }, [selectLoadStatus])
 
-  if (select.loadStatus === 'success') {
+  if (selectLoadStatus === 'success') {
     return <>{props.children}</>
   } else {
-    return <div>Ждём...</div>
+    return (
+      <FormWrapper>
+        <CircularProgress color="secondary" />
+      </FormWrapper>
+    )
   }
 }

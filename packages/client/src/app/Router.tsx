@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import IndexPage from '../pages/IndexPage'
 import LoginPage from '../pages/LoginPage'
@@ -7,16 +7,9 @@ import Profile from '../pages/Profile'
 import LeaderboardPage from '../pages/LeaderboardPage'
 import MainPage from '../pages/MainPage'
 import Forum from '../pages/Forum'
-import { fetchUser } from '../store/userState'
 import { Protected } from '../utils/Protected'
-import { useAppDispatch } from '../hooks/reduxTsHook'
+
 const AppRouter: React.FC = () => {
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    dispatch(fetchUser())
-  }, [])
-
   return (
     <Routes>
       <Route path="/" element={<IndexPage />} />
