@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react'
-import { moveDown, moveLeft, moveRight, moveUp } from '../../utils/gameMoves'
+import { GameEngine } from '../../utils/gameMoves'
 import { addNewTile, drawBoard, drawTiles } from '../../utils/gameDraw'
 import { styles } from './tempStyles'
 import { FullscreenProvider } from '../FullscreenProvider'
@@ -54,19 +54,19 @@ const GameBoard: React.FC = () => {
 
       switch (event.key) {
         case 'ArrowUp':
-          moved = moveUp(board)
+          moved = GameEngine.moveUp(board)
           setScore(findLargestElement(board))
           break
         case 'ArrowDown':
-          moved = moveDown(board)
+          moved = GameEngine.moveDown(board)
           setScore(findLargestElement(board))
           break
         case 'ArrowLeft':
-          moved = moveLeft(board)
+          moved = GameEngine.moveLeft(board)
           setScore(findLargestElement(board))
           break
         case 'ArrowRight':
-          moved = moveRight(board)
+          moved = GameEngine.moveRight(board)
           setScore(findLargestElement(board))
           break
         default:

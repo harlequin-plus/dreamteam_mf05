@@ -1,5 +1,34 @@
 import { styles } from '../components/GameBoard/tempStyles'
-import { moveNotPossible } from './gameMoves'
+import { GameEngine } from './gameMoves'
+
+const getColorForValue = (value: number) => {
+  switch (value) {
+    case 2:
+      return '#eee4da'
+    case 4:
+      return '#ede0c8'
+    case 8:
+      return '#f2b179'
+    case 16:
+      return '#f59563'
+    case 32:
+      return '#f67c5f'
+    case 64:
+      return '#f65e3b'
+    case 128:
+      return '#edcf72'
+    case 256:
+      return '#edcc61'
+    case 512:
+      return '#edc850'
+    case 1024:
+      return '#edc53f'
+    case 2048:
+      return '#edc22e'
+    default:
+      return '#1D1F34'
+  }
+}
 
 export const drawTiles = (
   ctxRef: React.MutableRefObject<CanvasRenderingContext2D | null>,
@@ -33,7 +62,7 @@ export const drawBoard = (
 
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[i].length; j++) {
-        ctx.fillStyle = '#cdc1b4'
+        ctx.fillStyle = getColorForValue(board[i][j])
         ctx.fillRect(10 + j * 95, 10 + i * 95, 90, 90)
       }
     }
@@ -61,16 +90,18 @@ export const addNewTile = (
     board[row][col] = 2
 
     drawTiles(ctxRef, board)
-    if (moveNotPossible(board)) {
+    drawBoard(ctxRef, board)
+
+    if (GameEngine.moveNotPossible(board)) {
       if (confirm(`No moves available. New game will be started`)) {
         for (let i = 0; i < board.length; i++) {
           for (let j = 0; j < board[i].length; j++) {
             board[i][j] = 0
           }
         }
+        addNewTile(ctxRef, board)
         drawBoard(ctxRef, board)
         drawTiles(ctxRef, board)
-        addNewTile(ctxRef, board)
       }
     }
   }
@@ -80,7 +111,7 @@ export const addNewTile = (
     const { row, col } = emptyTiles[randomIndex]
 
     board[row][col] = 2
-
+    drawBoard(ctxRef, board)
     drawTiles(ctxRef, board)
   }
 }
