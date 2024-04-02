@@ -6,6 +6,7 @@ import Button from '@mui/material/Button'
 import { signUp } from '../../services/apiService'
 import { useAppDispatch } from '../../hooks/reduxTsHook'
 import { fetchUser } from '../../store/userState'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const userInitValue = {
   first_name: '',
@@ -33,6 +34,8 @@ export function SignUpForm({ toggleShow }: Props) {
   const [user, setUser] = useState(userInitValue)
   const [errorValue, setErrorValue] = useState(errorInitValue)
   const dispatch = useAppDispatch()
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const onChangeUserValue = (e: SyntheticEvent) => {
     const target = e.target as HTMLInputElement
@@ -75,6 +78,12 @@ export function SignUpForm({ toggleShow }: Props) {
       dispatch(fetchUser())
       setUser(userInitValue)
       setErrorValue(errorInitValue)
+      // Возврат на страницу, с которой пришли
+      const back =
+        location.state?.back && location.state?.back !== location.pathname
+          ? location.state?.back
+          : '/'
+      navigate(back)
     }
   }
 
