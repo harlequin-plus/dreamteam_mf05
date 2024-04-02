@@ -19,9 +19,8 @@
   }
 
   &__logo {
-
     & a {
-      display: flex; 
+      display: flex;
       align-items: center;
       gap: 16px;
       text-decoration: none;
@@ -32,7 +31,6 @@
       &:hover {
         opacity: 0.7;
       }
-
     }
   }
 
@@ -43,12 +41,12 @@
     padding: 0;
     height: 100%;
 
-    @media(min-width:1024px) {
+    @media (min-width: 1024px) {
       display: flex;
       margin-left: 35px;
     }
 
-    @media(min-width:1280px) {
+    @media (min-width: 1280px) {
       margin-left: 150px;
     }
 
@@ -72,7 +70,6 @@
           background: var(--dark-gray);
           color: var(--second-white);
         }
-
       }
     }
   }
@@ -90,9 +87,8 @@
       opacity: 0.7;
     }
 
-    @media(min-width:1024px) {
+    @media (min-width: 1024px) {
       display: block;
     }
-    
   }
 }

@@ -9,11 +9,10 @@
     align-items: center;
     height: 100%;
 
-    @media(min-width:1024px) {
+    @media (min-width: 1024px) {
       flex-flow: row nowrap;
       align-items: center;
     }
-
   }
 
   &__logo {
@@ -22,7 +21,6 @@
     & img {
       width: 100%;
     }
-
   }
   &-list {
     align-items: center;
@@ -30,7 +28,7 @@
     padding: 0;
     margin-left: 30px;
 
-    @media(min-width:1280px) {
+    @media (min-width: 1280px) {
       margin-left: 150px;
       display: flex;
     }
@@ -49,7 +47,7 @@
         align-items: center;
         transition: all 0.1s;
 
-        @media(min-width:1024px) {
+        @media (min-width: 1024px) {
           padding: 0 22px;
           font-size: 16px;
         }
@@ -57,7 +55,6 @@
         &:hover {
           opacity: 0.7;
         }
-        
       }
     }
   }
@@ -70,10 +67,9 @@
     text-transform: uppercase;
     text-decoration: none;
 
-    @media(min-width:1024px) {
+    @media (min-width: 1024px) {
       margin-left: auto;
       margin-top: 0;
     }
-
   }
 }
