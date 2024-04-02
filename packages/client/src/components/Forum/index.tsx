@@ -86,7 +86,7 @@ const GameForum = () => {
                     <Link to={topic.id.toString()}>{topic.name}</Link>
                   </Typography>
                   <Typography variant="caption" color={'text.secondary'}>
-                    {topic.author.display_name}
+                    {topic.author.first_name}
                   </Typography>
                 </TableCell>
                 <TableCell align="center">{topic.comments.length}</TableCell>
@@ -96,8 +96,7 @@ const GameForum = () => {
                   </Typography>
                   <Typography variant="body2">
                     {`Автор: ${
-                      topic.comments[topic.comments.length - 1].user
-                        .display_name
+                      topic.comments[topic.comments.length - 1].user.first_name
                     }`}
                   </Typography>
                 </TableCell>

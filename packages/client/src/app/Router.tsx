@@ -10,9 +10,7 @@ import ForumPage from '../pages/ForumPage'
 import ProfilePage from '../pages/ProfilePage'
 import Topic from '../components/Topic'
 
-
 import { Protected } from '../utils/Protected'
-
 
 const AppRouter: React.FC = () => {
   return (
@@ -20,19 +18,14 @@ const AppRouter: React.FC = () => {
       <Route path="/" element={<IndexPage />} />
       <Route path="/auth" element={<LoginPage />} />
 
-      <Route
-        path="/profile"
-        element={
-          <Protected redirect="/auth">
-            <ProfilePage />
-          </Protected>
-        }
-      />
+      <Route element={<Protected redirect="/auth" />}>
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/forum" element={<ForumPage />} />
+        <Route path="/forum/:id" element={<Topic />} />
+      </Route>
 
       <Route path="/leaderboard" element={<LeaderboardPage />} />
       <Route path="/mainpage" element={<MainPage />} />
-      <Route path="/forum" element={<ForumPage />} />
-      <Route path="/forum/:id" element={<Topic />} />
 
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
