@@ -16,6 +16,8 @@ export type InputName =
   | 'tel'
   | 'oldPassword'
   | 'newPassword'
+  | 'addComment'
+  | 'topicName'
 
 export type InputAutocomlete =
   | 'email'
@@ -31,4 +33,18 @@ export type UserState = {
   item: User
   loadStatus: LoadStatus
   isLoading: boolean
+}
+
+export type CommentType = {
+  user: User
+  content: string
+  date: Date
+  id: string
+}
+
+export type TopicType = {
+  id: string
+  comments: CommentType[]
+  name: string
+  author: User
 }

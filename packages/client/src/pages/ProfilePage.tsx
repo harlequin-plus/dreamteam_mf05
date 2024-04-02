@@ -1,6 +1,6 @@
 import { Box, Divider, Stack } from '@mui/material'
 import ChangeAvatar from '../components/ChangeAvatar'
-import BasicModal from '../components/ModalForm'
+import Modalform from '../components/ModalForm'
 import ProfileField from '../components/ProfileField'
 import { useEffect } from 'react'
 import { ChangePass } from '../api/type'
@@ -53,7 +53,7 @@ const Profile = () => {
         />
         <ProfileField value={user.phone} label="Телефон" />
       </Stack>
-      <BasicModal
+      <Modalform
         successText="Пароль успешно изменен!"
         handleSubmitForm={handleChangePassword}
         modalTitle="Изменить пароль"
@@ -70,7 +70,7 @@ const Profile = () => {
             type: 'password',
             autoComlete: 'password',
           },
-        ]}></BasicModal>
+        ]}></Modalform>
     </Box>
   )
 }

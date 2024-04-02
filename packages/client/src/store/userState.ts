@@ -4,7 +4,7 @@ import { getUser } from '../services/apiService'
 import { UserState } from '../types'
 
 const defaultUser: User = {
-  id: 0,
+  id: -1,
   login: '',
   email: '',
   first_name: '',

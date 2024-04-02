@@ -1,9 +1,20 @@
-import { Link } from 'react-router-dom'
+import { SyntheticEvent } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import HeaderLogo from '../../assets/header_logo.svg'
 import './style.scss'
 import HeaderMenu from './HeaderMenu'
+import { logout } from '../../services/apiService'
+import { useAppSelector } from '../../hooks/reduxTsHook'
 
 export function Header() {
+  const user = useAppSelector(state => state.userState.item.id)
+  const navigate = useNavigate()
+
+  const hadleLogout = async (event: SyntheticEvent) => {
+    event.preventDefault()
+    await logout()
+    navigate('/auth')
+  }
   return (
     <div className="header">
       <div className="container header__container">
@@ -29,9 +40,15 @@ export function Header() {
             </li>
           </ul>
           <HeaderMenu />
-          <Link className="header__auth" to="/auth">
-            Авторизация
-          </Link>
+          {user == -1 ? (
+            <Link className="header__auth" to="/auth">
+              Авторизация
+            </Link>
+          ) : (
+            <Link to="/auth" className="header__auth" onClick={hadleLogout}>
+              Выйти
+            </Link>
+          )}
         </nav>
       </div>
     </div>

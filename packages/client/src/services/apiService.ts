@@ -31,6 +31,7 @@ const getUser = async () => {
     if ('reason' in userResponse) {
       throw Error(userResponse.reason)
     }
+
     return userResponse
   } catch (error) {
     console.log(error)

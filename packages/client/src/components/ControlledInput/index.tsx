@@ -20,7 +20,7 @@ type OwnProps = {
   type?: InputType
   name: InputName
   label: string
-  autoComplete: InputAutocomlete
+  autoComplete?: InputAutocomlete
 }
 
 export const ControlledInput = forwardRef(

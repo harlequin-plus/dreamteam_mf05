@@ -12,7 +12,7 @@ export interface ModalInput {
   label: string
   name: InputName
   type?: InputType
-  autoComlete: InputAutocomlete
+  autoComlete?: InputAutocomlete
 }
 
 type OwnProps = {
@@ -57,12 +57,7 @@ const Form: Props = ({
     const error = validateArr.includes(false)
     if (error) return
 
-    const isSuccess = await submitData(data)
-    if (isSuccess) {
-      Object.values(refs).map(value => {
-        value.current.resetInput()
-      })
-    }
+    await submitData(data)
   }
 
   return (

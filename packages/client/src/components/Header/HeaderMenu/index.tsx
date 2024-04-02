@@ -2,12 +2,16 @@ import * as React from 'react'
 import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './style.scss'
+import { useAppSelector } from '../../../hooks/reduxTsHook'
+import { logout } from '../../../services/apiService'
 
 function HeaderMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const user = useAppSelector(state => state.userState.item.id)
+  const navigate = useNavigate()
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -15,6 +19,11 @@ function HeaderMenu() {
     setAnchorEl(null)
   }
 
+  const hadleLogout = async (event: React.SyntheticEvent) => {
+    event.preventDefault()
+    await logout()
+    navigate('/auth')
+  }
   return (
     <div className="BurgerWrapper">
       <Button
@@ -49,9 +58,15 @@ function HeaderMenu() {
         <MenuItem onClick={handleClose}>
           <Link to="/mainpage">Лендинг презентация</Link>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link to="/auth">Авторизация</Link>
-        </MenuItem>
+        {user == -1 ? (
+          <MenuItem onClick={handleClose}>
+            <Link to="/auth">Авторизация</Link>
+          </MenuItem>
+        ) : (
+          <MenuItem onClick={hadleLogout}>
+            <Link to="/auth">Выйти</Link>
+          </MenuItem>
+        )}
       </Menu>
     </div>
   )
