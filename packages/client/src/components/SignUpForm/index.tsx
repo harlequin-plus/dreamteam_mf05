@@ -99,7 +99,7 @@ export function SignUpForm({ toggleShow }: Props) {
       gap={0.7}
       p={2}
       onSubmit={onSubmitHandler}>
-      <Typography variant="h3" gutterBottom>
+      <Typography variant="h3" gutterBottom color={'#973232'}>
         Регистрация
       </Typography>
       <CustomFormControl
@@ -190,13 +190,13 @@ export function SignUpForm({ toggleShow }: Props) {
         type="submit"
         variant="contained"
         size="large"
-        sx={{ width: '12rem', height: '3rem' }}>
+        sx={{ width: '12rem', height: '3rem', bgcolor: '#973232' }}>
         Зарегистрироваться
       </Button>
       <Button
         variant="text"
         size="medium"
-        sx={{ height: '3rem' }}
+        sx={{ height: '3rem', color: '#973232' }}
         onClick={toggleShow}>
         уже есть аккаунт, войти
       </Button>
