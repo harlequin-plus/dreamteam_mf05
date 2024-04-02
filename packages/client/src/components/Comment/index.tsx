@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { User } from '../../api/type'
-import { Avatar, Box, Grid, Typography } from '@mui/material'
+import { Avatar, Box, TableCell, TableRow, Typography } from '@mui/material'
 import { formatDate } from '../../utils/formatDate'
 type OwnProps = {
   content: string
@@ -18,35 +18,37 @@ const Comment: FC<OwnProps> = ({ content, user, date, ordinalNumber }) => {
   const displayFullDate = formatDate(date)
 
   return (
-    <Grid
-      container
-      columnSpacing={0}
-      my={1}
-      py={0}
-      border={1}
-      borderColor={'warning.main'}>
-      <Grid item xs={12} md={2} py={3}>
+    // <Grid
+    //   container
+    //   columnSpacing={0}
+    //   my={1}
+    //   py={0}
+    //   border={1}
+    //   borderColor={'warning.main'}>
+    <TableRow>
+      <TableCell width={'20%'}>
         <Box display={'flex'} alignItems="center" flexDirection="column">
           <Avatar src={avatar} sx={{ width: 56, height: 56 }} />
           <Typography p={1} variant="subtitle1">
             {display_name}
           </Typography>
         </Box>
-      </Grid>
-      <Grid item xs={12} md={10}>
+      </TableCell>
+      <TableCell width={'80%'}>
         <Box display={'flex'} justifyContent={'space-between'}>
-          <Typography color={'text.secondary'} variant="caption" m={1}>
+          <Typography color={'text.secondary'} variant="caption">
             {displayFullDate}
           </Typography>
-          <Typography color={'text.secondary'} variant="caption" m={1}>
+          <Typography color={'text.secondary'} variant="caption">
             {`#${ordinalNumber}`}
           </Typography>
         </Box>
         <Typography variant="body2" m={2}>
           {content}
         </Typography>
-      </Grid>
-    </Grid>
+      </TableCell>
+    </TableRow>
+    // </Grid>
   )
 }
 

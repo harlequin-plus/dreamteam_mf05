@@ -1,13 +1,13 @@
 import React from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import IndexPage from '../pages/IndexPage'
 import LoginPage from '../pages/LoginPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import LeaderboardPage from '../pages/LeaderboardPage'
-import useGetUser from '../api/useGetUser'
 import MainPage from '../pages/MainPage'
 import ForumPage from '../pages/ForumPage'
 import ProfilePage from '../pages/ProfilePage'
+import Topic from '../components/Topic'
 
 const AppRouter: React.FC = () => {
   return (
@@ -18,6 +18,8 @@ const AppRouter: React.FC = () => {
       <Route path="/leaderboard" element={<LeaderboardPage />} />
       <Route path="/mainpage" element={<MainPage />} />
       <Route path="/forum" element={<ForumPage />} />
+      <Route path="/forum/:id" element={<Topic />} />
+
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )

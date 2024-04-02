@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid'
 import { CommentType, TopicType } from '../types'
 
 const mockComments: CommentType[] = [
@@ -16,7 +17,7 @@ const mockComments: CommentType[] = [
       email: 'freddy@lot.fn',
       phone: '98765432155',
     },
-    id: 1,
+    id: nanoid(),
   },
   {
     content: `По теме: у меня катализатор предыдущим хозяином выбит, звук... не нравится.
@@ -32,7 +33,7 @@ const mockComments: CommentType[] = [
       email: 'freddy@lot.fn',
       phone: '98765432155',
     },
-    id: 2,
+    id: nanoid(),
   },
   {
     content: `Не вижу связи
@@ -50,7 +51,7 @@ const mockComments: CommentType[] = [
       email: 'freddy@lot.fn',
       phone: '98765432155',
     },
-    id: 3,
+    id: nanoid(),
   },
 ]
 
@@ -68,7 +69,7 @@ const mockComments1: CommentType[] = [
       email: 'freddy@lot.fn',
       phone: '98765432155',
     },
-    id: 1,
+    id: nanoid(),
     date: new Date('2023-12-10'),
   },
   {
@@ -85,13 +86,13 @@ const mockComments1: CommentType[] = [
       email: 'freddy@lot.fn',
       phone: '98765432155',
     },
-    id: 2,
+    id: nanoid(),
   },
 ]
 
 const mockToics: TopicType[] = [
   {
-    id: 1,
+    id: nanoid(),
     name: 'Как набрать 2048?',
     comments: mockComments,
     author: {
@@ -107,7 +108,7 @@ const mockToics: TopicType[] = [
     },
   },
   {
-    id: 2,
+    id: nanoid(),
     name: 'Выбираем зимнюю резину',
     comments: mockComments1,
     author: {
@@ -125,4 +126,8 @@ const mockToics: TopicType[] = [
 
 export const getTopics = () => {
   return mockToics
+}
+
+export const addTopic = (topic: TopicType) => {
+  mockToics.push(topic)
 }

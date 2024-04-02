@@ -54,7 +54,7 @@ const ModalForm: Props = ({
 
   return (
     <div>
-      <Button variant="contained" onClick={handleOpen}>
+      <Button variant="outlined" onClick={handleOpen}>
         {modalTitle}
       </Button>
       <Modal

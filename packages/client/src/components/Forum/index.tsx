@@ -1,30 +1,71 @@
 import {
   Box,
-  Button,
   Typography,
   Container,
-  Grid,
   Table,
   TableHead,
   TableCell,
   TableRow,
   TableBody,
 } from '@mui/material'
-import Topic from '../Topic'
-import { getTopics } from '../../mocks/topics.mock'
-import { useEffect } from 'react'
+import { addTopic, getTopics } from '../../mocks/topics.mock'
 import { formatDate } from '../../utils/formatDate'
+import { Link } from 'react-router-dom'
+import ModalForm from '../ModalForm'
+import { CommentType, DataModalForm, TopicType } from '../../types'
+import { useAppSelector } from '../../hooks/reduxTsHook'
+import { useState } from 'react'
+import { nanoid } from 'nanoid'
 
 const GameForum = () => {
-  const topics = getTopics() //Имитация получения списка тем из АПИ
+  const [topics, setTopics] = useState(getTopics()) //Имитация получения списка тем из АПИ
+
+  const user = useAppSelector(state => state.userState.item)
+
+  const handleCreateTopic = async (data: DataModalForm) => {
+    console.log(data.addComment)
+
+    const comment: CommentType = {
+      content: data.addComment,
+      date: new Date(),
+      id: nanoid(),
+      user,
+    }
+
+    const topic: TopicType = {
+      comments: [comment],
+      name: data.topicName,
+      author: user,
+      id: nanoid(),
+    }
+
+    setTopics([...topics, topic])
+    addTopic(topic)
+  }
 
   return (
     <Container maxWidth="lg">
       <Box display={'flex'} alignItems="center" flexDirection="column">
-        <Typography variant="h3" component="h1">
+        <Typography variant="h4" component="h1" m={5}>
           Форум игры 2048
         </Typography>
-        <Button>Создать новую тему</Button>
+        <Box alignSelf={'flex-end'}>
+          <ModalForm
+            modalTitle="Создать новую тему"
+            handleSubmitForm={handleCreateTopic}
+            submitButtonText="Создать тему"
+            inputs={[
+              {
+                label: 'Название темы',
+                name: 'topicName',
+              },
+              {
+                label: 'Сообщение',
+                name: 'addComment',
+              },
+            ]}
+          />
+        </Box>
         <Table>
           <TableHead>
             <TableRow>
@@ -37,7 +78,9 @@ const GameForum = () => {
             {topics.map(topic => (
               <TableRow key={topic.id}>
                 <TableCell width={'65%'}>
-                  <Typography variant="body1">{topic.name}</Typography>
+                  <Typography variant="body1">
+                    <Link to={topic.id.toString()}>{topic.name}</Link>
+                  </Typography>
                   <Typography variant="caption" color={'text.secondary'}>
                     {topic.author.display_name}
                   </Typography>

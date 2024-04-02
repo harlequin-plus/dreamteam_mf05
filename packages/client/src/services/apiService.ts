@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import authApi from '../api/authApi'
 import { SignUpDataType, SignInDataType } from '../api/authApiTypes'
 
@@ -32,6 +31,7 @@ const getUser = async () => {
     if ('reason' in userResponse) {
       throw Error(userResponse.reason)
     }
+
     return userResponse
   } catch (error) {
     console.log(error)
