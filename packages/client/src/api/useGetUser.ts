@@ -1,38 +1,32 @@
 import { useState, useEffect } from 'react'
 import { User } from './authApiTypes'
-import authApi from './authApi'
-type GetUser = {
-  isLoading: boolean
-  user: null | User
-  error: boolean
-}
+import { getUser } from '../services/apiService'
+
 const useGetUser = () => {
-  const [state, setState] = useState<GetUser>({
-    isLoading: true,
-    user: null,
-    error: false,
-  })
-
-  const getUser = async () => {
+  const [isLoading, setIsLoading] = useState(true)
+  const [user, setUser] = useState<null | User>(null)
+  const [error, setError] = useState(false)
+  const checkUser = async () => {
     try {
-      const getUserResponse = await authApi.getUser()
-      if ('reason' in getUserResponse) {
-        throw Error(getUserResponse.reason)
-      }
-
-      setState({ ...state, isLoading: false, user: getUserResponse })
-      console.log('User:', getUserResponse)
+      const getUserResponse = await getUser()
+      setIsLoading(false)
+      if (getUserResponse) setUser(getUserResponse)
     } catch (error) {
+      setIsLoading(false)
+      setError(true)
       console.log(error)
-      setState({ ...state, isLoading: false, error: true })
     }
   }
 
   useEffect(() => {
-    getUser()
+    checkUser()
   }, [])
 
-  return state
+  return {
+    isLoading,
+    user,
+    error,
+  }
 }
 
 export default useGetUser

@@ -71,12 +71,21 @@ export function CustomFormControl({
       sx={{ m: 1, minWidth: '18rem', width: '100%' }}
       variant="outlined"
       error={isErrorValue}>
-      <InputLabel htmlFor={id}>{label}</InputLabel>
+      <InputLabel htmlFor={id} sx={{ '&.Mui-focused': { color: '#973232' } }}>
+        {label}
+      </InputLabel>
       <OutlinedInput
-        sx={{ fontSize: '1.2rem' }}
+        sx={{
+          fontSize: '1.2rem',
+          '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
+            {
+              borderColor: '#973232',
+            },
+        }}
         id={id}
         type={isPassword ? (showPassword ? 'text' : 'password') : type}
         name={name}
+        color="secondary"
         onBlur={e => onBlurHandler(e)}
         onFocus={onFocusHandler}
         onChange={onChangeValue}

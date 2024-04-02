@@ -58,6 +58,7 @@ const userSlice = createSlice({
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       if (action.payload) {
         state.item = action.payload
+        state.loadStatus = 'success'
       }
     })
   },
