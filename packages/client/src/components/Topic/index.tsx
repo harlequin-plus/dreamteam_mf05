@@ -61,7 +61,7 @@ const Topic = () => {
           display={'flex'}
           alignItems="center"
           flexDirection="column"
-          minHeight={'80%'}>
+          minHeight={'80vh'}>
           <Typography component="h1" variant="h4" m={4}>
             {topic?.name}
           </Typography>

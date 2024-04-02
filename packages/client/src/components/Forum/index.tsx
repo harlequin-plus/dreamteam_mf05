@@ -49,7 +49,7 @@ const GameForum = () => {
         display={'flex'}
         alignItems="center"
         flexDirection="column"
-        minHeight={'80%'}>
+        minHeight={'80vh'}>
         <Typography variant="h4" component="h1" m={5}>
           Форум игры 2048
         </Typography>
