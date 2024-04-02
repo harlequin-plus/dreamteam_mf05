@@ -26,6 +26,7 @@ class AuthApi {
   async logout(): Promise<number | Error> {
     const logOut = await fetch(`${baseURL}/auth/logout`, {
       method: 'POST',
+      credentials: 'include',
     })
     if (logOut.status === 200) {
       return logOut.status

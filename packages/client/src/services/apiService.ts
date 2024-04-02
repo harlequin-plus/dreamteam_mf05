@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import authApi from '../api/authApi'
 import { SignUpDataType, SignInDataType } from '../api/authApiTypes'
 
