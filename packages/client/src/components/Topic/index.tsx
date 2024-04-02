@@ -19,7 +19,7 @@ import { getTopics } from '../../mocks/topics.mock'
 import { useAppSelector } from '../../hooks/reduxTsHook'
 import { useParams } from 'react-router-dom'
 import NotFoundPage from '../../pages/NotFoundPage'
-import { nanoid } from 'nanoid'
+import { v4 as uuid } from 'uuid'
 
 const Topic = () => {
   const [comment, setComment] = useState('')
@@ -45,7 +45,7 @@ const Topic = () => {
     event.preventDefault()
     const newComment: CommentType = {
       content: comment,
-      id: nanoid(),
+      id: uuid(),
       date: new Date(),
       user,
     }
@@ -57,7 +57,11 @@ const Topic = () => {
   return topic ? (
     <>
       <Container maxWidth="lg">
-        <Box display={'flex'} alignItems="center" flexDirection="column">
+        <Box
+          display={'flex'}
+          alignItems="center"
+          flexDirection="column"
+          minHeight={'80%'}>
           <Typography component="h1" variant="h4" m={4}>
             {topic?.name}
           </Typography>

@@ -15,7 +15,7 @@ import ModalForm from '../ModalForm'
 import { CommentType, DataModalForm, TopicType } from '../../types'
 import { useAppSelector } from '../../hooks/reduxTsHook'
 import { useState } from 'react'
-import { nanoid } from 'nanoid'
+import { v4 as uuid } from 'uuid'
 
 const GameForum = () => {
   const [topics, setTopics] = useState(getTopics()) //Имитация получения списка тем из АПИ
@@ -28,7 +28,7 @@ const GameForum = () => {
     const comment: CommentType = {
       content: data.addComment,
       date: new Date(),
-      id: nanoid(),
+      id: uuid(),
       user,
     }
 
@@ -36,7 +36,7 @@ const GameForum = () => {
       comments: [comment],
       name: data.topicName,
       author: user,
-      id: nanoid(),
+      id: uuid(),
     }
 
     setTopics([...topics, topic])
@@ -45,7 +45,11 @@ const GameForum = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box display={'flex'} alignItems="center" flexDirection="column">
+      <Box
+        display={'flex'}
+        alignItems="center"
+        flexDirection="column"
+        minHeight={'80%'}>
         <Typography variant="h4" component="h1" m={5}>
           Форум игры 2048
         </Typography>

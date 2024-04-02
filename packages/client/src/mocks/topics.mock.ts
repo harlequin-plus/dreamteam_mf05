@@ -1,5 +1,5 @@
-import { nanoid } from 'nanoid'
 import { CommentType, TopicType } from '../types'
+import { v4 as uuid } from 'uuid'
 
 const mockComments: CommentType[] = [
   {
@@ -17,7 +17,7 @@ const mockComments: CommentType[] = [
       email: 'freddy@lot.fn',
       phone: '98765432155',
     },
-    id: nanoid(),
+    id: uuid(),
   },
   {
     content: `По теме: у меня катализатор предыдущим хозяином выбит, звук... не нравится.
@@ -33,7 +33,7 @@ const mockComments: CommentType[] = [
       email: 'freddy@lot.fn',
       phone: '98765432155',
     },
-    id: nanoid(),
+    id: uuid(),
   },
   {
     content: `Не вижу связи
@@ -51,7 +51,7 @@ const mockComments: CommentType[] = [
       email: 'freddy@lot.fn',
       phone: '98765432155',
     },
-    id: nanoid(),
+    id: uuid(),
   },
 ]
 
@@ -69,7 +69,7 @@ const mockComments1: CommentType[] = [
       email: 'freddy@lot.fn',
       phone: '98765432155',
     },
-    id: nanoid(),
+    id: uuid(),
     date: new Date('2023-12-10'),
   },
   {
@@ -86,13 +86,13 @@ const mockComments1: CommentType[] = [
       email: 'freddy@lot.fn',
       phone: '98765432155',
     },
-    id: nanoid(),
+    id: uuid(),
   },
 ]
 
 const mockToics: TopicType[] = [
   {
-    id: nanoid(),
+    id: uuid(),
     name: 'Как набрать 2048?',
     comments: mockComments,
     author: {
@@ -108,7 +108,7 @@ const mockToics: TopicType[] = [
     },
   },
   {
-    id: nanoid(),
+    id: uuid(),
     name: 'Выбираем зимнюю резину',
     comments: mockComments1,
     author: {
