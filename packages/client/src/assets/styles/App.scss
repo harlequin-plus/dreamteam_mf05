@@ -10,6 +10,9 @@
     padding: 0;
   }
 }
-#app {
-  overflow-x: hidden;
+
+#root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }

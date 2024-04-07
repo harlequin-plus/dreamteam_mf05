@@ -56,7 +56,7 @@ const Topic = () => {
 
   return topic ? (
     <>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" style={{ flex: '1 1 auto' }}>
         <Box
           display={'flex'}
           alignItems="center"

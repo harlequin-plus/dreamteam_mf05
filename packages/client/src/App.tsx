@@ -18,17 +18,13 @@ function App() {
     // }
     // fetchServerData()
     dispatch(fetchUser())
-  }, [])
+  }, [dispatch])
 
   return (
     <Router>
-      <main>
-        <Header />
-        <div id="app">
-          <AppRouter />
-        </div>
-        <Footer />
-      </main>
+      <Header />
+      <AppRouter />
+      <Footer />
     </Router>
   )
 }

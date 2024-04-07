@@ -3,6 +3,7 @@ import Avatar from '@mui/material/Avatar'
 import Typography from '@mui/material/Typography'
 import {
   CardHeader,
+  Container,
   Table,
   TableBody,
   TableCell,
@@ -26,12 +27,12 @@ export function Leaderboard() {
   }
 
   return (
-    <React.Fragment>
+    <Container maxWidth="lg" style={{ flex: '1 1 auto' }}>
       <Box display={'flex'} alignItems="center" flexDirection="column">
         <Typography variant="h3" gutterBottom>
           Лучшие игроки
         </Typography>
-        <Table style={{ maxWidth: 1000 }}>
+        <Table>
           <TableHead>
             <TableRow>
               <TableCell>Место</TableCell>
@@ -75,6 +76,6 @@ export function Leaderboard() {
           rowsPerPage={5}
         />
       </Box>
-    </React.Fragment>
+    </Container>
   )
 }

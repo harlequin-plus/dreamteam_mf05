@@ -32,7 +32,12 @@ const Profile = () => {
   }
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" my={13}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      my={13}
+      flex="1 1 auto">
       <ChangeAvatar
         handleChangeAvatar={handleChangeAvatar}
         avatar={`${resourceURL}${user.avatar}`}
