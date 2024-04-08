@@ -12,7 +12,7 @@ export function FormWrapper({ children }: Props) {
   return (
     <Box
       width="100wh"
-      height="100vh"
+      flex="1 1 auto"
       display="flex"
       justifyContent="center"
       alignItems="center"
