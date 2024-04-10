@@ -1,9 +1,7 @@
+import { NotFound } from '../components/NotFound'
+
 function NotFoundPage() {
-  return (
-    <div>
-      <h1>404. Страница не найдена</h1>
-    </div>
-  )
+  return <NotFound />
 }
 
 export default NotFoundPage
