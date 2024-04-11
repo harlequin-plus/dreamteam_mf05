@@ -11,6 +11,7 @@ import ProfilePage from '../pages/ProfilePage'
 import Topic from '../components/Topic'
 
 import { Protected } from '../utils/Protected'
+import { InternalServerError } from '../components/InternalServerError'
 
 const AppRouter: React.FC = () => {
   return (
@@ -28,6 +29,7 @@ const AppRouter: React.FC = () => {
       <Route path="/mainpage" element={<MainPage />} />
 
       <Route path="*" element={<NotFoundPage />} />
+      <Route path="/error/500" element={<InternalServerError />} />
     </Routes>
   )
 }

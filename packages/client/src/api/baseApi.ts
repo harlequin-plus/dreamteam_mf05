@@ -62,6 +62,10 @@ export default class BaseApi {
 
   private errorHandler(error: unknown): never {
     if (error instanceof AxiosError && error.response?.data.reason) {
+      if (error.response.status === 500) {
+        window.location.href = 'error/500'
+      }
+
       throw new Error(error.response?.data.reason)
     } else {
       throw error
