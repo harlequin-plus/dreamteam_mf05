@@ -10,7 +10,8 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import store from './store'
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.hydrateRoot(
+  document.getElementById('root') as HTMLElement,
   <React.StrictMode>
     <ErrorBoundary FallbackComponent={ErrorHandler}>
       <Provider store={store}>
