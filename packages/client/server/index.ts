@@ -1,12 +1,14 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
+import { HelmetData } from 'react-helmet'
 import express, { Request as ExpressRequest } from 'express'
 import path from 'path'
 
 import fs from 'fs/promises'
 import { createServer as createViteServer, ViteDevServer } from 'vite'
 import serialize from 'serialize-javascript'
+import cookieParser from 'cookie-parser'
 
 const port = process.env.PORT || 80
 const clientPath = path.join(__dirname, '..')
@@ -15,6 +17,7 @@ const isDev = process.env.NODE_ENV === 'development'
 async function createServer() {
   const app = express()
 
+  app.use(cookieParser())
   let vite: ViteDevServer | undefined
   if (isDev) {
     vite = await createViteServer({
@@ -34,9 +37,11 @@ async function createServer() {
     const url = req.originalUrl
 
     try {
+      // Получаем файл client/index.html который мы правили ранее
+      // Создаём переменные
       let render: (
         req: ExpressRequest
-      ) => Promise<{ html: string; initialState: unknown }>
+      ) => Promise<{ html: string; initialState: unknown; helmet: HelmetData }>
       let template: string
       if (vite) {
         template = await fs.readFile(
@@ -71,14 +76,20 @@ async function createServer() {
       }
 
       // Получаем HTML-строку из JSX
-      const { html: appHtml, initialState } = await render(req)
+      const { html: appHtml, initialState, helmet } = await render(req)
 
-      const html = template.replace(`<!--ssr-outlet-->`, appHtml).replace(
-        `<!--ssr-initial-state-->`,
-        `<script>window.APP_INITIAL_STATE = ${serialize(initialState, {
-          isJSON: true,
-        })}</script>`
-      )
+      const html = template
+        .replace(
+          `<!--ssr-helmet-->`,
+          `${helmet.meta.toString()} ${helmet.title.toString()} ${helmet.link.toString()}`
+        )
+        .replace(`<!--ssr-outlet-->`, appHtml)
+        .replace(
+          `<!--ssr-initial-state-->`,
+          `<script>window.APP_INITIAL_STATE = ${serialize(initialState, {
+            isJSON: true,
+          })}</script>`
+        )
 
       // Завершаем запрос и отдаём HTML-страницу
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
@@ -89,7 +100,7 @@ async function createServer() {
   })
 
   app.listen(port, () => {
-    console.log(`Client is listening on port: ${port}`)
+    console.log(`Client is listening on port!: ${port}`)
   })
 }
 

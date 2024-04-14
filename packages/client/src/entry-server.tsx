@@ -8,6 +8,7 @@ import { store } from './store'
 import AppRouter from './app/Router'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import { Helmet } from 'react-helmet'
 
 export const render = async (req: ExpressRequest) => {
   const html = ReactDOMServer.renderToString(
@@ -20,8 +21,11 @@ export const render = async (req: ExpressRequest) => {
     </Provider>
   )
 
+  const helmet = Helmet.renderStatic()
+
   return {
     html,
+    helmet,
     initialState: store.getState(),
   }
 }
