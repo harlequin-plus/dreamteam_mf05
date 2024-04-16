@@ -1,104 +1,22 @@
-import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react'
-import { GameEngine } from '../../utils/gameMoves'
-import { addNewTile, drawBoard, drawTiles } from '../../utils/gameDraw'
+import React, { useEffect, useRef, useState } from 'react'
+import { GameEngine } from '../../utils/gameEngin'
 import { styles } from './tempStyles'
 import { FullscreenProvider } from '../FullscreenProvider'
 import { Button } from '@mui/material'
 import CloseFullscreenIcon from '../../assets/close_fullscreen.svg'
 import OpenFullscreenIcon from '../../assets/open_fullscreen.svg'
 
+const gameEngine = new GameEngine()
+
 const GameBoard: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
-
-  const [highScore, setScore] = useState<number>(2)
-  const [completed, setCompleted] = useState<boolean>(false)
-
-  const findLargestElement = useCallback(
-    (matrix: number[][]): number => {
-      let largestElement = Number.NEGATIVE_INFINITY
-
-      for (const row of matrix) {
-        for (const element of row) {
-          if (element > largestElement) {
-            largestElement = element
-          }
-        }
-      }
-
-      if (largestElement === 2048 && !completed) {
-        alert(
-          `Congrats! You are about to score 2048! Continue if you want bigger score`
-        )
-
-        setCompleted(true)
-      }
-      return largestElement
-    },
-    [completed]
-  )
-
-  const board = useMemo(
-    () => [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-    ],
-    []
-  )
-
-  const handleKeyDown = useCallback(
-    (event: KeyboardEvent) => {
-      let moved = false
-
-      switch (event.key) {
-        case 'ArrowUp':
-          moved = GameEngine.moveUp(board)
-          setScore(findLargestElement(board))
-          break
-        case 'ArrowDown':
-          moved = GameEngine.moveDown(board)
-          setScore(findLargestElement(board))
-          break
-        case 'ArrowLeft':
-          moved = GameEngine.moveLeft(board)
-          setScore(findLargestElement(board))
-          break
-        case 'ArrowRight':
-          moved = GameEngine.moveRight(board)
-          setScore(findLargestElement(board))
-          break
-        default:
-          break
-      }
-
-      if (moved) {
-        drawBoard(ctxRef, board)
-        addNewTile(ctxRef, board)
-      }
-    },
-    [board, findLargestElement]
-  )
+  const [highScore, setScore] = useState<number>(0)
 
   useEffect(() => {
-    if (canvasRef.current) {
-      const canvas = canvasRef.current
-      const ctx = canvas.getContext('2d')
-
-      if (ctx) {
-        ctxRef.current = ctx
-        drawBoard(ctxRef, board)
-        drawTiles(ctxRef, board)
-        addNewTile(ctxRef, board)
-        window.addEventListener('keydown', handleKeyDown)
-      }
-    }
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [board, handleKeyDown])
+    gameEngine.start(canvasRef)
+    gameEngine.setScoreCallback = score => setScore(score)
+    return gameEngine.finish
+  }, [])
 
   const [isFullscreenEnabled, setFullscreenEnabled] = useState<boolean>(false)
   return (
