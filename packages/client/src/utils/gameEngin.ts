@@ -1,5 +1,12 @@
 import { styles } from '../components/GameBoard/tempStyles'
 
+const emptyBoard = () => [
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+]
+
 const getColorForValue = (value: number) => {
   switch (value) {
     case 2:
@@ -34,19 +41,44 @@ export class GameEngine extends Function {
     super()
   }
 
+  public ctxRef: CanvasRenderingContext2D | null = null
   public completed = false
   public score = 0
-  public board = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-  ]
+  public board = emptyBoard()
+  public setScoreCallback?: (score: number) => void
 
-  onKeyboardPress = (
-    ctxRef: React.MutableRefObject<CanvasRenderingContext2D | null>,
-    event: KeyboardEvent
-  ) => {
+  setScore = (score: number) => {
+    this.score = score
+    if (this.setScoreCallback) {
+      this.setScoreCallback(score)
+    }
+  }
+
+  start = (canvasRef: React.MutableRefObject<HTMLCanvasElement | null>) => {
+    this.completed = false
+    this.board = emptyBoard()
+    this.setScore(0)
+
+    if (canvasRef.current) {
+      const canvas = canvasRef.current
+      const ctx = canvas.getContext('2d')
+
+      if (ctx) {
+        this.ctxRef = ctx
+        window.addEventListener('keydown', this.onKeyboardPress)
+      }
+    }
+
+    this.drawBoard(this.ctxRef)
+    this.drawTiles(this.ctxRef)
+    this.addNewTile(this.ctxRef)
+  }
+
+  finish = () => {
+    window.removeEventListener('keydown', this.onKeyboardPress)
+  }
+
+  onKeyboardPress = (event: KeyboardEvent) => {
     let moved = false
 
     switch (event.key) {
@@ -67,8 +99,8 @@ export class GameEngine extends Function {
     }
 
     if (moved) {
-      this.drawBoard(ctxRef)
-      this.addNewTile(ctxRef)
+      this.drawBoard(this.ctxRef)
+      this.addNewTile(this.ctxRef)
     }
 
     this.checkFinish()
@@ -113,7 +145,7 @@ export class GameEngine extends Function {
             this.board[k - 1][j] *= 2
             this.board[k][j] = 0
             moved = true
-            this.score += this.board[k - 1][j]
+            this.setScore(this.score + this.board[k - 1][j])
           }
         }
       }
@@ -142,7 +174,7 @@ export class GameEngine extends Function {
             this.board[k + 1][j] *= 2
             this.board[k][j] = 0
             moved = true
-            this.score += this.board[k + 1][j]
+            this.setScore(this.score + this.board[k + 1][j])
           }
         }
       }
@@ -168,7 +200,7 @@ export class GameEngine extends Function {
             this.board[i][k - 1] *= 2
             this.board[i][k] = 0
             moved = true
-            this.score += this.board[i][k - 1]
+            this.setScore(this.score + this.board[i][k - 1])
           }
         }
       }
@@ -197,7 +229,7 @@ export class GameEngine extends Function {
             this.board[i][k + 1] *= 2
             this.board[i][k] = 0
             moved = true
-            this.score += this.board[i][k + 1]
+            this.setScore(this.score + this.board[i][k + 1])
           }
         }
       }
@@ -228,11 +260,9 @@ export class GameEngine extends Function {
     return true
   }
 
-  drawTiles = (
-    ctxRef: React.MutableRefObject<CanvasRenderingContext2D | null>
-  ) => {
-    if (ctxRef.current) {
-      const ctx = ctxRef.current
+  drawTiles = (ctxRef: CanvasRenderingContext2D | null) => {
+    if (ctxRef) {
+      const ctx = ctxRef
       ctx.fillStyle = styles.color
       ctx.font = styles.font
       ctx.textAlign = <CanvasTextAlign>styles.alignItems
@@ -248,11 +278,9 @@ export class GameEngine extends Function {
     }
   }
 
-  drawBoard = (
-    ctxRef: React.MutableRefObject<CanvasRenderingContext2D | null>
-  ) => {
-    if (ctxRef.current) {
-      const ctx = ctxRef.current
+  drawBoard = (ctxRef: CanvasRenderingContext2D | null) => {
+    if (ctxRef) {
+      const ctx = ctxRef
       ctx.fillStyle = '#bbada0'
       ctx.fillRect(5, 5, 390, 390)
 
@@ -265,9 +293,7 @@ export class GameEngine extends Function {
     }
   }
 
-  addNewTile = (
-    ctxRef: React.MutableRefObject<CanvasRenderingContext2D | null>
-  ) => {
+  addNewTile = (ctxRef: CanvasRenderingContext2D | null) => {
     const emptyTiles: { row: number; col: number }[] = []
 
     for (let i = 0; i < this.board.length; i++) {
@@ -289,7 +315,7 @@ export class GameEngine extends Function {
 
       if (this.moveNotPossible()) {
         if (confirm(`No moves available. New game will be started`)) {
-          this.score = 0
+          this.setScore(0)
           for (let i = 0; i < this.board.length; i++) {
             for (let j = 0; j < this.board[i].length; j++) {
               this.board[i][j] = 0

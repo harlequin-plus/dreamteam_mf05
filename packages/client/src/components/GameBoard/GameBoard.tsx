@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { GameEngine } from '../../utils/gameEngin'
 import { styles } from './tempStyles'
 import { FullscreenProvider } from '../FullscreenProvider'
@@ -10,33 +10,13 @@ const gameEngine = new GameEngine()
 
 const GameBoard: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
-
   const [highScore, setScore] = useState<number>(0)
 
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    gameEngine.onKeyboardPress(ctxRef, event)
-    setScore(gameEngine.score)
-  }, [])
-
   useEffect(() => {
-    if (canvasRef.current) {
-      const canvas = canvasRef.current
-      const ctx = canvas.getContext('2d')
-
-      if (ctx) {
-        ctxRef.current = ctx
-        gameEngine.drawBoard(ctxRef)
-        gameEngine.drawTiles(ctxRef)
-        gameEngine.addNewTile(ctxRef)
-        window.addEventListener('keydown', handleKeyDown)
-      }
-    }
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [handleKeyDown])
+    gameEngine.start(canvasRef)
+    gameEngine.setScoreCallback = score => setScore(score)
+    return gameEngine.finish
+  }, [])
 
   const [isFullscreenEnabled, setFullscreenEnabled] = useState<boolean>(false)
   return (

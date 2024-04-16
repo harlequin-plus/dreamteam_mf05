@@ -104,14 +104,14 @@ describe('drawBoard', () => {
 
   it(`должен вернуть снимок границы поля игры`, function () {
     gameEngine.board = board
-    gameEngine.drawBoard(ctxRef)
+    gameEngine.drawBoard(ctxRef.current)
     const events = ctxRef.current.__getEvents()
 
     expect(events).toMatchSnapshot()
   })
   it(`должен вернуть снимок ячеек поля игры`, function () {
     gameEngine.board = board
-    gameEngine.drawTiles(ctxRef)
+    gameEngine.drawTiles(ctxRef.current)
     const events = ctxRef.current.__getEvents()
     console.log(events)
     expect(events).toMatchSnapshot()
