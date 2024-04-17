@@ -8,13 +8,23 @@ import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
-import store from './store'
+import createStore from './store'
+import { ClientYandexApiRepository } from './repository/ClientYandexApiRepository'
+import { UserService } from './api/UserService'
+
+const initialState = window.APP_INITIAL_STATE
+
+delete window.APP_INITIAL_STATE
 
 ReactDOM.hydrateRoot(
   document.getElementById('root') as HTMLElement,
   <React.StrictMode>
     <ErrorBoundary FallbackComponent={ErrorHandler}>
-      <Provider store={store}>
+      <Provider
+        store={createStore(
+          new UserService(new ClientYandexApiRepository()),
+          initialState
+        )}>
         <App />
       </Provider>
     </ErrorBoundary>

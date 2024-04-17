@@ -11,6 +11,7 @@ import { createServer as createViteServer, ViteDevServer } from 'vite'
 import serialize from 'serialize-javascript'
 import cookieParser from 'cookie-parser'
 import { createProxyMiddleware } from 'http-proxy-middleware'
+import { SsrYandexAPIRepository } from './repository/SsrYandexApiRepository'
 
 const port = process.env.PORT || 3000
 const clientPath = path.join(__dirname, '..')
@@ -54,7 +55,8 @@ async function createServer() {
       // Получаем файл client/index.html который мы правили ранее
       // Создаём переменные
       let render: (
-        req: ExpressRequest
+        req: ExpressRequest,
+        repository
       ) => Promise<{ html: string; initialState: unknown; helmet: HelmetData }>
       let template: string
       if (vite) {
@@ -90,7 +92,12 @@ async function createServer() {
       }
 
       // Получаем HTML-строку из JSX
-      const { html: appHtml, initialState, helmet } = await render(req)
+
+      const {
+        html: appHtml,
+        initialState,
+        helmet,
+      } = await render(req, new SsrYandexAPIRepository(req.headers['cookie']))
 
       const html = template
         .replace(

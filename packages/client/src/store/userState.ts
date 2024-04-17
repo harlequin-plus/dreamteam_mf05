@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { User } from '../api/type'
-import { getUser } from '../services/apiService'
 import { UserState } from '../types'
+import { IUserServise } from '.'
 
 const defaultUser: User = {
   id: -1,
@@ -69,9 +69,10 @@ export const { setUserState, loadSuccess, loadFailed, loadPending } =
 
 export const fetchUser = createAsyncThunk(
   'userState/fetchStatus',
-  async (_req, { rejectWithValue }) => {
+  async (_req, { rejectWithValue, extra }) => {
+    const service: IUserServise = extra as IUserServise
     try {
-      const user = await getUser()
+      const user = await service.getCurrentUser()
       if (user) return user
       throw new Error('Failed to load user!') //т.к. getUser в случае ошибки ничего не возвращает и у user значение undefined, мы пробрасывам ошибку.
     } catch (err) {
