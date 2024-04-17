@@ -32,6 +32,6 @@ export type AppDispatch = ReturnType<typeof createStore>['dispatch']
 
 declare global {
   interface Window {
-    APP_INITIAL_STATE: RootState
+    APP_INITIAL_STATE?: RootState
   }
 }

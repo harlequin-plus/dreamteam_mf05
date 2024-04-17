@@ -1,14 +1,22 @@
 import { render, fireEvent, screen } from '@testing-library/react'
 import { LoginForm } from './index'
-import { Provider } from 'react-redux'
-import store from '../../store'
 import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import createStore from '../../store'
+import { UserService } from '../../api/UserService'
+import { ClientYandexApiRepository } from '../../repository/ClientYandexApiRepository'
+
+const initialState = window.APP_INITIAL_STATE
 
 describe('LoginForm', () => {
   const mockHandler = jest.fn()
   beforeEach(() => {
     render(
-      <Provider store={store}>
+      <Provider
+        store={createStore(
+          new UserService(new ClientYandexApiRepository()),
+          initialState
+        )}>
         <BrowserRouter>
           <LoginForm toggleShow={mockHandler} />
         </BrowserRouter>
