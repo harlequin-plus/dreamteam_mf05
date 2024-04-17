@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import cors from 'cors'
 dotenv.config()
 
 import { HelmetData } from 'react-helmet'
@@ -9,15 +10,28 @@ import fs from 'fs/promises'
 import { createServer as createViteServer, ViteDevServer } from 'vite'
 import serialize from 'serialize-javascript'
 import cookieParser from 'cookie-parser'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 
-const port = process.env.PORT || 80
+const port = process.env.PORT || 3000
 const clientPath = path.join(__dirname, '..')
 const isDev = process.env.NODE_ENV === 'development'
 
 async function createServer() {
   const app = express()
+  app.use(cors())
 
-  app.use(cookieParser())
+  app.use(
+    '/api/v2',
+    createProxyMiddleware({
+      changeOrigin: true,
+      cookieDomainRewrite: {
+        '*': '',
+      },
+      target: 'https://ya-praktikum.tech/api/v2',
+    })
+  )
+
+  app.use('*', cookieParser())
   let vite: ViteDevServer | undefined
   if (isDev) {
     vite = await createViteServer({

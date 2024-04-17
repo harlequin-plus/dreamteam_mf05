@@ -11,6 +11,8 @@ import Footer from './components/Footer'
 import { Helmet } from 'react-helmet'
 
 export const render = async (req: ExpressRequest) => {
+  const url = req.url
+
   const html = ReactDOMServer.renderToString(
     <Provider store={store}>
       <StaticRouter location={req.url}>
