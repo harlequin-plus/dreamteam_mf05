@@ -3,10 +3,11 @@ import { CustomFormControl } from '../CustomFormControl'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import { signIn } from '../../services/apiService'
+import { signIn, getServiceID } from '../../services/apiService'
 import { useAppDispatch } from '../../hooks/reduxTsHook'
 import { fetchUser } from '../../store/userState'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { oauthRedirectURI } from '../../constants'
 
 const userInitValue = {
   login: '',
@@ -33,7 +34,10 @@ export function LoginForm({ toggleShow }: Props) {
     const value = target.value
     setUser({ ...user, [name]: value })
   }
-
+  const oauthSignIn = async () => {
+    const serviceId = await getServiceID()
+    window.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${serviceId}&redirect_uri=${oauthRedirectURI}`
+  }
   const onChangeErrorValue = (value: boolean, name: string) => {
     setErrorValue({ ...errorValue, [name]: value })
   }
@@ -105,6 +109,13 @@ export function LoginForm({ toggleShow }: Props) {
         size="large"
         sx={{ width: '12rem', height: '3rem', bgcolor: '#973232' }}>
         Войти
+      </Button>
+      <Button
+        variant="text"
+        size="medium"
+        sx={{ height: '3rem', color: '#973232' }}
+        onClick={oauthSignIn}>
+        Войти с яндекс
       </Button>
       <Button
         variant="text"

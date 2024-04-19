@@ -27,3 +27,12 @@ export type User = {
   avatar: string
   email: string
 }
+
+export type OauthDataType = {
+  code: string
+  redirect_uri: string
+}
+
+export type ServiceID = {
+  service_id: string
+}

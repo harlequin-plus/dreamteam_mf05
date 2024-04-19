@@ -5,8 +5,11 @@ import {
   APIError,
   SignInDataType,
   User,
+  OauthDataType,
+  ServiceID,
 } from './authApiTypes'
 import { makeRequest } from '../utils/makeRequest'
+import { oauthRedirectURI } from '../constants'
 
 class AuthApi {
   async signUp(data: SignUpDataType): Promise<SignUpResponse | APIError> {
@@ -32,6 +35,25 @@ class AuthApi {
       return logOut.status
     } else {
       throw new Error('logout не выполнен')
+    }
+  }
+  async oauthGetServiceID(): Promise<ServiceID | APIError> {
+    const response = await makeRequest(
+      `${baseURL}/oauth/yandex/service-id?${new URLSearchParams({
+        redirect_uri: oauthRedirectURI,
+      })}`
+    )
+    return response.json()
+  }
+
+  async oauthSignInWithYandex(
+    data: OauthDataType
+  ): Promise<undefined | APIError> {
+    const response = await makeRequest(`${baseURL}/oauth/yandex`, {
+      body: data,
+    })
+    if (response.status !== 200) {
+      return response.json()
     }
   }
 }

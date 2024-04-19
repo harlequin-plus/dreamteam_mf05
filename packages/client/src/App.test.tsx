@@ -6,6 +6,7 @@ import { UserService } from './api/UserService'
 import { ClientYandexApiRepository } from './repository/ClientYandexApiRepository'
 
 const initialState = window.APP_INITIAL_STATE
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 global.fetch = jest.fn(() =>
   Promise.resolve({ json: () => Promise.resolve('hey') })

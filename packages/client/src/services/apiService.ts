@@ -1,5 +1,9 @@
 import authApi from '../api/authApi'
-import { SignUpDataType, SignInDataType } from '../api/authApiTypes'
+import {
+  SignUpDataType,
+  SignInDataType,
+  OauthDataType,
+} from '../api/authApiTypes'
 
 const signUp = async (data: SignUpDataType) => {
   try {
@@ -50,7 +54,29 @@ const logout = async () => {
   }
 }
 
-export { signUp, signIn, getUser, logout }
+const getServiceID = async () => {
+  try {
+    const response = await authApi.oauthGetServiceID()
+    if ('reason' in response) {
+      throw Error(response.reason)
+    }
+    return response.service_id
+  } catch (error) {
+    console.log(error)
+  }
+}
+const signInWithYandex = async (data: OauthDataType) => {
+  try {
+    const response = await authApi.oauthSignInWithYandex(data)
+    if (response && 'reason' in response) {
+      throw Error(response.reason)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export { signUp, signIn, getUser, logout, getServiceID, signInWithYandex }
 
 // const test = {
 //   first_name: 'Vasia25',
