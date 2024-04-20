@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { User } from '../api/type'
 import { UserState } from '../types'
-import { IUserServise } from '.'
+import { TUser } from '../models/TUser'
+import { IUserServise } from './index'
 
-const defaultUser: User = {
+const defaultUser: TUser = {
   id: -1,
   login: '',
   email: '',
@@ -36,7 +36,7 @@ const userSlice = createSlice({
       state.loadStatus = 'loading'
       state.isLoading = true
     },
-    setUserState(state, action: PayloadAction<User>) {
+    setUserState(state, action: PayloadAction<TUser>) {
       state.item = action.payload
     },
     resetUserState(state) {
@@ -50,9 +50,8 @@ const userSlice = createSlice({
       state.loadStatus = 'loading'
     })
 
-    builder.addCase(fetchUser.rejected, (state, action) => {
+    builder.addCase(fetchUser.rejected, state => {
       state.loadStatus = 'failed'
-      console.log(action.payload)
     })
 
     builder.addCase(fetchUser.fulfilled, (state, action) => {
@@ -64,20 +63,22 @@ const userSlice = createSlice({
   },
 })
 
-export const { setUserState, loadSuccess, loadFailed, loadPending } =
-  userSlice.actions
+export const {
+  setUserState,
+  loadSuccess,
+  loadFailed,
+  loadPending,
+  resetUserState,
+} = userSlice.actions
 
 export const fetchUser = createAsyncThunk(
   'userState/fetchStatus',
-  async (_req, { rejectWithValue, extra }) => {
+  async (_req, { fulfillWithValue, rejectWithValue, extra }) => {
     const service: IUserServise = extra as IUserServise
-    try {
-      const user = await service.getCurrentUser()
-      if (user) return user
-      throw new Error('Failed to load user!') //т.к. getUser в случае ошибки ничего не возвращает и у user значение undefined, мы пробрасывам ошибку.
-    } catch (err) {
-      if (err instanceof Error) return rejectWithValue(err.message)
-    }
+    return service
+      .getCurrentUser()
+      .then(user => fulfillWithValue(user))
+      .catch(err => rejectWithValue(err.message))
   }
 )
 

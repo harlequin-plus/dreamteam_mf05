@@ -41,6 +41,7 @@ const GameForum = () => {
 
     setTopics([...topics, topic])
     addTopic(topic)
+    return true
   }
 
   return (

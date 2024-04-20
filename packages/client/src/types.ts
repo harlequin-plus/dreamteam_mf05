@@ -1,4 +1,4 @@
-import { User } from './api/type'
+import { TUser } from './models/TUser'
 
 export type TupleUseState<T> = [T, React.Dispatch<React.SetStateAction<T>>]
 
@@ -30,13 +30,13 @@ export type InputAutocomlete =
 export type LoadStatus = 'success' | 'loading' | 'failed' | 'noloaded'
 
 export type UserState = {
-  item: User
+  item: TUser
   loadStatus: LoadStatus
   isLoading: boolean
 }
 
 export type CommentType = {
-  user: User
+  user: TUser
   content: string
   date: Date
   id: string
@@ -46,5 +46,5 @@ export type TopicType = {
   id: string
   comments: CommentType[]
   name: string
-  author: User
+  author: TUser
 }

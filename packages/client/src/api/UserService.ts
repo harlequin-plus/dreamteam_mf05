@@ -1,9 +1,10 @@
-import { User } from './type'
+import { TUser } from '../models/TUser'
 
 export interface UserRepository {
-  getCurrent(): Promise<User>
+  getCurrent(): Promise<TUser>
 }
 
+// TODO: найти подходящее место
 export class UserService {
   constructor(private _repo: UserRepository) {}
   getCurrentUser() {

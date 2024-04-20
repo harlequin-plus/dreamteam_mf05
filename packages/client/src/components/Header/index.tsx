@@ -3,17 +3,23 @@ import { Link, useNavigate } from 'react-router-dom'
 import HeaderLogo from '../../assets/header_logo.svg'
 import './style.scss'
 import HeaderMenu from './HeaderMenu'
-import { logout } from '../../services/apiService'
-import { useAppSelector } from '../../hooks/reduxTsHook'
+import { logout } from '../../services/auth'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxTsHook'
+import { resetUserState } from '../../store/userState'
 
 export function Header() {
   const user = useAppSelector(state => state.userState.item.id)
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   const hadleLogout = async (event: SyntheticEvent) => {
     event.preventDefault()
-    await logout()
-    navigate('/auth')
+    logout()
+      .then(() => {
+        dispatch(resetUserState())
+        navigate('/auth')
+      })
+      .catch(error => console.warn('logout error:', error))
   }
   return (
     <div className="header">

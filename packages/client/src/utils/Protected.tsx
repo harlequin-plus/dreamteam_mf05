@@ -15,10 +15,10 @@ export const Protected = (props: OwnProps) => {
   const location = useLocation()
 
   useEffect(() => {
-    if (selectLoadStatus === 'failed') {
+    if (selectLoadStatus === 'failed' || selectLoadStatus === 'noloaded') {
       navigate(props.redirect, { state: { back: location.pathname } })
     }
-  }, [selectLoadStatus])
+  }, [location.pathname, navigate, props.redirect, selectLoadStatus])
 
   if (selectLoadStatus === 'success') {
     return <Outlet />

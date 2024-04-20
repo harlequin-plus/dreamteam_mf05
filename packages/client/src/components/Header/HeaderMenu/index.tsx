@@ -4,14 +4,16 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import { Link, useNavigate } from 'react-router-dom'
 import './style.scss'
-import { useAppSelector } from '../../../hooks/reduxTsHook'
-import { logout } from '../../../services/apiService'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxTsHook'
+import { logout } from '../../../services/auth'
+import { resetUserState } from '../../../store/userState'
 
 function HeaderMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const user = useAppSelector(state => state.userState.item.id)
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -19,11 +21,16 @@ function HeaderMenu() {
     setAnchorEl(null)
   }
 
-  const hadleLogout = async (event: React.SyntheticEvent) => {
+  const handleLogout = async (event: React.SyntheticEvent) => {
     event.preventDefault()
-    await logout()
-    navigate('/auth')
+    logout()
+      .then(() => {
+        dispatch(resetUserState())
+        navigate('/auth')
+      })
+      .catch(error => console.warn('logout error:', error))
   }
+
   return (
     <div className="BurgerWrapper">
       <Button
@@ -63,7 +70,7 @@ function HeaderMenu() {
             <Link to="/auth">Авторизация</Link>
           </MenuItem>
         ) : (
-          <MenuItem onClick={hadleLogout}>
+          <MenuItem onClick={handleLogout}>
             <Link to="/auth">Выйти</Link>
           </MenuItem>
         )}
