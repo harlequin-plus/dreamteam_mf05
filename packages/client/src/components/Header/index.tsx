@@ -6,6 +6,7 @@ import HeaderMenu from './HeaderMenu'
 import { logout } from '../../services/auth'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxTsHook'
 import { resetUserState } from '../../store/userState'
+import { criticail } from './critical'
 
 export function Header() {
   const user = useAppSelector(state => state.userState.item.id)
@@ -22,7 +23,7 @@ export function Header() {
       .catch(error => console.warn('logout error:', error))
   }
   return (
-    <div className="header">
+    <div className="header" style={criticail}>
       <div className="container header__container">
         <nav className="header__menu">
           <div className="header__logo">
