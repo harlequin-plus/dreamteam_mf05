@@ -282,7 +282,7 @@ export class GameEngine extends Function {
     if (ctxRef) {
       const ctx = ctxRef
       ctx.fillStyle = '#bbada0'
-      ctx.fillRect(5, 5, 390, 390)
+      ctx.fillRect(5, 5, 385, 385)
 
       for (let i = 0; i < this.board.length; i++) {
         for (let j = 0; j < this.board[i].length; j++) {
