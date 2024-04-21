@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './userState'
-import { User } from '../api/type'
 import { UserState } from '../types'
+import { TUser } from '../models/TUser'
+
 export interface IUserServise {
-  getCurrentUser(): Promise<User>
+  getCurrentUser(): Promise<TUser>
 }
 export interface IStoreState {
   userState: UserState

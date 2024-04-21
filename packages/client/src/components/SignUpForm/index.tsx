@@ -3,7 +3,7 @@ import { CustomFormControl } from '../CustomFormControl'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import { signUp } from '../../services/apiService'
+import { signUp } from '../../services/auth'
 import { useAppDispatch } from '../../hooks/reduxTsHook'
 import { fetchUser } from '../../store/userState'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -68,22 +68,27 @@ export function SignUpForm({ toggleShow }: Props) {
       setErrorValue({ ...errorValue, repeat_password: true })
       return
     }
+
     if (isEmptyValueError(user)) return
+
     if (
       Object.keys(errorValue).every(
-        name => errorValue[name as keyof typeof errorValue] === false
+        name => !errorValue[name as keyof typeof errorValue]
       )
     ) {
-      await signUp(user) //запрос на регистрацию
-      dispatch(fetchUser())
-      setUser(userInitValue)
-      setErrorValue(errorInitValue)
-      // Возврат на страницу, с которой пришли
-      const back =
-        location.state?.back && location.state?.back !== location.pathname
-          ? location.state?.back
-          : '/'
-      navigate(back)
+      signUp(user) //запрос на регистрацию
+        .then(() => {
+          dispatch(fetchUser())
+          setUser(userInitValue)
+          setErrorValue(errorInitValue)
+          // Возврат на страницу, с которой пришли
+          const back =
+            location.state?.back && location.state?.back !== location.pathname
+              ? location.state?.back
+              : '/'
+          navigate(back)
+        })
+        .catch(error => console.warn('signup error:', error))
     }
   }
 

@@ -3,7 +3,7 @@ import { CustomFormControl } from '../CustomFormControl'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import { signIn, getServiceID } from '../../services/apiService'
+import { oauthGetServiceID, signIn } from '../../services/auth'
 import { useAppDispatch } from '../../hooks/reduxTsHook'
 import { fetchUser } from '../../store/userState'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -35,33 +35,43 @@ export function LoginForm({ toggleShow }: Props) {
     setUser({ ...user, [name]: value })
   }
   const oauthSignIn = async () => {
-    const serviceId = await getServiceID()
-    window.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${serviceId}&redirect_uri=${oauthRedirectURI}`
+    const { service_id } = await oauthGetServiceID()
+    window.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${service_id}&redirect_uri=${oauthRedirectURI}`
   }
+
   const onChangeErrorValue = (value: boolean, name: string) => {
     setErrorValue({ ...errorValue, [name]: value })
   }
+
   const onSubmitHandler = async (e: SyntheticEvent) => {
     e.preventDefault()
     if (user.login === '') {
       setErrorValue({ ...errorValue, login: true })
       return
     }
+
     if (user.password === '') {
       setErrorValue({ ...errorValue, password: true })
       return
     }
-    if (errorValue.login || errorValue.password) return
-    await signIn(user) //запрос на вход
-    dispatch(fetchUser())
-    setUser(userInitValue)
-    setErrorValue(errorInitValue)
-    // Возврат на страницу, с которой пришли
-    const back =
-      location.state?.back && location.state?.back !== location.pathname
-        ? location.state?.back
-        : '/'
-    navigate(back)
+
+    if (errorValue.login || errorValue.password) {
+      return
+    }
+
+    signIn(user)
+      .then(() => {
+        dispatch(fetchUser())
+        setUser(userInitValue)
+        setErrorValue(errorInitValue)
+        // Возврат на страницу, с которой пришли
+        const back =
+          location.state?.back && location.state?.back !== location.pathname
+            ? location.state?.back
+            : '/'
+        navigate(back)
+      })
+      .catch(error => console.warn('signin error:', error))
   }
 
   return (

@@ -2,13 +2,13 @@ import { Box, Divider, Stack } from '@mui/material'
 import ChangeAvatar from '../components/ChangeAvatar'
 import Modalform from '../components/ModalForm'
 import ProfileField from '../components/ProfileField'
-import { useEffect } from 'react'
-import { ChangePass } from '../api/type'
+import { useCallback, useEffect } from 'react'
 import { resourceURL } from '../constants'
-import userApi from '../api/userApi'
 import { DataModalForm } from '../types'
 import { useAppDispatch, useAppSelector } from '../hooks/reduxTsHook'
 import { setUserState } from '../store/userState'
+import { TChangePasswordInput } from '../models/TChangePasswordInput'
+import { changeAvatar, changePassword } from '../services/user'
 
 const Profile = () => {
   const dipatch = useAppDispatch()
@@ -18,18 +18,27 @@ const Profile = () => {
     document.title = 'Мой профиль'
   }, [])
 
-  const handleChangePassword = async (data: DataModalForm) => {
-    await userApi.changePassword(data as ChangePass)
-  }
-
-  const handleChangeAvatar = async (file: File) => {
+  const handleChangePassword = useCallback(async (data: DataModalForm) => {
     try {
-      const userRes = await userApi.changeAvatar(file)
-      dipatch(setUserState(userRes))
+      await changePassword(data as TChangePasswordInput)
+      return true
     } catch (error) {
-      console.log(error)
+      console.warn(`change password error: ${error}`)
+      return false
     }
-  }
+  }, [])
+
+  const handleChangeAvatar = useCallback(
+    async (file: File) => {
+      try {
+        const userRes = await changeAvatar(file)
+        dipatch(setUserState(userRes))
+      } catch (error) {
+        console.warn(`change avatar error: ${error}`)
+      }
+    },
+    [dipatch]
+  )
 
   return (
     <Box

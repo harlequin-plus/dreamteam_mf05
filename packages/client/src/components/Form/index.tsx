@@ -17,7 +17,7 @@ export interface ModalInput {
 
 type OwnProps = {
   inputs: ModalInput[]
-  submitData: (data: DataModalForm) => Promise<true | undefined>
+  submitData: (data: DataModalForm) => void
   onCancel: () => void
   submitButtonText?: string
   cancelButtonText?: string

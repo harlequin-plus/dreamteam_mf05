@@ -1,5 +1,5 @@
 import { Box, Button, Modal, Typography } from '@mui/material'
-import { FC, HTMLAttributes, useState } from 'react'
+import { FC, HTMLAttributes, useCallback, useState } from 'react'
 import { DataModalForm } from '../../types'
 import Form, { ModalInput } from '../Form'
 
@@ -18,7 +18,7 @@ const style = {
 type OwnProps = {
   modalTitle: string
   inputs: ModalInput[]
-  handleSubmitForm: (data: DataModalForm) => void
+  handleSubmitForm: (data: DataModalForm) => Promise<boolean>
   successText?: string
   submitButtonText?: string
   cancelButtonText?: string
@@ -34,23 +34,22 @@ const ModalForm: Props = ({
   submitButtonText = 'Изменить',
   cancelButtonText = 'Отмена',
 }) => {
-  const [openSucces, setOpenSucces] = useState(false)
+  const [openSuccess, setOpenSuccess] = useState(false)
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
-  const handleOpenSucces = () => setOpenSucces(true)
-  const handleCloseSucces = () => setOpenSucces(false)
+  const handleOpenSuccess = () => setOpenSuccess(true)
+  const handleCloseSuccess = () => setOpenSuccess(false)
 
-  const submitData = async (data: DataModalForm) => {
-    try {
-      await handleSubmitForm(data)
-      handleOpenSucces()
-      handleClose()
-      return true
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const submitData = useCallback(
+    async (data: DataModalForm) => {
+      if (await handleSubmitForm(data)) {
+        handleOpenSuccess()
+        handleClose()
+      }
+    },
+    [handleSubmitForm]
+  )
 
   return (
     <div>
@@ -74,7 +73,7 @@ const ModalForm: Props = ({
           />
         </Box>
       </Modal>
-      <Modal open={openSucces} onClose={handleCloseSucces}>
+      <Modal open={openSuccess} onClose={handleCloseSuccess}>
         <Box sx={style}>
           <Typography
             id="modal-modal-title"
@@ -85,7 +84,7 @@ const ModalForm: Props = ({
           </Typography>
           <Typography color="secondary">{successText}</Typography>
 
-          <Button onClick={handleCloseSucces}>Ok</Button>
+          <Button onClick={handleCloseSuccess}>Ok</Button>
         </Box>
       </Modal>
     </div>

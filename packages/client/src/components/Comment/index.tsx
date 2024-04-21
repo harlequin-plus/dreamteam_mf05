@@ -1,10 +1,11 @@
 import { FC } from 'react'
-import { User } from '../../api/type'
 import { Avatar, Box, TableCell, TableRow, Typography } from '@mui/material'
 import { formatDate } from '../../utils/formatDate'
+import { TUser } from '../../models/TUser'
+
 type OwnProps = {
   content: string
-  user: User
+  user: TUser
   date: Date
   ordinalNumber: number
 }

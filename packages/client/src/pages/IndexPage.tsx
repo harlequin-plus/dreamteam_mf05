@@ -1,17 +1,25 @@
 import GameBoard from '../components/GameBoard/GameBoard'
 import PreGameScreen from '../components/preGameScreen/preGameScreen'
-import { signInWithYandex } from '../services/apiService'
 import { oauthRedirectURI } from '../constants'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useAppDispatch } from '../hooks/reduxTsHook'
 import { fetchUser } from '../store/userState'
+import { oauthSignInWithYandex } from '../services/auth'
 
 function IndexPage() {
   const dispatch = useAppDispatch()
-  const getUserFromYandexOauth = async (code: string) => {
-    await signInWithYandex({ code, redirect_uri: oauthRedirectURI })
-    dispatch(fetchUser())
-  }
+
+  const getUserFromYandexOauth = useCallback(
+    (code: string) => {
+      oauthSignInWithYandex({ code, redirect_uri: oauthRedirectURI })
+        .then(() => {
+          dispatch(fetchUser())
+        })
+        .catch(error => console.warn('signin error: ', error))
+    },
+    [dispatch]
+  )
+
   useEffect(() => {
     const queryString = window.location.search
     const params = new URLSearchParams(queryString)
@@ -19,7 +27,7 @@ function IndexPage() {
     if (code) {
       getUserFromYandexOauth(code)
     }
-  }, [])
+  }, [getUserFromYandexOauth])
 
   return (
     <>
