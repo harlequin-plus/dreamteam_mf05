@@ -12,7 +12,6 @@ export const styles: Record<string, string> = {
 
   color: generalCss.color,
   font: generalCss.font,
-  textBaseling: 'middle',
 
   justifyContent: 'center',
   alignItems: 'center',
