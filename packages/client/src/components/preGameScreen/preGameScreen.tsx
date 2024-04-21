@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Modal, Button, Typography, Box } from '@mui/material'
-import { container, img } from './styles'
+import { container, breakline } from './styles'
 
 const InfoModal = () => {
   const [open, setOpen] = useState(true)
@@ -28,36 +28,32 @@ const InfoModal = () => {
   return (
     <Modal open={open} onClose={handleClose}>
       <div style={container}>
-        <Typography variant="h6">Rules:</Typography>
+        <Typography variant="h6">Для того чтобы собрать 2048:</Typography>
 
         <Typography width="80%" variant="body1">
-          1. Arrows keyboard for game control
+          1 Смахните влево и вправо несколько раз (необязательно). Начните новую
+          игру, после чего быстро смахните влево и вправо. Продолжайте до тех
+          пор, пока не сформируется пара рядов с числами 2, 4 и 8.
         </Typography>
-        <Box
-          component="img"
-          sx={{
-            width: '30%',
-          }}
-          alt="keyboard arrows"
-          src={img.keyArrows}
-        />
+
+        <hr style={breakline} />
 
         <Typography width="80%" variant="body1">
-          2. Collide equale blocks to summarize two into one
+          2 Создавайте плитку с большим числом в углу. Объединяйте плитки с
+          малым номиналом в 16 и 32 и двигайте в угол. Ваша цель — оставлять
+          плитку на одном месте как можно дольше.
         </Typography>
-        <Box
-          component="img"
-          sx={{
-            width: '60%',
-          }}
-          alt="blocks example"
-          src={img.blocks}
-        />
+
+        <hr style={breakline} />
 
         <Typography width="80%" variant="body1">
-          3. Collect 2048 in a single block to win!
+          3 Оставляйте ряд с самой крупной плиткой заполненным. Например, если
+          самая крупная плитка находится в правом верхнем углу, заполните
+          плитками весь верхний ряд.
         </Typography>
-        <Typography variant="h6"> The game starts in {countdown}</Typography>
+
+        <Typography variant="h6"> Игра начнётся {countdown}</Typography>
+
         <Button variant="contained" color="warning" onClick={handleClose}>
           Start
         </Button>
