@@ -1,7 +1,7 @@
 import { Button } from '@mui/material'
 import CloseFullscreenIcon from '../../assets/close_fullscreen.svg'
 import OpenFullscreenIcon from '../../assets/open_fullscreen.svg'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
 export function FullscreenButton({
   isFullscreenEnabled,
@@ -10,18 +10,21 @@ export function FullscreenButton({
   isFullscreenEnabled: boolean
   setFullscreenEnabled: CallableFunction
 }) {
-  const getTheFullscreenOn = (e: KeyboardEvent) => {
-    switch (e.key) {
-      case 'а':
-      case 'f':
-      case 'А':
-      case 'F':
-        setFullscreenEnabled((prev: boolean) => !prev)
-        break
-      default:
-        break
-    }
-  }
+  const getTheFullscreenOn = useCallback(
+    (e: KeyboardEvent) => {
+      switch (e.key) {
+        case 'а':
+        case 'f':
+        case 'А':
+        case 'F':
+          setFullscreenEnabled((prev: boolean) => !prev)
+          break
+        default:
+          break
+      }
+    },
+    [setFullscreenEnabled]
+  )
 
   useEffect(() => {
     window.addEventListener('keydown', getTheFullscreenOn)

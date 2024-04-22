@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Modal, Button, Typography, Box } from '@mui/material'
+import { Modal, Button, Typography } from '@mui/material'
 import { container, breakline } from './styles'
 
 const InfoModal = () => {

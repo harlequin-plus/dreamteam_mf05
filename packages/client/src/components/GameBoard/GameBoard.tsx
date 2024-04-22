@@ -2,9 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { GameEngine } from '../../utils/gameEngin'
 import { styles } from './tempStyles'
 import { FullscreenProvider } from '../FullscreenProvider'
-import { Button } from '@mui/material'
-import CloseFullscreenIcon from '../../assets/close_fullscreen.svg'
-import OpenFullscreenIcon from '../../assets/open_fullscreen.svg'
 import { FullscreenButton } from '../FullscreenButton'
 
 const gameEngine = new GameEngine()
