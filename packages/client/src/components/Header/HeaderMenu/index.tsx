@@ -7,6 +7,7 @@ import './style.scss'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxTsHook'
 import { logout } from '../../../services/auth'
 import { resetUserState } from '../../../store/userState'
+import { resetLeaderboardState } from '../../../store/leaderboardState'
 
 function HeaderMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -26,6 +27,7 @@ function HeaderMenu() {
     logout()
       .then(() => {
         dispatch(resetUserState())
+        dispatch(resetLeaderboardState())
         navigate('/auth')
       })
       .catch(error => console.warn('logout error:', error))

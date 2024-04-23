@@ -11,12 +11,13 @@ export default class UserApi {
     return http.put<void>(`${baseURL}/user/password`, data)
   }
 
-  async changeAvatar(file: File): Promise<TResult<TUser | TAPIError>> {
-    const formData = new FormData()
-    formData.append('avatar', file)
-
-    return http.put<TUser>(`${baseURL}/user/profile/avatar`, formData, {
+  async changeAvatar(data: FormData): Promise<TResult<TUser | TAPIError>> {
+    return http.put<TUser>(`${baseURL}/user/profile/avatar`, data, {
       headers: {},
     })
+  }
+
+  async getUserByID(id: number): Promise<TResult<TUser | TAPIError>> {
+    return http.get<TUser>(`${baseURL}/user/${id}`)
   }
 }

@@ -11,7 +11,7 @@ import { TChangePasswordInput } from '../models/TChangePasswordInput'
 import { changeAvatar, changePassword } from '../services/user'
 
 const Profile = () => {
-  const dipatch = useAppDispatch()
+  const dispatch = useAppDispatch()
   const user = useAppSelector(state => state.userState.item)
 
   useEffect(() => {
@@ -32,12 +32,12 @@ const Profile = () => {
     async (file: File) => {
       try {
         const userRes = await changeAvatar(file)
-        dipatch(setUserState(userRes))
+        dispatch(setUserState(userRes))
       } catch (error) {
         console.warn(`change avatar error: ${error}`)
       }
     },
-    [dipatch]
+    [dispatch]
   )
 
   return (

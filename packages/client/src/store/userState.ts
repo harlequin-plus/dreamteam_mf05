@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { UserState } from '../types'
 import { TUser } from '../models/TUser'
-import { IUserServise } from './index'
+import { TServices } from '../repository_services'
 
 const defaultUser: TUser = {
   id: -1,
@@ -9,9 +9,9 @@ const defaultUser: TUser = {
   email: '',
   first_name: '',
   second_name: '',
-  display_name: null,
+  display_name: undefined,
   phone: '',
-  avatar: null,
+  avatar: undefined,
 }
 
 const initialState: UserState = {
@@ -74,8 +74,8 @@ export const {
 export const fetchUser = createAsyncThunk(
   'userState/fetchStatus',
   async (_req, { fulfillWithValue, rejectWithValue, extra }) => {
-    const service: IUserServise = extra as IUserServise
-    return service
+    const services: TServices = extra as TServices
+    return services.userService
       .getCurrentUser()
       .then(user => fulfillWithValue(user))
       .catch(err => rejectWithValue(err.message))
