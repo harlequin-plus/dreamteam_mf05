@@ -2,9 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { GameEngine } from '../../utils/gameEngin'
 import { styles } from './tempStyles'
 import { FullscreenProvider } from '../FullscreenProvider'
-import { Button } from '@mui/material'
-import CloseFullscreenIcon from '../../assets/close_fullscreen.svg'
-import OpenFullscreenIcon from '../../assets/open_fullscreen.svg'
+import { FullscreenButton } from '../FullscreenButton'
 
 const gameEngine = new GameEngine()
 
@@ -24,26 +22,10 @@ const GameBoard: React.FC = () => {
       enabled={isFullscreenEnabled}
       onChange={setFullscreenEnabled}>
       <div style={styles}>
-        <Button
-          className="fullscreen-btn"
-          aria-label="OpenInFull"
-          onClick={() => setFullscreenEnabled(prev => !prev)}
-          sx={{
-            position: 'absolute',
-            right: 0,
-            top: 0,
-            width: 75,
-            height: 75,
-          }}>
-          <img
-            src={isFullscreenEnabled ? CloseFullscreenIcon : OpenFullscreenIcon}
-            alt={
-              isFullscreenEnabled
-                ? 'Close fullscreen button'
-                : 'Open fullscreen button'
-            }
-          />
-        </Button>
+        <FullscreenButton
+          isFullscreenEnabled={isFullscreenEnabled}
+          setFullscreenEnabled={setFullscreenEnabled}
+        />
         <div> High Score: {highScore}</div>
         <canvas ref={canvasRef} width={400} height={420} />
       </div>

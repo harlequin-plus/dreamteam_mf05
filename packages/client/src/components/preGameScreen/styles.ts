@@ -1,5 +1,4 @@
 import { generalCss } from '../../styles'
-import colideImg from './../../assets/colideMethod.svg'
 
 export const container: Record<string, string> = {
   position: 'absolute',
@@ -11,7 +10,8 @@ export const container: Record<string, string> = {
   padding: '20px',
 
   width: '80%',
-  maxWidth: '500px',
+  minWidth: '500px',
+  maxWidth: '550px',
   height: '80%',
   maxHeight: '500px',
 
@@ -24,8 +24,6 @@ export const container: Record<string, string> = {
   font: generalCss.font,
 }
 
-export const img: Record<string, string> = {
-  keyArrows:
-    'https://images.vexels.com/media/users/3/153199/isolated/preview/c0facb164c02a5815d7efea4eb898a98-keyboard-arrow-keys-stroke-icon-by-vexels.png',
-  blocks: colideImg,
+export const breakline: Record<string, string> = {
+  width: '100%',
 }

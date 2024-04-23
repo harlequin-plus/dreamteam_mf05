@@ -6,6 +6,7 @@ import HeaderMenu from './HeaderMenu'
 import { logout } from '../../services/auth'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxTsHook'
 import { resetUserState } from '../../store/userState'
+import { criticail, row, rowList } from './critical'
 
 export function Header() {
   const user = useAppSelector(state => state.userState.item.id)
@@ -22,9 +23,9 @@ export function Header() {
       .catch(error => console.warn('logout error:', error))
   }
   return (
-    <div className="header">
+    <div className="header" style={criticail}>
       <div className="container header__container">
-        <nav className="header__menu">
+        <nav className="header__menu" style={rowList}>
           <div className="header__logo">
             <Link to="/">
               <img src={HeaderLogo} alt="2048 логотип" />
@@ -32,16 +33,16 @@ export function Header() {
             </Link>
           </div>
           <ul className="header-list">
-            <li className="header-list__item">
+            <li className="header-list__item" style={row}>
               <Link to="/profile">Профиль</Link>
             </li>
-            <li className="header-list__item">
+            <li className="header-list__item" style={row}>
               <Link to="/leaderboard">Страница таблицы лидеров</Link>
             </li>
-            <li className="header-list__item">
+            <li className="header-list__item" style={row}>
               <Link to="/forum">Сообщество</Link>
             </li>
-            <li className="header-list__item">
+            <li className="header-list__item" style={row}>
               <Link to="/mainpage">Лендинг презентация</Link>
             </li>
           </ul>
