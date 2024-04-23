@@ -1,6 +1,6 @@
 import { styles } from '../components/GameBoard/tempStyles'
 import { GameMoves } from './gameMoves'
-import { getColorForValue } from './helpers'
+import { getColorForValue, keysMapper } from './helpers'
 
 export class GameEngine extends GameMoves {
   constructor() {
@@ -44,37 +44,22 @@ export class GameEngine extends GameMoves {
 
   onKeyboardPress = (event: KeyboardEvent) => {
     let moved = false
-    // getRidOfThat
-    switch (event.key) {
-      case 'ArrowUp':
-      case 'w':
-      case 'ц':
-      case 'Ц':
-      case 'W':
+
+    // remove from gameEngie
+    switch (keysMapper[event.key]) {
+      case 'up':
         event.preventDefault()
         moved = this.moveUp()
         break
-      case 'ArrowDown':
-      case 's':
-      case 'ы':
-      case 'S':
-      case 'Ы':
+      case 'down':
         event.preventDefault()
         moved = this.moveDown()
         break
-      case 'ArrowLeft':
-      case 'a':
-      case 'ф':
-      case 'Ф':
-      case 'A':
+      case 'left':
         event.preventDefault()
         moved = this.moveLeft()
         break
-      case 'ArrowRight':
-      case 'в':
-      case 'd':
-      case 'D':
-      case 'В':
+      case 'right':
         event.preventDefault()
         moved = this.moveRight()
         break
