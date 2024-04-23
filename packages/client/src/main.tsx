@@ -9,8 +9,10 @@ import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import createStore from './store'
-import { ClientYandexApiRepository } from './repository/ClientYandexApiRepository'
-import { UserService } from './api/UserService'
+import { ClientYandexApiUserRepository } from './repository/ClientYandexApiUserRepository'
+import { UserService } from './repository_services/UserService'
+import { LeaderboardService } from './repository_services/LeaderboardService'
+import { ClientYandexApiLeaderboardRepository } from './repository/ClientYandexApiLeaderboardRepository'
 
 const initialState = window.APP_INITIAL_STATE
 
@@ -22,7 +24,12 @@ ReactDOM.hydrateRoot(
     <ErrorBoundary FallbackComponent={ErrorHandler}>
       <Provider
         store={createStore(
-          new UserService(new ClientYandexApiRepository()),
+          {
+            userService: new UserService(new ClientYandexApiUserRepository()),
+            leaderboardService: new LeaderboardService(
+              new ClientYandexApiLeaderboardRepository()
+            ),
+          },
           initialState
         )}>
         <App />

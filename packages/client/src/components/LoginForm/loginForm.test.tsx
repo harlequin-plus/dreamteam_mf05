@@ -3,8 +3,10 @@ import { LoginForm } from './index'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import createStore from '../../store'
-import { UserService } from '../../api/UserService'
-import { ClientYandexApiRepository } from '../../repository/ClientYandexApiRepository'
+import { UserService } from '../../repository_services/UserService'
+import { ClientYandexApiUserRepository } from '../../repository/ClientYandexApiUserRepository'
+import { LeaderboardService } from '../../repository_services/LeaderboardService'
+import { ClientYandexApiLeaderboardRepository } from '../../repository/ClientYandexApiLeaderboardRepository'
 
 const initialState = window.APP_INITIAL_STATE
 
@@ -14,7 +16,12 @@ describe('LoginForm', () => {
     render(
       <Provider
         store={createStore(
-          new UserService(new ClientYandexApiRepository()),
+          {
+            userService: new UserService(new ClientYandexApiUserRepository()),
+            leaderboardService: new LeaderboardService(
+              new ClientYandexApiLeaderboardRepository()
+            ),
+          },
           initialState
         )}>
         <BrowserRouter>

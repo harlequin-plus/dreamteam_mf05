@@ -13,11 +13,12 @@ export class GameEngine extends GameMoves {
   public score = 0
   explosions: Explosion[] = []
   speed = 0.15
+  public timerMs = 0
 
   setScore = (score: number) => {
     this.score = score
-    if (this.setScoreCallback) {
-      this.setScoreCallback(score)
+    if (this.scoreChangedCallback) {
+      this.scoreChangedCallback(score)
     }
   }
 
@@ -25,6 +26,7 @@ export class GameEngine extends GameMoves {
     this.completed = false
     this.cellBoard = this.emptyCellBoard()
     this.setScore(0)
+    this.timerMs = performance.now()
 
     if (canvasRef.current) {
       const canvas = canvasRef.current
@@ -119,6 +121,11 @@ export class GameEngine extends GameMoves {
       ).setFontSize(0)
 
       if (this.moveNotPossible()) {
+        this.gameOverCallback?.(
+          this.score,
+          Math.floor((performance.now() - this.timerMs) / 1000)
+        )
+
         if (confirm(`No moves available. New game will be started`)) {
           this.setScore(0)
           this.cellBoard = this.emptyCellBoard()

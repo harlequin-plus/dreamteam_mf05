@@ -23,9 +23,9 @@ const AppRouter: React.FC = () => {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/forum" element={<ForumPage />} />
         <Route path="/forum/:id" element={<Topic />} />
+        <Route path="/leaderboard" element={<LeaderboardPage />} />
       </Route>
 
-      <Route path="/leaderboard" element={<LeaderboardPage />} />
       <Route path="/mainpage" element={<MainPage />} />
 
       <Route path="*" element={<NotFoundPage />} />
