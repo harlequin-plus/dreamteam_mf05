@@ -1,6 +1,8 @@
 import { styles } from '../components/GameBoard/tempStyles'
 import { GameMoves } from './gameMoves'
 import { getColorForValue } from './helpers'
+import { Cell } from './gameMoves'
+import { Explosion } from './gameMoves'
 
 export class GameEngine extends GameMoves {
   constructor() {
@@ -10,6 +12,8 @@ export class GameEngine extends GameMoves {
   public ctxRef: CanvasRenderingContext2D | null = null
   public completed = false
   public score = 0
+  explosions: Explosion[] = []
+  speed = 0.15
 
   setScore = (score: number) => {
     this.score = score
@@ -20,7 +24,7 @@ export class GameEngine extends GameMoves {
 
   start = (canvasRef: React.MutableRefObject<HTMLCanvasElement | null>) => {
     this.completed = false
-    this.board = this.emptyBoard()
+    this.cellBoard = this.emptyCellBoard()
     this.setScore(0)
 
     if (canvasRef.current) {
@@ -32,9 +36,7 @@ export class GameEngine extends GameMoves {
         window.addEventListener('keydown', this.onKeyboardPress)
       }
     }
-
-    this.drawBoard(this.ctxRef)
-    this.drawTiles(this.ctxRef)
+    this.loop(this.ctxRef)
     this.addNewTile(this.ctxRef)
   }
 
@@ -84,7 +86,6 @@ export class GameEngine extends GameMoves {
     }
 
     if (moved) {
-      this.drawBoard(this.ctxRef)
       this.addNewTile(this.ctxRef)
     }
 
@@ -94,10 +95,10 @@ export class GameEngine extends GameMoves {
   checkFinish = (): boolean => {
     let largestElement = Number.NEGATIVE_INFINITY
 
-    for (const row of this.board) {
+    for (const row of this.cellBoard) {
       for (const element of row) {
-        if (element > largestElement) {
-          largestElement = element
+        if (element && element.value > largestElement) {
+          largestElement = element.value
         }
       }
     }
@@ -116,34 +117,28 @@ export class GameEngine extends GameMoves {
   addNewTile = (ctxRef: CanvasRenderingContext2D | null) => {
     const emptyTiles: { row: number; col: number }[] = []
 
-    for (let i = 0; i < this.board.length; i++) {
-      for (let j = 0; j < this.board[i].length; j++) {
-        if (this.board[i][j] === 0) {
+    for (let i = 0; i < this.cellBoard.length; i++) {
+      for (let j = 0; j < this.cellBoard[i].length; j++) {
+        if (this.cellBoard[i][j] === null) {
           emptyTiles.push({ row: i, col: j })
         }
       }
     }
-
     if (emptyTiles.length === 1) {
       const randomIndex = Math.floor(Math.random() * emptyTiles.length)
       const { row, col } = emptyTiles[randomIndex]
-
-      this.board[row][col] = 2
-
-      this.drawTiles(ctxRef)
-      this.drawBoard(ctxRef)
+      this.cellBoard[row][col] = new Cell(
+        2,
+        row,
+        col,
+        getColorForValue(2)
+      ).setFontSize(0)
 
       if (this.moveNotPossible()) {
         if (confirm(`No moves available. New game will be started`)) {
           this.setScore(0)
-          for (let i = 0; i < this.board.length; i++) {
-            for (let j = 0; j < this.board[i].length; j++) {
-              this.board[i][j] = 0
-            }
-          }
+          this.cellBoard = this.emptyCellBoard()
           this.addNewTile(ctxRef)
-          this.drawBoard(ctxRef)
-          this.drawTiles(ctxRef)
         }
       }
     }
@@ -151,42 +146,141 @@ export class GameEngine extends GameMoves {
     if (emptyTiles.length > 0) {
       const randomIndex = Math.floor(Math.random() * emptyTiles.length)
       const { row, col } = emptyTiles[randomIndex]
-
-      this.board[row][col] = 2
-      this.drawBoard(ctxRef)
-      this.drawTiles(ctxRef)
+      this.cellBoard[row][col] = new Cell(
+        2,
+        row,
+        col,
+        getColorForValue(2)
+      ).setFontSize(0)
     }
   }
-  drawBoard = (ctxRef: CanvasRenderingContext2D | null) => {
+
+  drawCells = (ctxRef: CanvasRenderingContext2D | null) => {
     if (ctxRef) {
       const ctx = ctxRef
       ctx.fillStyle = '#bbada0'
-      ctx.fillRect(5, 5, 385, 385)
-
-      for (let i = 0; i < this.board.length; i++) {
-        for (let j = 0; j < this.board[i].length; j++) {
-          ctx.fillStyle = getColorForValue(this.board[i][j])
-          ctx.fillRect(10 + j * 95, 10 + i * 95, 90, 90)
+      ctx.fillRect(4, 4, 387, 387)
+      for (let i = 0; i < 4; i++)
+        for (let j = 0; j < 4; j++) {
+          ctx.clearRect(10 + i * 95, 10 + j * 95, 90, 90)
         }
-      }
-    }
-  }
 
-  drawTiles = (ctxRef: CanvasRenderingContext2D | null) => {
-    if (ctxRef) {
-      const ctx = ctxRef
-      ctx.fillStyle = styles.color
-      ctx.font = styles.font
-      ctx.textAlign = <CanvasTextAlign>styles.alignItems
-      ctx.textBaseline = <CanvasTextBaseline>styles.textBaseline
-
-      for (let i = 0; i < this.board.length; i++) {
-        for (let j = 0; j < this.board[i].length; j++) {
-          if (this.board[i][j] !== 0) {
-            ctx.fillText(String(this.board[i][j]), 55 + j * 95, 55 + i * 95)
+      for (let i = 0; i < this.cellBoard.length; i++) {
+        for (let j = 0; j < this.cellBoard[i].length; j++) {
+          const currentCell = this.cellBoard[i][j]
+          if (currentCell) {
+            if (currentCell.row < i) {
+              if (currentCell.boom) {
+                drawTempCell(ctx, i, j, currentCell.value)
+              }
+              currentCell.setRow(currentCell.row + this.speed)
+              if (currentCell.row > i) {
+                currentCell.setRow(i)
+                if (currentCell.boom) {
+                  boomAction(currentCell, this.explosions)
+                }
+              }
+            }
+            if (currentCell.row > i) {
+              if (currentCell.boom) {
+                drawTempCell(ctx, i, j, currentCell.value)
+              }
+              currentCell.setRow(currentCell.row - this.speed)
+              if (currentCell.row < i) {
+                currentCell.setRow(i)
+                if (currentCell.boom) {
+                  boomAction(currentCell, this.explosions)
+                }
+              }
+            }
+            if (currentCell.column < j) {
+              if (currentCell.boom) {
+                drawTempCell(ctx, i, j, currentCell.value)
+              }
+              currentCell.setColumn(currentCell.column + this.speed)
+              if (currentCell.column > j) {
+                currentCell.setColumn(j)
+                if (currentCell.boom) {
+                  boomAction(currentCell, this.explosions)
+                }
+              }
+            }
+            if (currentCell.column > j) {
+              if (currentCell.boom) {
+                drawTempCell(ctx, i, j, currentCell.value)
+              }
+              currentCell.setColumn(currentCell.column - this.speed)
+              if (currentCell.column < j) {
+                currentCell.setColumn(j)
+                if (currentCell.boom) {
+                  boomAction(currentCell, this.explosions)
+                }
+              }
+            }
+            drawRect(ctx, currentCell as Cell)
           }
         }
       }
     }
   }
+  loop = (ctxRef: CanvasRenderingContext2D | null) => {
+    if (ctxRef) {
+      ctxRef.clearRect(0, 0, 400, 400)
+      this.drawCells(ctxRef)
+      if (this.explosions.length > 0) {
+        for (let i = 0; i < this.explosions.length; i++) {
+          this.explosions[i].update()
+          this.explosions[i].draw(ctxRef)
+        }
+      }
+      window.requestAnimationFrame(() => this.loop(ctxRef))
+    }
+  }
+}
+
+function drawRect(ctx: CanvasRenderingContext2D, cell: Cell) {
+  ctx.fillStyle = getColorForValue(cell.value)
+  ctx.fillRect(cell.getCoordinates().x, cell.getCoordinates().y, 90, 90)
+  ctx.fillStyle = styles.color
+  if (cell.fontSize < 80 && cell.fontSize !== 40) {
+    cell.setFontSize(cell.fontSize + 2.4) // параметр 2.4 - скорость увелечения текста при появлении новой ячейки. 40 не должно быть кратно этой скорости
+  }
+  if (cell.fontSize >= 60) {
+    cell.setFontSize(40)
+  }
+  ctx.font = `bold ${cell.fontSize}px Arial`
+  ctx.textAlign = <CanvasTextAlign>styles.alignItems
+  ctx.textBaseline = <CanvasTextBaseline>styles.textBaseline
+  ctx.fillText(
+    String(cell.value),
+    cell.getCoordinates().x + 45,
+    cell.getCoordinates().y + 45
+  )
+}
+
+function drawTempCell(
+  ctx: CanvasRenderingContext2D,
+  row: number,
+  column: number,
+  value: number
+) {
+  const cell = new Cell(value, row, column, getColorForValue(value))
+  ctx.fillStyle = cell.color
+  ctx.fillRect(cell.getCoordinates().x, cell.getCoordinates().y, 90, 90)
+  ctx.fillStyle = styles.color
+  ctx.font = <CanvasTextAlign>styles.font
+  ctx.textAlign = <CanvasTextAlign>styles.alignItems
+  ctx.textBaseline = <CanvasTextBaseline>styles.textBaseline
+  ctx.fillText(
+    String(cell.value),
+    cell.getCoordinates().x + 45,
+    cell.getCoordinates().y + 45
+  )
+}
+
+function boomAction(cell: Cell, boomArray: Explosion[]) {
+  cell.setBoom(false).setValue(cell.value * 2)
+  boomArray.push(
+    new Explosion(cell.getCoordinates().x, cell.getCoordinates().y)
+  )
 }
