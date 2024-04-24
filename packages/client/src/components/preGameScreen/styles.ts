@@ -10,7 +10,8 @@ export const container: Record<string, string> = {
   padding: '20px',
 
   width: '80%',
-  maxWidth: '500px',
+  minWidth: '500px',
+  maxWidth: '550px',
   height: '80%',
   maxHeight: '500px',
 

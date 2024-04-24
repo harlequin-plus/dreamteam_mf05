@@ -26,3 +26,29 @@ export const getColorForValue = (value: number) => {
       return '#1D1F34'
   }
 }
+
+export const keysMapper: Record<string, 'left' | 'right' | 'up' | 'down'> = {
+  ArrowLeft: 'left',
+  a: 'left',
+  ф: 'left',
+  A: 'left',
+  Ф: 'left',
+
+  ArrowUp: 'up',
+  w: 'up',
+  W: 'up',
+  ц: 'up',
+  Ц: 'up',
+
+  ArrowRight: 'right',
+  в: 'right',
+  d: 'right',
+  В: 'right',
+  D: 'right',
+
+  ArrowDown: 'down',
+  s: 'down',
+  S: 'down',
+  ы: 'down',
+  Ы: 'down',
+}
