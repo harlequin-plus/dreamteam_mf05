@@ -14,7 +14,7 @@ import {
 import Box from '@mui/material/Box'
 import { secondsToString } from '../../utils/convert'
 import { getLeaderboard } from '../../services/leaderboard'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { resourceURL, scoreVariableName } from '../../constants'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxTsHook'
 import { setLeaderboardState } from '../../store/leaderboardState'
@@ -26,10 +26,9 @@ export function Leaderboard() {
   const [page, setPage] = React.useState(0)
 
   const allLeaders = useAppSelector(state => state.leaderboardState.items)
-  const displayedLeaders = allLeaders?.slice(
-    page * paginationSize,
-    (page + 1) * paginationSize
-  )
+  const displayedLeaders = useMemo(() => {
+    return allLeaders?.slice(page * paginationSize, (page + 1) * paginationSize)
+  }, [allLeaders, page])
 
   const handleChangePage = useCallback(
     async (
@@ -100,13 +99,10 @@ export function Leaderboard() {
         <TablePagination
           component="div"
           rowsPerPageOptions={[]}
-          count={Math.min(allLeaders ? allLeaders.length : 0)}
+          count={allLeaders?.length ?? 0}
           page={page}
           onPageChange={handleChangePage}
-          rowsPerPage={Math.min(
-            allLeaders ? allLeaders.length : 0,
-            paginationSize
-          )}
+          rowsPerPage={Math.min(allLeaders?.length ?? 0, paginationSize)}
         />
       </Box>
     </Container>
