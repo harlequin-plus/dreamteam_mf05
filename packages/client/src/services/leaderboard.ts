@@ -22,15 +22,16 @@ const getLeaderboard = async (data: TLeaderboardRequest) => {
     throw Error(response.data.reason)
   }
 
-  const list = response.data as TLeaderboardData
+  const leaders = response.data as TLeaderboardData
 
   // if user was removed, don't include him into detailedList
   const detailedList: TLeaderboardData = []
 
-  await Promise.all(
-    list.map(async (leader: { data: TLeader }) => {
+  for (const leader of leaders) {
+    const userId = leader.data.userId
+    if (userId) {
       try {
-        const user = await getUserByID(leader.data.userId)
+        const user = await getUserByID(userId)
         leader.data.included = {
           user,
         }
@@ -38,8 +39,8 @@ const getLeaderboard = async (data: TLeaderboardRequest) => {
       } catch (error) {
         /* empty */
       }
-    })
-  )
+    }
+  }
 
   return detailedList
 }
