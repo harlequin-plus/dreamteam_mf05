@@ -1,5 +1,4 @@
-import { http, TResult } from '../utils/http'
-import { TAPIError } from '../models/TAPIError'
+import { HTTPTransport } from '../utils/http'
 import { baseURL, scoreVariableName, teamName } from '../constants'
 import {
   TLeader,
@@ -7,23 +6,25 @@ import {
   TLeaderboardRequest,
 } from '../models/TAddUserToLeaderboard'
 
+const leaderboardApi = new HTTPTransport()
+
 export default class LeaderboardApi {
-  async addUserToLeaderboard(
-    data: TLeader
-  ): Promise<TResult<void | TAPIError>> {
-    return http.post<void>(`${baseURL}/leaderboard`, {
+  async addUserToLeaderboard(data: TLeader) {
+    return leaderboardApi.post<void>(`${baseURL}/leaderboard`, undefined, {
       ratingFieldName: scoreVariableName,
       teamName,
       data,
     })
   }
 
-  async getLeaderboard(
-    data: TLeaderboardRequest
-  ): Promise<TResult<TLeaderboardData | TAPIError>> {
-    return http.post<TLeaderboardData>(`${baseURL}/leaderboard/all`, {
-      ...data,
-      ratingFieldName: scoreVariableName,
-    })
+  async getLeaderboard(data: TLeaderboardRequest) {
+    return leaderboardApi.post<TLeaderboardData>(
+      `${baseURL}/leaderboard/all`,
+      undefined,
+      {
+        ...data,
+        ratingFieldName: scoreVariableName,
+      }
+    )
   }
 }
