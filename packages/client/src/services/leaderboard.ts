@@ -22,7 +22,7 @@ const getLeaderboard = async (data: TLeaderboardRequest) => {
     throw Error(response.data.reason)
   }
 
-  const leaders = response.data as TLeaderboardData
+  const leaders = response.data
 
   // if user was removed, don't include him into detailedList
   const detailedList: TLeaderboardData = []
