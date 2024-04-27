@@ -14,8 +14,7 @@ export type TResult<TResponse> = {
 
 type HTTPMethod = <R = unknown>(
   url: string,
-  options?: RequestInit,
-  body?: object
+  param?: { options?: RequestInit; body?: object }
 ) => Promise<TResult<R> | TResult<TAPIError>>
 
 function handleResponse<R = unknown>(
@@ -46,7 +45,7 @@ function handleResponse<R = unknown>(
 }
 
 export class HTTPTransport {
-  get: HTTPMethod = async (url, options) => {
+  get: HTTPMethod = async (url, param) => {
     const requestOptions: RequestInit = {
       method: METHODS.GET,
       mode: 'cors',
@@ -54,39 +53,49 @@ export class HTTPTransport {
     }
 
     return handleResponse(
-      await fetch(url, Object.assign(requestOptions, options))
+      await fetch(url, Object.assign(requestOptions, param?.options))
     )
   }
 
-  post: HTTPMethod = async (url, options, body) => {
+  post: HTTPMethod = async (url, param = {}) => {
     const requestOptions: RequestInit = {
       method: METHODS.POST,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+      body: JSON.stringify(param.body),
       mode: 'cors',
       credentials: 'include',
     }
 
+    if (param?.body) {
+      requestOptions['body'] = JSON.stringify(param.body)
+    }
+
     return handleResponse(
-      await fetch(url, Object.assign(requestOptions, options))
+      await fetch(url, Object.assign(requestOptions, param.options))
     )
   }
 
-  put: HTTPMethod = async (url, options, body) => {
+  put: HTTPMethod = async (url, param) => {
     const requestOptions: RequestInit = {
       method: METHODS.PUT,
       headers: { 'Content-Type': 'application/json' },
-      body: body instanceof FormData ? body : JSON.stringify(body),
       mode: 'cors',
       credentials: 'include',
     }
 
+    if (param?.body) {
+      requestOptions['body'] =
+        param?.body instanceof FormData
+          ? param.body
+          : JSON.stringify(param?.body)
+    }
+
     return handleResponse(
-      await fetch(url, Object.assign(requestOptions, options))
+      await fetch(url, Object.assign(requestOptions, param?.options))
     )
   }
 
-  delete: HTTPMethod = async (url, options) => {
+  delete: HTTPMethod = async (url, param) => {
     const requestOptions: RequestInit = {
       method: METHODS.DELETE,
       mode: 'cors',
@@ -94,7 +103,7 @@ export class HTTPTransport {
     }
 
     return handleResponse(
-      await fetch(url, Object.assign(requestOptions, options))
+      await fetch(url, Object.assign(requestOptions, param?.options))
     )
   }
 }

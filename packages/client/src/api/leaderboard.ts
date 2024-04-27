@@ -10,21 +10,21 @@ const leaderboardApi = new HTTPTransport()
 
 export default class LeaderboardApi {
   async addUserToLeaderboard(data: TLeader) {
-    return leaderboardApi.post<void>(`${baseURL}/leaderboard`, undefined, {
-      ratingFieldName: scoreVariableName,
-      teamName,
-      data,
+    return leaderboardApi.post<void>(`${baseURL}/leaderboard`, {
+      body: {
+        ratingFieldName: scoreVariableName,
+        teamName,
+        data,
+      },
     })
   }
 
   async getLeaderboard(data: TLeaderboardRequest) {
-    return leaderboardApi.post<TLeaderboardData>(
-      `${baseURL}/leaderboard/all`,
-      undefined,
-      {
+    return leaderboardApi.post<TLeaderboardData>(`${baseURL}/leaderboard/all`, {
+      body: {
         ...data,
         ratingFieldName: scoreVariableName,
-      }
-    )
+      },
+    })
   }
 }

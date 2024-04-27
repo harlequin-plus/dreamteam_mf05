@@ -11,15 +11,15 @@ const authApi = new HTTPTransport()
 
 export default class AuthApi {
   async signUp(data: TSignUpInput) {
-    return authApi.post<TSignUpResponse>(
-      `${baseURL}/auth/signup`,
-      undefined,
-      data
-    )
+    return authApi.post<TSignUpResponse>(`${baseURL}/auth/signup`, {
+      body: data,
+    })
   }
 
   async signIn(data: TSignInInput) {
-    return authApi.post<void>(`${baseURL}/auth/signin`, undefined, data)
+    return authApi.post<void>(`${baseURL}/auth/signin`, {
+      body: data,
+    })
   }
 
   async getUser() {
@@ -39,6 +39,8 @@ export default class AuthApi {
   }
 
   async oauthSignInWithYandex(data: TOauthDataType) {
-    return authApi.post<void>(`${baseURL}/oauth/yandex`, undefined, data)
+    return authApi.post<void>(`${baseURL}/oauth/yandex`, {
+      body: data,
+    })
   }
 }
