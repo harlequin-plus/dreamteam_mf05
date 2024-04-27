@@ -7,17 +7,18 @@ const userApi = new HTTPTransport()
 
 export default class UserApi {
   async changePassword(data: TChangePasswordInput) {
-    return userApi.put<void>(`${baseURL}/user/password`, undefined, data)
+    return userApi.put<void>(`${baseURL}/user/password`, {
+      body: data,
+    })
   }
 
   async changeAvatar(data: FormData) {
-    return userApi.put<TUser>(
-      `${baseURL}/user/profile/avatar`,
-      {
+    return userApi.put<TUser>(`${baseURL}/user/profile/avatar`, {
+      options: {
         headers: {},
       },
-      data
-    )
+      body: data,
+    })
   }
 
   async getUserByID(id: number) {
