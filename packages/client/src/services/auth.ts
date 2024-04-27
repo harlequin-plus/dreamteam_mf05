@@ -2,8 +2,6 @@ import { TSignUpInput } from '../models/TSignUp'
 import { TSignInInput } from '../models/TSignIn'
 import { responseHasError } from '../utils/api.utils'
 import AuthApi from '../api/auth'
-import { TUser } from '../models/TUser'
-import { TServiceID } from '../models/TServiceID'
 import { TOauthDataType } from '../models/TOauthDataType'
 
 const authApi = new AuthApi()
@@ -28,7 +26,7 @@ const getUser = async () => {
     throw Error(response.data.reason)
   }
 
-  return response.data as TUser
+  return response.data
 }
 
 const logout = async () => {
@@ -44,7 +42,7 @@ const oauthGetServiceID = async () => {
     throw Error(response.data.reason)
   }
 
-  return response.data as TServiceID
+  return response.data
 }
 
 const oauthSignInWithYandex = async (data: TOauthDataType) => {

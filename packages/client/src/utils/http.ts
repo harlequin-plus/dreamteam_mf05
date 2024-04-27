@@ -1,3 +1,5 @@
+import { TAPIError } from '../models/TAPIError'
+
 enum METHODS {
   GET = 'GET',
   POST = 'POST',
@@ -10,79 +12,98 @@ export type TResult<TResponse> = {
   data: TResponse
 }
 
-function get<TResponse>(url: string, options: RequestInit = {}) {
-  const requestOptions: RequestInit = {
-    method: METHODS.GET,
-    mode: 'cors',
-    credentials: 'include',
-  }
-  return fetch(url, Object.assign(requestOptions, options)).then(
-    handleResponse<TResponse>
-  )
-}
+type HTTPMethod = <R = unknown>(
+  url: string,
+  param?: { options?: RequestInit; body?: object }
+) => Promise<TResult<R> | TResult<TAPIError>>
 
-function post<TResponse>(url: string, body: object, options: RequestInit = {}) {
-  const requestOptions: RequestInit = {
-    method: METHODS.POST,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-    mode: 'cors',
-    credentials: 'include',
-  }
-  return fetch(url, Object.assign(requestOptions, options)).then(
-    handleResponse<TResponse>
-  )
-}
-
-function put<TResponse>(url: string, body: object, options: RequestInit = {}) {
-  const requestOptions: RequestInit = {
-    method: METHODS.PUT,
-    headers: { 'Content-Type': 'application/json' },
-    body: body instanceof FormData ? body : JSON.stringify(body),
-    mode: 'cors',
-    credentials: 'include',
-  }
-  return fetch(url, Object.assign(requestOptions, options)).then(
-    handleResponse<TResponse>
-  )
-}
-
-function _delete<TResponse>(url: string, options: RequestInit = {}) {
-  const requestOptions: RequestInit = {
-    method: METHODS.DELETE,
-    mode: 'cors',
-    credentials: 'include',
-  }
-  return fetch(url, Object.assign(requestOptions, options)).then(
-    handleResponse<TResponse>
-  )
-}
-
-function handleResponse<TResponse>(response: Response) {
-  return new Promise<TResult<TResponse>>(function (resolve, reject) {
+function handleResponse<R = unknown>(
+  response: Response
+): Promise<TResult<R> | TResult<TAPIError>> {
+  return new Promise<TResult<R> | TResult<TAPIError>>(function (
+    resolve,
+    reject
+  ) {
     response.text().then(text => {
       if (!response.ok) {
-        reject(text)
+        return reject(text)
       }
 
       if (response.headers.get('content-type')?.includes('application/json')) {
-        resolve({
+        return resolve({
           status: response.status,
           data: JSON.parse(text),
         })
       } else {
-        resolve({
+        return resolve({
           status: response.status,
-          data: text as TResponse,
+          data: text as R,
         })
       }
     })
   })
 }
 
-export const http = {
-  get,
-  post,
-  put,
-  delete: _delete,
+export class HTTPTransport {
+  get: HTTPMethod = async (url, param) => {
+    const requestOptions: RequestInit = {
+      method: METHODS.GET,
+      mode: 'cors',
+      credentials: 'include',
+    }
+
+    return handleResponse(
+      await fetch(url, Object.assign(requestOptions, param?.options))
+    )
+  }
+
+  post: HTTPMethod = async (url, param = {}) => {
+    const requestOptions: RequestInit = {
+      method: METHODS.POST,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(param.body),
+      mode: 'cors',
+      credentials: 'include',
+    }
+
+    if (param?.body) {
+      requestOptions['body'] = JSON.stringify(param.body)
+    }
+
+    return handleResponse(
+      await fetch(url, Object.assign(requestOptions, param.options))
+    )
+  }
+
+  put: HTTPMethod = async (url, param) => {
+    const requestOptions: RequestInit = {
+      method: METHODS.PUT,
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'cors',
+      credentials: 'include',
+    }
+
+    if (param?.body) {
+      requestOptions['body'] =
+        param?.body instanceof FormData
+          ? param.body
+          : JSON.stringify(param?.body)
+    }
+
+    return handleResponse(
+      await fetch(url, Object.assign(requestOptions, param?.options))
+    )
+  }
+
+  delete: HTTPMethod = async (url, param) => {
+    const requestOptions: RequestInit = {
+      method: METHODS.DELETE,
+      mode: 'cors',
+      credentials: 'include',
+    }
+
+    return handleResponse(
+      await fetch(url, Object.assign(requestOptions, param?.options))
+    )
+  }
 }

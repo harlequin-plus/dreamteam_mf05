@@ -12,12 +12,13 @@ export class GameMoves extends Function {
   public board = this.emptyBoard()
   public score = 0
 
-  public setScoreCallback?: (score: number) => void
+  public scoreChangedCallback?: (score: number) => void
+  public gameOverCallback?: (score: number, secondsInGame: number) => void
 
   setScore = (score: number) => {
     this.score = score
-    if (this.setScoreCallback) {
-      this.setScoreCallback(score)
+    if (this.scoreChangedCallback) {
+      this.scoreChangedCallback(score)
     }
   }
 

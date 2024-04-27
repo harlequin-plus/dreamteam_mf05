@@ -1,25 +1,26 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './userState'
+import leaderboardReducer from './leaderboardState'
 import { UserState } from '../types'
-import { TUser } from '../models/TUser'
+import { LeaderboardState } from './leaderboardState'
+import { TServices } from '../repository_services'
 
-export interface IUserServise {
-  getCurrentUser(): Promise<TUser>
-}
 export interface IStoreState {
   userState: UserState
+  leaderboardState: LeaderboardState
 }
 
-const createStore = (service: IUserServise, initialState?: IStoreState) => {
+const createStore = (services: TServices, initialState?: IStoreState) => {
   return configureStore({
     reducer: {
       userState: userReducer,
+      leaderboardState: leaderboardReducer,
     },
     preloadedState: initialState,
     middleware: getDefaultMiddleware => {
       return getDefaultMiddleware({
         thunk: {
-          extraArgument: service,
+          extraArgument: services,
         },
       })
     },
