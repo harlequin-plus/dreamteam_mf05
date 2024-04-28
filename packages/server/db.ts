@@ -17,6 +17,7 @@ export const createClientAndConnect = async (): Promise<Client | null> => {
 
     const res = await client.query('SELECT NOW()')
     console.log('  ➜ 🎸 Connected to the database at:', res?.rows?.[0].now)
+    console.log(res)
     client.end()
 
     return client
