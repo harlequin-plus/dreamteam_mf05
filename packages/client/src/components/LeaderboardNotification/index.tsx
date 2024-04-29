@@ -15,8 +15,13 @@ export function LeaderboardNotification() {
   const allLeaders = useAppSelector(state => state.leaderboardState.items)
 
   useEffect(() => {
+    if (!('Notification' in window) || !Notification) {
+      return
+    }
+
     const timerId = setInterval(function () {
-      if (user.id !== -1) {
+      console.log('timer')
+      if (user.id !== -1 && Notification.permission === 'granted') {
         getLeaderboardLite({
           cursor: 0,
           limit: 30,
@@ -31,9 +36,9 @@ export function LeaderboardNotification() {
                   console.log('leaderboard error', error)
                 })
               const notification = new Notification(
-                'New champion in the game!',
+                'У нас новый лидер в игре!',
                 {
-                  body: 'Click me to go to leaderboard!',
+                  body: 'Нажми сюда, чтобы перейти на страницу лидерборда!',
                   icon: notification_icon,
                 }
               )
