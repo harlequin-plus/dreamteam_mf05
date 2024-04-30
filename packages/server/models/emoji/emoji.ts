@@ -1,4 +1,10 @@
-import { DataType, Model, Table, Column } from 'sequelize-typescript'
+import {
+  DataType,
+  Model,
+  Table,
+  Column,
+  //   BelongsTo,
+} from 'sequelize-typescript'
 
 export interface IEmoji {
   messageID: number
@@ -11,10 +17,12 @@ export interface IEmoji {
   tableName: 'Emoji',
 })
 export class Emoji extends Model<IEmoji> {
+  //   @BelongsTo(() => Message) таблица Message пока не сделана
   @Column(DataType.INTEGER)
   messageID!: number
   @Column(DataType.TEXT)
   unicod!: string
+  //   @BelongsTo(() => User) таблица User пока не сделана
   @Column(DataType.INTEGER)
   userID!: number
 }
