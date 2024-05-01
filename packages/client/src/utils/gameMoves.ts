@@ -39,10 +39,12 @@ export class GameMoves extends Function {
             this.cellBoard[k - 1][j]?.value === this.cellBoard[k][j]?.value &&
             this.cellBoard[k][j]?.value
           ) {
-            this.cellBoard[k - 1][j] = currentCell.setBoom(true)
+            this.cellBoard[k - 1][j] = currentCell
+              .setBoom(true)
+              .setValue(currentCell.value * 2)
             this.cellBoard[k][j] = null
             moved = true
-            this.setScore(this.score + currentCell.value)
+            if (this.score < currentCell.value) this.setScore(currentCell.value)
           }
         }
       }
@@ -71,10 +73,12 @@ export class GameMoves extends Function {
             this.cellBoard[k + 1][j]?.value === this.cellBoard[k][j]?.value &&
             this.cellBoard[k][j]?.value
           ) {
-            this.cellBoard[k + 1][j] = currentCell.setBoom(true)
+            this.cellBoard[k + 1][j] = currentCell
+              .setBoom(true)
+              .setValue(currentCell.value * 2)
             this.cellBoard[k][j] = null
             moved = true
-            this.setScore(this.score + currentCell.value)
+            if (this.score < currentCell.value) this.setScore(currentCell.value)
           }
         }
       }
@@ -101,10 +105,12 @@ export class GameMoves extends Function {
             this.cellBoard[i][k - 1]?.value === this.cellBoard[i][k]?.value &&
             this.cellBoard[i][k]?.value !== undefined
           ) {
-            this.cellBoard[i][k - 1] = currentCell.setBoom(true)
+            this.cellBoard[i][k - 1] = currentCell
+              .setBoom(true)
+              .setValue(currentCell.value * 2)
             this.cellBoard[i][k] = null
             moved = true
-            this.setScore(this.score + currentCell.value)
+            if (this.score < currentCell.value) this.setScore(currentCell.value)
           }
         }
       }
@@ -134,10 +140,12 @@ export class GameMoves extends Function {
             this.cellBoard[i][k + 1]?.value === this.cellBoard[i][k]?.value &&
             this.cellBoard[i][k]?.value !== undefined
           ) {
-            this.cellBoard[i][k + 1] = currentCell.setBoom(true)
+            this.cellBoard[i][k + 1] = currentCell
+              .setBoom(true)
+              .setValue(currentCell.value * 2)
             this.cellBoard[i][k] = null
             moved = true
-            this.setScore(this.score + currentCell.value)
+            if (this.score < currentCell.value) this.setScore(currentCell.value)
           }
         }
       }
