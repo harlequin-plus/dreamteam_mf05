@@ -35,8 +35,8 @@ export class GameEngine extends GameMoves {
         window.addEventListener('keydown', this.onKeyboardPress)
       }
     }
-    this.loop(this.ctxRef)
     this.addNewTile(this.ctxRef)
+    this.loop(this.ctxRef)
   }
 
   finish = () => {
@@ -122,7 +122,7 @@ export class GameEngine extends GameMoves {
         if (confirm(`No moves available. New game will be started`)) {
           this.setScore(0)
           this.cellBoard = this.emptyCellBoard()
-          this.addNewTile(ctxRef)
+          //   this.addNewTile(ctxRef) убрал добавление 2ой плитки в начале игры
         }
       }
     }
@@ -263,7 +263,8 @@ function drawTempCell(
 }
 
 function boomAction(cell: Cell, boomArray: Explosion[]) {
-  cell.setBoom(false).setValue(cell.value * 2)
+  cell.setBoom(false)
+  //   .setValue(cell.value * 2)
   boomArray.push(
     new Explosion(cell.getCoordinates().x, cell.getCoordinates().y)
   )
