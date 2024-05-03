@@ -23,20 +23,14 @@ services:
       dockerfile: Dockerfile.server
       args:
         SERVER_PORT: ${SERVER_PORT}
-    # restart: always
+    restart: always
     ports:
       - '${SERVER_PORT}:${SERVER_PORT}'
-    depends_on:
-      - postgres
     environment:
-      DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}:${SERVER_PORT}/${POSTGRES_DB}
       SERVER_PORT: ${SERVER_PORT}
-    networks:
-      - postgres
 
   postgres:
-    container_name: postgres
-    image: postgres:latest
+    image: postgres:14
     ports:
       - '${POSTGRES_PORT}:${POSTGRES_PORT}'
     environment:
@@ -46,13 +40,14 @@ services:
     volumes:
       - ./tmp/pgdata:/var/lib/postgresql/data
     networks:
-      - postgres
+      - awesome
+
   pgadmin:
     container_name: pgadmin
-    image: dpage/pgadmin4:latest
+    image: dpage/pgadmin4:4.18
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_EMAIL: admin@mail.com
       PGADMIN_DEFAULT_PASSWORD: secret
       PGADMIN_LISTEN_PORT: 80
     ports:
@@ -62,11 +57,11 @@ services:
     depends_on:
       - postgres
     networks:
-      - postgres
+      - awesome
 
 volumes:
   pgadmin-data:
 
 networks:
-  postgres:
+  awesome:
     driver: bridge
