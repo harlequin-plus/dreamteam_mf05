@@ -13,7 +13,7 @@ export function Header() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const hadleLogout = async (event: SyntheticEvent) => {
+  const handleLogout = async (event: SyntheticEvent) => {
     event.preventDefault()
     logout()
       .then(() => {
@@ -52,7 +52,7 @@ export function Header() {
               Авторизация
             </Link>
           ) : (
-            <Link to="/auth" className="header__auth" onClick={hadleLogout}>
+            <Link to="/auth" className="header__auth" onClick={handleLogout}>
               Выйти
             </Link>
           )}

@@ -16,18 +16,19 @@ const addUserToLeaderboard = async (data: TLeader) => {
   }
 }
 
-const getLeaderboard = async (data: TLeaderboardRequest) => {
+const getLeaderboardLite = async (data: TLeaderboardRequest) => {
   const response = await leaderboardApi.getLeaderboard(data)
   if (responseHasError(response)) {
     throw Error(response.data.reason)
   }
 
-  const leaders = response.data
+  return response.data
+}
 
-  // if user was removed, don't include him into detailedList
+const fillLeaderboardLite = async (leadersLite: TLeaderboardData) => {
   const detailedList: TLeaderboardData = []
 
-  for (const leader of leaders) {
+  for (const leader of leadersLite) {
     const userId = leader.data.userId
     if (userId) {
       try {
@@ -45,4 +46,14 @@ const getLeaderboard = async (data: TLeaderboardRequest) => {
   return detailedList
 }
 
-export { leaderboardApi, addUserToLeaderboard, getLeaderboard }
+const getLeaderboard = async (data: TLeaderboardRequest) => {
+  return fillLeaderboardLite(await getLeaderboardLite(data))
+}
+
+export {
+  leaderboardApi,
+  addUserToLeaderboard,
+  getLeaderboardLite,
+  fillLeaderboardLite,
+  getLeaderboard,
+}
