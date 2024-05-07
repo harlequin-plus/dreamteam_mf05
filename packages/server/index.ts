@@ -42,11 +42,11 @@ app.use('', async (req, res, next) => {
       }
     )
     console.log(data)
+    next()
   } catch (e) {
-    res.status(403).send()
+    res.status(403).send({ reason: 'afasdf' })
     console.log('unaautor')
   }
-  next()
 })
 
 app.use(express.json())
