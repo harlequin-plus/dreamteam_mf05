@@ -1,30 +1,30 @@
 import { ITopic } from '../../models/types'
-import { Topics } from '../../models/topics'
-import { Comments } from '../../models/comments'
-import { Users } from '../../models/users'
+import { Topics } from '../../models/Topics'
+import { Comments } from '../../models/Comments'
+import { Users } from '../../models/Users'
 
-export const createTopicEntry = async ({ title, author }: ITopic) => {
-  const topic = await Topics.create({ title, author })
+export const createTopicEntry = async ({
+  title,
+  UserId,
+}: Pick<ITopic, 'title' | 'UserId'>) => {
+  const topic = await Topics.create({ title, UserId })
   return topic.id
 }
 
 export const getTopics = async () => {
   const topics = await Topics.findAll({
+    attributes: ['id', 'title', ['UserId', 'TS']],
     include: [
       {
         model: Comments,
-        attributes: ['time'],
+        attributes: ['id', ['createdAt', 'time'], 'UserId'],
+        order: [['id', 'DESC']],
+        limit: 1,
+        required: true,
+
         include: [
           {
             model: Users,
-            attributes: [
-              'first_name',
-              'second_name',
-              'avatar',
-              'email',
-              'login',
-              'phone',
-            ],
           },
         ],
       },
@@ -33,10 +33,8 @@ export const getTopics = async () => {
   return topics
 }
 
-export const deleteTopicEntry = async ({
-  topicId,
-}: Pick<ITopic, 'topicId'>) => {
-  await Topics.destroy({
-    where: { topicId },
+export const deleteTopicEntry = async (id: number) => {
+  return await Topics.destroy({
+    where: { id },
   })
 }
