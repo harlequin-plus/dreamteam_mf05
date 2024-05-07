@@ -1,5 +1,7 @@
 import dotenv from 'dotenv'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
+// import axios from 'axios'
 dotenv.config()
 
 import express from 'express'
