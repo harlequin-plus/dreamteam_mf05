@@ -2,16 +2,15 @@ import express from 'express'
 import {
   createTopicEntry,
   deleteTopicEntry,
-  // getTopics,
+  getTopics,
 } from '../services/topics'
 import { createComment, getCommentsByTopicId } from '../services/comments'
 
 export const TopicRouter = express.Router()
 
 TopicRouter.get('', async (_req, res) => {
-  // const topics = await getTopics()
-  res.statusCode = 200
-  res.send()
+  const topics = await getTopics()
+  res.status(200).send(topics)
 })
 
 TopicRouter.post('', async (req, res) => {

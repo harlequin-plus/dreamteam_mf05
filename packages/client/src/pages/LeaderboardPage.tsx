@@ -4,10 +4,8 @@ import axios from 'axios'
 
 function LeaderboardPage() {
   const Test = async () => {
-    const value = await fetch('http://localhost:3001/topic', {
-      method: 'GET',
-      mode: 'cors',
-      credentials: 'include',
+    const value = await axios.get('http://localhost:3001/topic', {
+      withCredentials: true,
     })
 
     console.log(value)

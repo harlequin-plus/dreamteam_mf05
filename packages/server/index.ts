@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-// import axios from 'axios'
+import axios from 'axios'
 dotenv.config()
 
 import express from 'express'
@@ -10,23 +10,42 @@ import { TopicRouter } from './routes/TopicRouter'
 
 dbConnect()
 const app = express()
+function processCors(
+  _req: any,
+  res: { header: (arg0: string, arg1: string) => void },
+  next: () => void
+) {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  )
+  res.header('Access-Control-Allow-Credentials', 'true')
+  res.header('Access-Control-Allow-Methods', 'GET')
+  next()
+}
 
 app.use(cors())
+app.use(processCors)
 
 app.use('*', cookieParser())
 
-app.use('', async (_req, _res, next) => {
+app.use('', async (req, res, next) => {
   console.log('middleware')
-  // const { data } = await axios.get(
-  //   `https://ya-praktikum.tech/api/v2/auth/user`,
-  //   {
-  //     headers: {
-  //       cookie: req.headers['cookie'],
-  //     },
-  //   }
-  // )
-  // console.log(req.headers['cookie'])
-  // console.log(data)
+  try {
+    const { data } = await axios.get(
+      `https://ya-praktikum.tech/api/v2/auth/user`,
+      {
+        headers: {
+          cookie: req.headers['cookie'],
+        },
+      }
+    )
+    console.log(data)
+  } catch (e) {
+    res.status(403).send()
+    console.log('unaautor')
+  }
   next()
 })
 
