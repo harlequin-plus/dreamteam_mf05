@@ -20,7 +20,9 @@
     "pg": "^8.11.5",
     "pg-hstore": "^2.3.4",
     "prettier": "^2.7.1",
-    "sequelize": "^6.37.3"
+    "reflect-metadata": "^0.2.2",
+    "sequelize": "^6.37.3",
+    "sequelize-typescript": "^2.1.6"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

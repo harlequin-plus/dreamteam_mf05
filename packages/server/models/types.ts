@@ -1,5 +1,5 @@
 export interface IUser {
-  userId: number
+  id: number
   first_name: string
   second_name: string
   display_name: string | null
@@ -10,14 +10,27 @@ export interface IUser {
 }
 
 export interface ITopic {
-  topicId?: number
+  id: number
   title: string
-  author: number
+  UserId: number
+  CreatedAt: string
+  UpdatedAt?: string
 }
 
 export interface IComments {
-  commentsId?: number
+  id: number
   content: string
-  author: number
-  topic: number
+  UserId: number
+  TopicId: number
+  CreatedAt: string
+  UpdatedAt: string
+}
+
+export interface IReplies {
+  id: number
+  content: string
+  UserId: number
+  CommentId: number
+  CreatedAt: string
+  UpdatedAt?: string
 }
