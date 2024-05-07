@@ -92,7 +92,7 @@ async function createServer() {
       }
 
       // Получаем HTML-строку из JSX
-
+      console.log(req.headers['cookie'])
       const {
         html: appHtml,
         initialState,
