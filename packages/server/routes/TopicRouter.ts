@@ -5,6 +5,7 @@ import {
   getTopics,
 } from '../services/topics'
 import { createComment, getCommentsByTopicId } from '../services/comments'
+import { getUserFromApi } from '../api/auth'
 
 export const TopicRouter = express.Router()
 
@@ -14,8 +15,10 @@ TopicRouter.get('', async (_req, res) => {
 })
 
 TopicRouter.post('', async (req, res) => {
-  const UserId = 1 // для получения сделать запрос к яндекс апи
+  const user = await getUserFromApi(req)
+  const UserId = user.id
   const { title, comment } = req.body
+  console.log(title, comment)
   if (
     title &&
     comment &&
@@ -24,7 +27,7 @@ TopicRouter.post('', async (req, res) => {
   ) {
     const TopicId = await createTopicEntry({ title, UserId })
     await createComment({ content: comment, TopicId, UserId })
-    res.sendStatus(200).send(TopicId)
+    res.status(200).send(TopicId)
     return
   }
   res.status(400).send({ reason: 'Bad request' })
