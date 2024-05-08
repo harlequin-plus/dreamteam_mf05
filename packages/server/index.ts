@@ -4,6 +4,7 @@ dotenv.config()
 
 import express from 'express'
 import { createClientAndConnect } from './db'
+import { forumMockApi } from './mocks/forumMockApi'
 
 const app = express()
 app.use(cors())
@@ -14,6 +15,8 @@ createClientAndConnect()
 app.get('/', (_, res) => {
   res.json('👋 Howdy from the server :)')
 })
+
+forumMockApi(app)
 
 app.listen(port, () => {
   console.log(`  ➜ 🎸 Server is listening on port: ${port}`)

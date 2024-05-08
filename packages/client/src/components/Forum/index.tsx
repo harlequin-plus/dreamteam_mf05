@@ -7,42 +7,69 @@ import {
   TableCell,
   TableRow,
   TableBody,
+  Button,
 } from '@mui/material'
-import { addTopic, getTopics } from '../../mocks/topics.mock'
-import { formatDate } from '../../utils/formatDate'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { Link } from 'react-router-dom'
 import ModalForm from '../ModalForm'
-import { CommentType, DataModalForm, TopicType } from '../../types'
+import { DataModalForm } from '../../types'
 import { useAppSelector } from '../../hooks/reduxTsHook'
-import { useState } from 'react'
-import { v4 as uuid } from 'uuid'
+import { useCallback, useEffect, useState } from 'react'
+import { createTopic, deleteTopicById, getTopics } from '../../services/forum'
+import { TTopics } from '../../models/TTopic'
+import { format, parseISO } from 'date-fns'
 
 const GameForum = () => {
-  const [topics, setTopics] = useState(getTopics()) //Имитация получения списка тем из АПИ
-
+  const [topics, setTopics] = useState<TTopics>([]) //Имитация получения списка тем из АПИ
   const user = useAppSelector(state => state.userState.item)
 
-  const handleCreateTopic = async (data: DataModalForm) => {
-    console.log(data.addComment)
+  useEffect(() => {
+    getTopics()
+      .then(topics => {
+        setTopics(topics)
+      })
+      .catch(error => {
+        console.log('forum error', error)
+      })
+  }, [])
 
-    const comment: CommentType = {
-      content: data.addComment,
-      date: new Date(),
-      id: uuid(),
-      user,
-    }
+  const handleCreateTopic = useCallback(
+    async (data: DataModalForm) => {
+      createTopic(data.title, data.comment)
+        .then(id => {
+          setTopics([
+            ...topics,
+            {
+              id: id,
+              title: data.title,
+              TS: user.first_name + user.second_name,
+              last_message: {
+                user: user,
+                time: new Date().toISOString(),
+              },
+            },
+          ])
+        })
+        .catch(error => {
+          console.log('create topic error', error)
+        })
+      return true
+    },
+    [topics, user]
+  )
 
-    const topic: TopicType = {
-      comments: [comment],
-      name: data.topicName,
-      author: user,
-      id: uuid(),
-    }
-
-    setTopics([...topics, topic])
-    addTopic(topic)
-    return true
-  }
+  const handleDeleteTopic = useCallback(
+    (id: number) => {
+      deleteTopicById(id)
+        .then(() => {
+          setTopics(topics.filter(topic => topic.id !== id))
+        })
+        .catch(error => {
+          console.log('delete topic error', error)
+        })
+    },
+    [topics]
+  )
 
   return (
     <Container maxWidth="lg" style={{ flex: '1 1 auto' }}>
@@ -62,11 +89,11 @@ const GameForum = () => {
             inputs={[
               {
                 label: 'Название темы',
-                name: 'topicName',
+                name: 'title',
               },
               {
                 label: 'Сообщение',
-                name: 'addComment',
+                name: 'comment',
               },
             ]}
           />
@@ -75,8 +102,8 @@ const GameForum = () => {
           <TableHead>
             <TableRow>
               <TableCell>Тема/Автор</TableCell>
-              <TableCell align="center">Ответов</TableCell>
               <TableCell align="right">Последний сообщение</TableCell>
+              <TableCell align="right"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -84,22 +111,30 @@ const GameForum = () => {
               <TableRow key={topic.id}>
                 <TableCell width={'65%'}>
                   <Typography variant="body1">
-                    <Link to={topic.id.toString()}>{topic.name}</Link>
+                    <Link to={topic.id.toString()}>{topic.title}</Link>
                   </Typography>
                   <Typography variant="caption" color={'text.secondary'}>
-                    {topic.author.first_name}
+                    {topic.TS}
                   </Typography>
                 </TableCell>
-                <TableCell align="center">{topic.comments.length}</TableCell>
                 <TableCell align="right">
                   <Typography variant="caption" color={'text.secondary'}>
-                    {formatDate(topic.comments[topic.comments.length - 1].date)}
+                    {format(
+                      parseISO(topic.last_message.time),
+                      'dd.MM.yyyy hh:mm'
+                    )}
                   </Typography>
                   <Typography variant="body2">
-                    {`Автор: ${
-                      topic.comments[topic.comments.length - 1].user.first_name
-                    }`}
+                    {`Автор: ${topic.last_message.user.first_name}`}
                   </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Button
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => handleDeleteTopic(topic.id)}>
+                    Delete
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

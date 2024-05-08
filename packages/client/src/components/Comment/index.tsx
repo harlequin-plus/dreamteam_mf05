@@ -1,31 +1,39 @@
 import { FC } from 'react'
-import { Avatar, Box, TableCell, TableRow, Typography } from '@mui/material'
-import { formatDate } from '../../utils/formatDate'
+import {
+  Avatar,
+  Box,
+  Button,
+  TableCell,
+  TableRow,
+  Typography,
+} from '@mui/material'
 import { TUser } from '../../models/TUser'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { format, parseISO } from 'date-fns'
 
 type OwnProps = {
   content: string
   user: TUser
-  date: Date
+  date: string
   ordinalNumber: number
+  handleDeleteComment: () => void
 }
 
-const Comment: FC<OwnProps> = ({ content, user, date, ordinalNumber }) => {
+const Comment: FC<OwnProps> = ({
+  content,
+  user,
+  date,
+  ordinalNumber,
+  handleDeleteComment,
+}) => {
   const avatar = user?.avatar ? `${user.avatar}` : ''
   const display_name = user?.display_name
     ? user?.display_name
     : `Пользователь ${user.id}`
 
-  const displayFullDate = formatDate(date)
+  const displayFullDate = format(parseISO(date), 'dd.MM.yyyy hh:mm')
 
   return (
-    // <Grid
-    //   container
-    //   columnSpacing={0}
-    //   my={1}
-    //   py={0}
-    //   border={1}
-    //   borderColor={'warning.main'}>
     <TableRow>
       <TableCell width={'20%'}>
         <Box display={'flex'} alignItems="center" flexDirection="column">
@@ -35,7 +43,7 @@ const Comment: FC<OwnProps> = ({ content, user, date, ordinalNumber }) => {
           </Typography>
         </Box>
       </TableCell>
-      <TableCell width={'80%'}>
+      <TableCell width={'70%'}>
         <Box display={'flex'} justifyContent={'space-between'}>
           <Typography color={'text.secondary'} variant="caption">
             {displayFullDate}
@@ -48,8 +56,15 @@ const Comment: FC<OwnProps> = ({ content, user, date, ordinalNumber }) => {
           {content}
         </Typography>
       </TableCell>
+      <TableCell width={'10%'} style={{ verticalAlign: 'top' }}>
+        <Button
+          variant="outlined"
+          startIcon={<DeleteIcon />}
+          onClick={handleDeleteComment}>
+          Delete
+        </Button>
+      </TableCell>
     </TableRow>
-    // </Grid>
   )
 }
 

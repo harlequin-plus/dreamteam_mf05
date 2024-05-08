@@ -12,18 +12,30 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import { FormEvent, useEffect, useState, SyntheticEvent } from 'react'
+import {
+  FormEvent,
+  useEffect,
+  useState,
+  SyntheticEvent,
+  useCallback,
+} from 'react'
 import Comment from '../Comment'
-import { CommentType, TopicType } from '../../types'
-import { getTopics } from '../../mocks/topics.mock'
 import { useAppSelector } from '../../hooks/reduxTsHook'
 import { useParams } from 'react-router-dom'
 import NotFoundPage from '../../pages/NotFoundPage'
-import { v4 as uuid } from 'uuid'
+import {
+  createComment,
+  deleteCommentById,
+  getCommentsByTopicId,
+  getTopics,
+} from '../../services/forum'
+import { TTopic } from '../../models/TTopic'
+import { TComments } from '../../models/TComment'
 
 const Topic = () => {
   const [comment, setComment] = useState('')
-  const [topic, setTopic] = useState<TopicType>()
+  const [topic, setTopic] = useState<TTopic>()
+  const [comments, setComments] = useState<TComments>([])
 
   const { id } = useParams()
   const user = useAppSelector(state => state.userState.item)
@@ -34,25 +46,65 @@ const Topic = () => {
     setComment(target.value)
   }
 
-  const topics = getTopics() //Имитация получения списка тем из АПИ
+  // get current topic
+  // TODO use redux to escape use api twice
   useEffect(() => {
-    const currentTopic = topics.find(topic => topic.id === id)
+    getTopics()
+      .then(topics => {
+        const currentTopic = topics.find(topic => topic.id.toString() === id)
+        setTopic(currentTopic)
+      })
+      .catch(error => {
+        console.log('forum error', error)
+      })
+  }, [id])
 
-    setTopic(currentTopic)
-  }, [topics, id])
+  useEffect(() => {
+    getCommentsByTopicId(Number(id))
+      .then(comments => {
+        setComments(comments)
+      })
+      .catch(error => {
+        console.log('forum error', error)
+      })
+  }, [id])
 
-  const addComment = async (event: FormEvent) => {
-    event.preventDefault()
-    const newComment: CommentType = {
-      content: comment,
-      id: uuid(),
-      date: new Date(),
-      user,
-    }
-    topic?.comments.push(newComment)
-    setTopic(topic) // addComment(topicName, newComment) api
-    setComment('')
-  }
+  const handleDeleteComment = useCallback(
+    (id: number) => {
+      deleteCommentById(id)
+        .then(() => {
+          setComments(comments.filter(comment => comment.commentId !== id))
+        })
+        .catch(error => {
+          console.log('delete comment error', error)
+        })
+    },
+    [comments]
+  )
+
+  const addComment = useCallback(
+    async (event: FormEvent) => {
+      event.preventDefault()
+      if (topic) {
+        createComment(topic.id, comment)
+          .then(id => {
+            setComments([
+              ...comments,
+              {
+                commentId: id,
+                content: comment,
+                date: new Date().toISOString(),
+                author: user,
+              },
+            ])
+          })
+          .catch(error => {
+            console.log('create comment error', error)
+          })
+      }
+    },
+    [comment, comments, topic, user]
+  )
 
   return topic ? (
     <>
@@ -63,7 +115,7 @@ const Topic = () => {
           flexDirection="column"
           minHeight={'80vh'}>
           <Typography component="h1" variant="h4" m={4}>
-            {topic?.name}
+            {topic?.title}
           </Typography>
           <Table>
             <TableHead>
@@ -73,13 +125,16 @@ const Topic = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {topic?.comments.map((comment, index) => (
+              {comments?.map((comment, index) => (
                 <Comment
-                  key={comment.id}
+                  key={comment.commentId}
                   content={comment.content}
                   date={comment.date}
-                  user={comment.user}
+                  user={comment.author}
                   ordinalNumber={index + 1}
+                  handleDeleteComment={() =>
+                    handleDeleteComment(comment.commentId)
+                  }
                 />
               ))}
             </TableBody>
