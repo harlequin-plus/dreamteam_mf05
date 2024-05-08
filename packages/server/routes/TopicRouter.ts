@@ -19,6 +19,7 @@ TopicRouter.get('', async (_req, res) => {
 TopicRouter.post('', async (req, res) => {
   const UserId = await getUserIdFromApi(req)
   const { title, comment } = req.body
+  console.log(title, comment)
   if (
     title &&
     comment &&
