@@ -36,6 +36,18 @@ export const getTopics = async () => {
           },
         ],
       },
+      {
+        model: Users,
+        attributes: [
+          'id',
+          'first_name',
+          'second_name',
+          'avatar',
+          'email',
+          'login',
+          'phone',
+        ],
+      },
     ],
   })
   return topics

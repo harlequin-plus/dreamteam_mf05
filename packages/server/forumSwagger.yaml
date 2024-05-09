@@ -1,0 +1,346 @@
+openapi: 3.0.3
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  description: Свагер для форума игры 2048
+  version: 1.0.0
+servers:
+  - url: localhost:3001/api/v2
+tags:
+  - name: topic
+    description: Взаимодействия с темами
+  - name: comment
+    description: Комментарии в темах
+  - name: reply
+    description: Ответы на комментарии
+paths:
+  /topic:
+    get:
+      tags:
+        - topic
+      summary: Get topics
+      description: Get all topic to forum
+      operationId: getTopics
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTopics'
+        '403':
+          description: Unauthorized
+    post:
+      tags:
+        - topic
+      summary: Create topic
+      operationId: createTopic
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createTopic'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Id'
+        '403':
+          description: Unauthorized
+  /topic/{id}/comments:
+    get:
+      tags:
+        - topic
+      summary: Get topic by Id
+      operationId: getTopic
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Topic identifier
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListComments'
+        '403':
+          description: Unauthorized
+  /topic/{id}:
+    delete:
+      tags:
+        - topic
+      summary: Delete topic by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Topic identifier
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad request
+        '403':
+          description: Unauthorized
+          
+  /comment:
+    post:
+      tags:
+        - comment
+      summary: Create comment
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createComment'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Id'
+      
+  /comment/edit:
+    put:
+      tags:
+        - comment
+      summary: edit comment by id
+      operationId: editComment 
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditComment'
+      responses:
+        '200':
+          description: OK
+          
+  /comment/{commentId}:
+    get:
+      tags:
+        - comment
+      summary: Get comment by id
+      operationId: getComment
+      parameters:
+      - name: commentId
+        in: path
+        required: true
+        description: comment identifier
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+    delete:
+      tags:
+        - comment
+      summary: Delete comment by id
+      operationId: deleteComment
+      parameters:
+      - name: commentId
+        in: path
+        required: true
+        description: comment identifier
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+  /reply:
+    post:
+      tags:
+        - reply
+      summary: create reply
+      requestBody:
+        content:
+          application/json:
+            schema:
+               $ref: '#/components/schemas/CreateReply'
+      responses:
+        '200':
+          description: OK
+  /reply/:
+    put:
+      tags:
+        - reply
+      summary: edit reply
+      requestBody:
+        content:
+          application/json:
+            schema:
+               $ref: '#/components/schemas/EditReply'
+      responses:
+        '200':
+          description: OK
+  
+  
+components:
+  schemas:
+    ListTopics:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          title:
+            type: string
+            example: Как играть в 2048
+          User:
+             $ref: '#/components/schemas/User'
+          last_message:
+            type: object
+            properties:
+              user:
+                $ref: '#/components/schemas/User'
+              time:
+                type: string
+                example: '2020-01-02T14:22:22.000Z'
+                
+    Topic:
+      type: object
+      properties:
+        id: 
+          type: integer
+        title:
+          type: string
+        author:
+          $ref: '#/components/schemas/User'
+        
+    
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 34
+        first_name:
+          type: string
+          example: Harry
+        second_name:
+          type: string
+          example: Potter
+        avatar:
+          type: string
+          example: /123/avatar1.jpg
+        email:
+          type: string
+          example: J.R.@fan.ru
+        login:
+          type: string
+          example: voldemort
+        phone:
+          type: integer
+          example: 891112223322
+          
+    createTopic:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Как играть 2048?
+        comment:
+          type: string
+          example: Объясните правила игры
+          
+    Id:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 122
+          
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 15
+        content:
+          type: string
+          example: Куда двигать числа
+        date:
+          type: string
+          example: '2020-01-02T14:22:22.000Z'
+        User:
+          $ref: '#/components/schemas/User'
+        Replies:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Reply'
+            
+    ListComments:
+      type: array
+      items:
+        $ref: '#/components/schemas/Comment'
+        
+    EditComment:
+      type: object
+      properties:
+        commentId:
+          type: number
+        newContent:
+          type: string
+          
+    createComment:
+      type: object
+      properties:
+        topicId:
+          type: number
+        сontent:
+          type: string
+        
+    Reply:
+      type: object
+      properties:
+        replyId:
+          type: number
+        content:
+          type: string
+          example: ответ на коммент
+        date:
+          type: string
+          example: '2020-01-02T14:22:22.000Z'
+        User: 
+          $ref: '#/components/schemas/User'
+    CreateReply:
+      type: object
+      properties:
+        topicId:
+          type: number
+        content:
+          type: string
+    EditReply:  
+      type: object
+      properties:
+        replyId:
+          type: number
+        newContent:
+          type: string
+      
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
