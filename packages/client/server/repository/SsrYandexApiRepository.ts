@@ -10,7 +10,6 @@ export class SsrYandexAPIRepository {
         cookie: this._cookieHeader,
       },
     })
-    // console.log(data)
     return data
   }
 }

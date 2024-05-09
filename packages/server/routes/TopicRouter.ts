@@ -6,6 +6,7 @@ import {
 } from '../services/topics'
 import { createComment, getCommentsByTopicId } from '../services/comments'
 import { getUserIdFromApi } from '../api/auth'
+import serialize from 'serialize-javascript'
 
 export const TopicRouter = express.Router()
 
@@ -23,8 +24,8 @@ TopicRouter.post('', async (req, res) => {
     typeof title == 'string' &&
     typeof comment == 'string'
   ) {
-    const TopicId = await createTopicEntry({ title, UserId })
-    await createComment({ content: comment, TopicId, UserId })
+    const TopicId = await createTopicEntry({ title: serialize(title), UserId })
+    await createComment({ content: serialize(comment), TopicId, UserId })
     res.status(200).send({ id: TopicId })
     return
   }

@@ -5,7 +5,7 @@ import { Comments } from '../models/Comments'
 import { Replies } from '../models/Replies'
 
 const sequelizeOptions: SequelizeOptions = {
-  //т.к. переменные окружения не сделаны захордкодил данные бд
+  //т.к. переменные окружения не сделаны(задание из другой задачи) захордкодил данные бд
   username: 'postgres',
   password: 'postgres',
   database: 'postgres',
