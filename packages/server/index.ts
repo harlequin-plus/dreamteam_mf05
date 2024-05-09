@@ -9,9 +9,12 @@ import { getUserFromApi } from './api/auth'
 import { createUserInDB, getUserByIdFromDB } from './services/users'
 import CommentRouter from './routes/CommentRouter'
 import ReplyRouter from './routes/ReplyRouter'
+import helmet from 'helmet'
 
 dbConnect()
 const app = express()
+
+app.use(helmet())
 
 app.use(
   cors({

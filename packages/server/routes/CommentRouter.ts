@@ -1,3 +1,4 @@
+import serialize from 'serialize-javascript'
 import {
   createComment,
   deleteComment,
@@ -25,7 +26,11 @@ CommentRouter.post('', async (req, res) => {
       res.status(400).send({ reason: 'Topic is not exist' })
       return
     }
-    const TopicId = await createComment({ content, TopicId: topicId, UserId })
+    const TopicId = await createComment({
+      content: serialize(content),
+      TopicId: topicId,
+      UserId,
+    })
     res.status(200).send({ id: TopicId })
     return
   }

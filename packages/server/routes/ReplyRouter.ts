@@ -8,6 +8,7 @@ import { getUserIdFromApi } from '../api/auth'
 import express from 'express'
 import checkId from '../utils/checkId'
 import { getCommentById } from '../services/comments'
+import serialize from 'serialize-javascript'
 
 const ReplyRouter = express.Router()
 
@@ -25,7 +26,11 @@ ReplyRouter.post('', async (req, res) => {
       res.status(400).send({ reason: 'comment is not exist' })
       return
     }
-    const id = await createReply({ content, CommentId: commentId, UserId })
+    const id = await createReply({
+      content: serialize(content),
+      CommentId: commentId,
+      UserId,
+    })
     res.status(200).send({ id })
     return
   }
@@ -49,7 +54,7 @@ ReplyRouter.put('', async (req, res) => {
       return
     }
 
-    await editReply({ content: newContent, id: replyId })
+    await editReply({ content: serialize(newContent), id: replyId })
     res.sendStatus(200)
     return
   }
