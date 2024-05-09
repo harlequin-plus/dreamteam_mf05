@@ -1,43 +1,46 @@
 import { baseURL } from '../constants'
 import { oauthRedirectURI } from '../constants'
 import { TSignUpInput, TSignUpResponse } from '../models/TSignUp'
-import { TAPIError } from '../models/TAPIError'
 import { TSignInInput } from '../models/TSignIn'
 import { TUser } from '../models/TUser'
-import { http, TResult } from '../utils/http'
+import { HTTPTransport } from '../utils/http'
 import { TServiceID } from '../models/TServiceID'
 import { TOauthDataType } from '../models/TOauthDataType'
 
+const authApi = new HTTPTransport()
+
 export default class AuthApi {
-  async signUp(
-    data: TSignUpInput
-  ): Promise<TResult<TSignUpResponse | TAPIError>> {
-    return http.post<TSignUpResponse>(`${baseURL}/auth/signup`, data)
+  async signUp(data: TSignUpInput) {
+    return authApi.post<TSignUpResponse>(`${baseURL}/auth/signup`, {
+      body: data,
+    })
   }
 
-  async signIn(data: TSignInInput): Promise<TResult<void | TAPIError>> {
-    return http.post<void>(`${baseURL}/auth/signin`, data)
+  async signIn(data: TSignInInput) {
+    return authApi.post<void>(`${baseURL}/auth/signin`, {
+      body: data,
+    })
   }
 
-  async getUser(): Promise<TResult<TUser | TAPIError>> {
-    return http.get<TUser>(`${baseURL}/auth/user`)
+  async getUser() {
+    return authApi.get<TUser>(`${baseURL}/auth/user`)
   }
 
-  async logout(): Promise<TResult<void | Error>> {
-    return http.post<void>(`${baseURL}/auth/logout`, {})
+  async logout() {
+    return authApi.post<void>(`${baseURL}/auth/logout`)
   }
 
-  async oauthGetServiceID(): Promise<TResult<TServiceID | TAPIError>> {
-    return http.get<TServiceID>(
+  async oauthGetServiceID() {
+    return authApi.get<TServiceID>(
       `${baseURL}/oauth/yandex/service-id?${new URLSearchParams({
         redirect_uri: oauthRedirectURI,
       })}`
     )
   }
 
-  async oauthSignInWithYandex(
-    data: TOauthDataType
-  ): Promise<TResult<void | TAPIError>> {
-    return http.post<void>(`${baseURL}/oauth/yandex`, data)
+  async oauthSignInWithYandex(data: TOauthDataType) {
+    return authApi.post<void>(`${baseURL}/oauth/yandex`, {
+      body: data,
+    })
   }
 }

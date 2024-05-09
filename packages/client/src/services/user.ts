@@ -13,7 +13,10 @@ const changePassword = async (data: TChangePasswordInput) => {
 }
 
 const changeAvatar = async (file: File) => {
-  const response = await userApi.changeAvatar(file)
+  const formData = new FormData()
+  formData.append('avatar', file)
+
+  const response = await userApi.changeAvatar(formData)
   if (responseHasError(response)) {
     throw Error(response.data.reason)
   }
@@ -21,4 +24,13 @@ const changeAvatar = async (file: File) => {
   return response.data as TUser
 }
 
-export { changePassword, changeAvatar }
+const getUserByID = async (id: number) => {
+  const response = await userApi.getUserByID(id)
+  if (responseHasError(response)) {
+    throw Error(response.data.reason)
+  }
+
+  return response.data as TUser
+}
+
+export { changePassword, changeAvatar, getUserByID }

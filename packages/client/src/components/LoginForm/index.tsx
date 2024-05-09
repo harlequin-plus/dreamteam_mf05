@@ -70,6 +70,14 @@ export function LoginForm({ toggleShow }: Props) {
             ? location.state?.back
             : '/'
         navigate(back)
+
+        if (
+          'Notification' in window &&
+          Notification &&
+          Notification.permission !== 'granted'
+        ) {
+          Notification.requestPermission()
+        }
       })
       .catch(error => console.warn('signin error:', error))
   }

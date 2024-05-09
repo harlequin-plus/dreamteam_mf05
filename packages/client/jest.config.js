@@ -12,6 +12,7 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
     '^.+\\.svg$': '<rootDir>/svgTransform.cjs',
+    '^.+\\.png$': '<rootDir>/pngTransform.cjs',
     '^.+\\.(css|less|scss)$': '<rootDir>/cssTransform.cjs',
   },
 }

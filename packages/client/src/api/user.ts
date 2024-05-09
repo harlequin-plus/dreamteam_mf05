@@ -1,22 +1,27 @@
 import { TChangePasswordInput } from '../models/TChangePasswordInput'
 import { TUser } from '../models/TUser'
-import { TAPIError } from '../models/TAPIError'
 import { baseURL } from '../constants'
-import { http, TResult } from '../utils/http'
+import { HTTPTransport } from '../utils/http'
+
+const userApi = new HTTPTransport()
 
 export default class UserApi {
-  async changePassword(
-    data: TChangePasswordInput
-  ): Promise<TResult<void | TAPIError>> {
-    return http.put<void>(`${baseURL}/user/password`, data)
+  async changePassword(data: TChangePasswordInput) {
+    return userApi.put<void>(`${baseURL}/user/password`, {
+      body: data,
+    })
   }
 
-  async changeAvatar(file: File): Promise<TResult<TUser | TAPIError>> {
-    const formData = new FormData()
-    formData.append('avatar', file)
-
-    return http.put<TUser>(`${baseURL}/user/profile/avatar`, formData, {
-      headers: {},
+  async changeAvatar(data: FormData) {
+    return userApi.put<TUser>(`${baseURL}/user/profile/avatar`, {
+      options: {
+        headers: {},
+      },
+      body: data,
     })
+  }
+
+  async getUserByID(id: number) {
+    return userApi.get<TUser>(`${baseURL}/user/${id}`)
   }
 }
