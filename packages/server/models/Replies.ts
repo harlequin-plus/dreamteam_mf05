@@ -14,4 +14,7 @@ export class Replies extends Model<IReplies, TRepliesCreateAttributies> {
   @AllowNull(false)
   @Column(DataType.STRING())
   content!: string
+
+  @Column(DataType.INTEGER)
+  UserId!: number
 }

@@ -4,15 +4,15 @@ import { Button } from '@mui/material'
 function LeaderboardPage() {
   const Test = async () => {
     try {
-      const res = await fetch('http://localhost:3001/topic', {
-        method: 'POST',
+      const res = await fetch('http://localhost:3001/forum/reply/6', {
+        method: 'DELETE',
         mode: 'cors',
         credentials: 'include',
-        body: JSON.stringify({
-          title: 'asdfa',
-          comment: 'adf',
-        }),
-        headers: { 'Content-Type': 'application/json' },
+        // body: JSON.stringify({
+        //   replyId: 6,
+        //   newContent: 'Edit Reply from front',
+        // }),
+        // headers: { 'Content-Type': 'application/json' },
       })
       const data = await res.json()
       console.log(data)
@@ -24,7 +24,7 @@ function LeaderboardPage() {
   }
   return (
     <>
-      <Button onClick={Test}> Test</Button>
+      <Button onClick={Test}>Test</Button>
       <Leaderboard />
     </>
   )

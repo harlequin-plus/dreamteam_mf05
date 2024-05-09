@@ -13,28 +13,49 @@ export const createComment = async ({
   return comment.id
 }
 
-export const getCommentById = async (id: Pick<IComments, 'id'>) => {
+export const getCommentById = async (id: number) => {
   const comment = await Comments.findOne({
     where: {
       id,
     },
-    include: {
-      model: Users,
-      attributes: [
-        'id',
-        'first_name',
-        'second_name',
-        'avatar',
-        'email',
-        'login',
-        'phone',
-      ],
-    },
+    attributes: ['id', 'content', ['createdAt', 'date']],
+    include: [
+      {
+        model: Users,
+        attributes: [
+          'id',
+          'first_name',
+          'second_name',
+          'avatar',
+          'email',
+          'login',
+          'phone',
+        ],
+      },
+      {
+        model: Replies,
+        attributes: ['id', 'content', ['createdAt', 'date']],
+        include: [
+          {
+            model: Users,
+            attributes: [
+              'id',
+              'first_name',
+              'second_name',
+              'avatar',
+              'email',
+              'login',
+              'phone',
+            ],
+          },
+        ],
+      },
+    ],
   })
   return comment
 }
 
-export const delComment = async (id: Pick<IComments, 'id'>) => {
+export const deleteComment = async (id: number) => {
   return await Comments.destroy({ where: { id } })
 }
 
@@ -64,7 +85,7 @@ export const getCommentsByTopicId = async ({ id }: Pick<ITopic, 'id'>) => {
     where: {
       TopicId: id,
     },
-    attributes: [['id', 'commentId'], 'content', ['createdAt', 'date']],
+    attributes: ['id', 'content', ['createdAt', 'date']],
     include: [
       {
         model: Users,
@@ -81,4 +102,14 @@ export const getCommentsByTopicId = async ({ id }: Pick<ITopic, 'id'>) => {
     ],
   })
   return comments
+}
+
+export const getCommentsAuthorByCommentId = async (id: number) => {
+  const comment = await Comments.findOne({
+    where: {
+      id,
+    },
+    attributes: ['UserId'],
+  })
+  return comment?.UserId
 }
