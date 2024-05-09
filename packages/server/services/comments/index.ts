@@ -74,6 +74,7 @@ export const editComment = async ({
     }
   )
 }
+
 export const getCommentsByTopicId = async ({ id }: Pick<ITopic, 'id'>) => {
   const topic = await Topics.findOne({
     where: {
