@@ -14,4 +14,7 @@ export class Comments extends Model<IComments, TCommentCreateAttributies> {
   @AllowNull(false)
   @Column(DataType.TEXT)
   content!: string
+
+  @Column(DataType.INTEGER)
+  UserId!: number
 }

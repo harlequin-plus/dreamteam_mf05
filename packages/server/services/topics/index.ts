@@ -11,6 +11,14 @@ export const createTopicEntry = async ({
   return topic.id
 }
 
+export const getTopicbyId = async (id: number) => {
+  return await Topics.findOne({
+    where: {
+      id,
+    },
+  })
+}
+
 export const getTopics = async () => {
   const topics = await Topics.findAll({
     attributes: ['id', 'title', ['UserId', 'TS']],

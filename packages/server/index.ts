@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-// import cors from 'cors'
+import cors from 'cors'
 dotenv.config()
 
 import express from 'express'
@@ -7,33 +7,20 @@ import { dbConnect } from './init'
 import { TopicRouter } from './routes/TopicRouter'
 import { getUserFromApi } from './api/auth'
 import { createUserInDB, getUserByIdFromDB } from './services/users'
+import CommentRouter from './routes/CommentRouter'
+import ReplyRouter from './routes/ReplyRouter'
 
 dbConnect()
 const app = express()
 
-const processCors = (
-  _req: any,
-  res: { header: (arg0: string, arg1: string) => void },
-  next: () => void
-) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  )
-  res.header('Access-Control-Allow-Credentials', 'true')
-
-  next()
-}
-// app.use(cors())
-app.use(processCors)
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  })
+)
 
 app.use('', async (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
-  res.header('Access-Control-Allow-Methods', 'POST')
-  res.header('Access-Control-Allow-Headers', 'Content-Type')
-  res.header('Access-Control-Allow-Credentials', 'true')
-  console.log('midllware')
   try {
     const user = await getUserFromApi(req)
     const userDB = await getUserByIdFromDB(user.id)
@@ -51,6 +38,8 @@ app.use('', async (req, res, next) => {
 app.use(express.json())
 
 app.use('/topic', TopicRouter)
+app.use('/forum/comment', CommentRouter)
+app.use('/forum/reply', ReplyRouter)
 const port = Number(process.env.SERVER_PORT) || 3001
 
 app.get('/', (_, res) => {
