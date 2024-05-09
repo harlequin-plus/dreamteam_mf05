@@ -52,7 +52,7 @@ CommentRouter.put('/edit', async (req, res) => {
       return
     }
 
-    await editComment({ content: newContent, id: commentId })
+    await editComment({ content: serialize(newContent), id: commentId })
     res.sendStatus(200)
     return
   }
