@@ -17,4 +17,5 @@ app.get('/', (_, res) => {
 
 app.listen(port, () => {
   console.log(`  ➜ 🎸 Server is listening on port: ${port}`)
+  console.log(`Вывод переменной из .env: ${process.env.AWESOME_VAR}`)
 })
