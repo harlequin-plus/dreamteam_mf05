@@ -1,14 +1,14 @@
-version: "3.9"
+version: '3.9'
 
 services:
   client:
     container_name: prakticum-client
     image: prakticum-client
     build:
-        context: .
-        dockerfile: Dockerfile.client
-        args:
-          CLIENT_PORT: ${CLIENT_PORT}
+      context: .
+      dockerfile: Dockerfile.client
+      args:
+        CLIENT_PORT: ${CLIENT_PORT}
     restart: always
     ports:
         - "${CLIENT_PORT}:6555"
@@ -23,14 +23,17 @@ services:
     container_name: prakticum-server
     image: prackicum-server
     build:
-        context: .
-        dockerfile: Dockerfile.server
-        args:
-          SERVER_PORT: ${SERVER_PORT}
+      context: .
+      dockerfile: Dockerfile.server
+      args:
+        SERVER_PORT: ${SERVER_PORT}
     restart: always
     ports:
         - "${SERVER_PORT}:${SERVER_PORT}"
     env_file: ./.env
+    environment:
+      DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}:${SERVER_PORT}/${POSTGRES_DB}
+      SERVER_PORT: ${SERVER_PORT}
     depends_on:
       - postgres
     networks:
@@ -73,4 +76,3 @@ volumes:
 networks:
   awesome:
     driver: bridge
-
