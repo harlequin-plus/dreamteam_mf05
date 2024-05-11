@@ -11,10 +11,14 @@ services:
         CLIENT_PORT: ${CLIENT_PORT}
     restart: always
     ports:
-      - '${CLIENT_PORT}:80'
+        - "${CLIENT_PORT}:6555"
+    env_file: ./.env
     environment:
       - CLIENT_PORT=${CLIENT_PORT}
       - SERVER_PORT=${SERVER_PORT}
+    networks:
+      - awesome
+
   server:
     container_name: prakticum-server
     image: prackicum-server
@@ -23,22 +27,23 @@ services:
       dockerfile: Dockerfile.server
       args:
         SERVER_PORT: ${SERVER_PORT}
-    # restart: always
+    restart: always
     ports:
-      - '${SERVER_PORT}:${SERVER_PORT}'
-    depends_on:
-      - postgres
+        - "${SERVER_PORT}:${SERVER_PORT}"
+    env_file: ./.env
     environment:
       DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}:${SERVER_PORT}/${POSTGRES_DB}
       SERVER_PORT: ${SERVER_PORT}
-    networks:
+    depends_on:
       - postgres
-
+    networks:
+      - awesome
+  
   postgres:
-    container_name: postgres
-    image: postgres:latest
+    container_name: ${POSTGRES_SERVICE_NAME}
+    image: postgres:14     
     ports:
-      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -46,14 +51,15 @@ services:
     volumes:
       - ./tmp/pgdata:/var/lib/postgresql/data
     networks:
-      - postgres
+      - awesome
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4:latest
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: secret
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
       PGADMIN_LISTEN_PORT: 80
     ports:
       - '8080:80'
@@ -62,11 +68,11 @@ services:
     depends_on:
       - postgres
     networks:
-      - postgres
+      - awesome
 
 volumes:
   pgadmin-data:
 
 networks:
-  postgres:
+  awesome:
     driver: bridge

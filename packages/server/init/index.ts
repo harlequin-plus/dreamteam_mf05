@@ -4,13 +4,23 @@ import { Users } from '../models/Users'
 import { Comments } from '../models/Comments'
 import { Replies } from '../models/Replies'
 
+const {
+  POSTGRES_USER,
+  POSTGRES_PASSWORD,
+  POSTGRES_DB,
+  POSTGRES_PORT,
+  NODE_ENV,
+  POSTGRES_SERVICE_NAME,
+} = process.env
+
+const hostname = NODE_ENV == 'production' ? POSTGRES_SERVICE_NAME : 'localhost'
+
 const sequelizeOptions: SequelizeOptions = {
-  //т.к. переменные окружения не сделаны(задание из другой задачи) захордкодил данные бд
-  username: 'postgres',
-  password: 'postgres',
-  database: 'postgres',
-  host: 'localhost',
-  port: 5432,
+  username: POSTGRES_USER,
+  password: POSTGRES_PASSWORD,
+  database: POSTGRES_DB,
+  host: hostname,
+  port: Number(POSTGRES_PORT),
   dialect: 'postgres',
 }
 
