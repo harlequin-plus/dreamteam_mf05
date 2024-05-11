@@ -10,7 +10,7 @@
     "test": "jest ./"
   },
   "dependencies": {
-    "@babel/plugin-proposal-decorators": "^7.24.0",
+    "cors": "^2.8.5",    "@babel/plugin-proposal-decorators": "^7.24.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.12",

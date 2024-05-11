@@ -21,7 +21,6 @@ export class SsrYandexAPIUserRepository {
         cookie: this._cookieHeader,
       },
     })
-    // console.log(data)
     return data
   }
 }
