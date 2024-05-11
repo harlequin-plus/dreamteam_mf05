@@ -6,9 +6,9 @@ dotenv.config()
 
 import express from 'express'
 import { dbConnect } from './init'
-import { TopicRouter } from './routes/TopicRouter'
+import { TopicRouter } from './routes/TopicRouter' /*
 import { getUserFromApi } from './api/auth'
-import { createUserInDB, getUserByIdFromDB } from './services/users'
+import { createUserInDB, getUserByIdFromDB } from './services/users'*/
 import CommentRouter from './routes/CommentRouter'
 import ReplyRouter from './routes/ReplyRouter'
 import helmet from 'helmet'
@@ -24,7 +24,7 @@ app.use(
     credentials: true,
   })
 )
-
+/*
 app.use('', async (req, res, next) => {
   try {
     const user = await getUserFromApi(req)
@@ -38,7 +38,7 @@ app.use('', async (req, res, next) => {
     res.status(403).send({ reason: 'Forbidden' })
     return
   }
-})
+})*/
 
 app.use(express.json())
 
@@ -47,8 +47,8 @@ app.use('/forum/comment', CommentRouter)
 app.use('/forum/reply', ReplyRouter)
 const port = Number(process.env.SERVER_PORT) || 3001
 
-app.get('/', (_, res) => {
-  res.json('👋 Howdy from the server :)')
+app.use('/test', (_, res) => {
+  res.status(200).json('👋 Howdy from the server :)')
 })
 
 app.listen(port, () => {
