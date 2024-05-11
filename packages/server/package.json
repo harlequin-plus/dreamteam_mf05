@@ -25,7 +25,8 @@
     "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.3",
     "sequelize-typescript": "^2.1.6",
-    "serialize-javascript": "^6.0.2"
+    "serialize-javascript": "^6.0.2",
+    "cors": "2.8.5"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.7",
