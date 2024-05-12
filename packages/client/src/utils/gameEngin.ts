@@ -1,8 +1,7 @@
 import { styles } from '../components/GameBoard/tempStyles'
 import { GameMoves } from './gameMoves'
 import { getColorForValue, keysMapper } from './helpers'
-import { Cell } from './gameMoves'
-import { Explosion } from './gameMoves'
+import { Cell, Explosion } from './gameMoves'
 
 export class GameEngine extends GameMoves {
   constructor() {
@@ -12,9 +11,9 @@ export class GameEngine extends GameMoves {
   public ctxRef: CanvasRenderingContext2D | null = null
   public completed = false
   public score = 0
-  public timerMs = 0
   explosions: Explosion[] = []
   speed = 0.15
+  public timerMs = 0
 
   setScore = (score: number) => {
     this.score = score
