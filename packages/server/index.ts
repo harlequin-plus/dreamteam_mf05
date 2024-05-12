@@ -1,14 +1,12 @@
 import dotenv from 'dotenv'
 import cors from 'cors'
-import cookieParser from 'cookie-parser'
-// import axios from 'axios'
 dotenv.config()
 
 import express from 'express'
 import { dbConnect } from './init'
-import { TopicRouter } from './routes/TopicRouter' /*
+import { TopicRouter } from './routes/TopicRouter'
 import { getUserFromApi } from './api/auth'
-import { createUserInDB, getUserByIdFromDB } from './services/users'*/
+import { createUserInDB, getUserByIdFromDB } from './services/users'
 import CommentRouter from './routes/CommentRouter'
 import ReplyRouter from './routes/ReplyRouter'
 import helmet from 'helmet'
@@ -24,7 +22,7 @@ app.use(
     credentials: true,
   })
 )
-/*
+
 app.use('', async (req, res, next) => {
   try {
     const user = await getUserFromApi(req)
@@ -38,7 +36,7 @@ app.use('', async (req, res, next) => {
     res.status(403).send({ reason: 'Forbidden' })
     return
   }
-})*/
+})
 
 app.use(express.json())
 

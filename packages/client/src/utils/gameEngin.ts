@@ -15,7 +15,6 @@ export class GameEngine extends GameMoves {
   public timerMs = 0
   explosions: Explosion[] = []
   speed = 0.15
-  public timerMs = 0
 
   setScore = (score: number) => {
     this.score = score
