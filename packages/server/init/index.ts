@@ -3,6 +3,7 @@ import { Topics } from '../models/Topics'
 import { Users } from '../models/Users'
 import { Comments } from '../models/Comments'
 import { Replies } from '../models/Replies'
+import { Emojis } from '../models/Emojis'
 
 const {
   POSTGRES_USER,
@@ -28,7 +29,7 @@ const sequelizeOptions: SequelizeOptions = {
 export const sequelize = new Sequelize(sequelizeOptions)
 
 // Инициализируем модели
-sequelize.addModels([Users, Topics, Comments, Replies])
+sequelize.addModels([Users, Topics, Comments, Replies, Emojis])
 
 Users.hasMany(Topics)
 Topics.belongsTo(Users)
