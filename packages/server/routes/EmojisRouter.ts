@@ -10,10 +10,10 @@ export const EmojiRouter = express.Router()
 
 // ?commentID=1  query параметры
 EmojiRouter.get(``, async (req, res) => {
-  const CommentID = Number(req.query.commentID)
-  if (!CommentID) res.status(400).send({ reason: 'bad request' })
+  const commentID = Number(req.query.commentID)
+  if (!commentID) res.status(400).send({ reason: 'bad request' })
 
-  const emojis = await getEmojisByCommentID({ CommentID })
+  const emojis = await getEmojisByCommentID({ commentID })
   if (emojis.length === 0)
     res.status(400).send({ reason: 'emojis does not exist' })
 
@@ -39,11 +39,11 @@ EmojiRouter.post(``, async (req, res) => {
 })
 
 EmojiRouter.delete(``, async (req, res) => {
-  const { messageID, userID } = req.body
+  const { commentID, userID } = req.body
   if (
-    !messageID ||
+    !commentID ||
     !userID ||
-    typeof messageID !== 'number' ||
+    typeof commentID !== 'number' ||
     typeof userID !== 'number'
   )
     res.status(400).send({ reason: 'bad request' })
