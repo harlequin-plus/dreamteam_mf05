@@ -9,6 +9,7 @@ import { getUserFromApi } from './api/auth'
 import { createUserInDB, getUserByIdFromDB } from './services/users'
 import CommentRouter from './routes/CommentRouter'
 import ReplyRouter from './routes/ReplyRouter'
+import { EmojiRouter } from './routes/EmojisRouter'
 import helmet from 'helmet'
 
 dbConnect()
@@ -43,6 +44,7 @@ app.use(express.json())
 app.use('/topic', TopicRouter)
 app.use('/forum/comment', CommentRouter)
 app.use('/forum/reply', ReplyRouter)
+app.use('/forum/emoji', EmojiRouter)
 const port = Number(process.env.SERVER_PORT) || 3001
 
 app.get('/', (_, res) => {
