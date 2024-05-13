@@ -1,4 +1,11 @@
-import { DataType, Model, Table, Column, BelongsTo } from 'sequelize-typescript'
+import {
+  DataType,
+  Model,
+  Table,
+  Column,
+  BelongsTo,
+  //   ForeignKey,
+} from 'sequelize-typescript'
 import { IEmoji } from './types'
 import { Comments } from './Comments'
 import { Users } from './Users'
@@ -8,12 +15,13 @@ import { Users } from './Users'
   tableName: 'Emoji',
 })
 export class Emojis extends Model<IEmoji> {
-  @BelongsTo(() => Comments)
+  //   @ForeignKey(() => Comments)
+  @BelongsTo(() => Comments, 'CommentID')
   @Column(DataType.INTEGER)
-  CommentID!: number
+  commentID!: Comments
   @Column(DataType.TEXT)
   unicod!: string
-  @BelongsTo(() => Users)
+  @BelongsTo(() => Users, 'UserID')
   @Column(DataType.INTEGER)
-  UserID!: number
+  userID!: Users
 }
