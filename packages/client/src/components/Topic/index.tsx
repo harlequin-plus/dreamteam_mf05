@@ -20,6 +20,8 @@ import { useAppSelector } from '../../hooks/reduxTsHook'
 import { useParams } from 'react-router-dom'
 import NotFoundPage from '../../pages/NotFoundPage'
 import { v4 as uuid } from 'uuid'
+import AddEmoji from '../AddEmoji'
+import InputAdornment from '@mui/material/InputAdornment'
 
 const Topic = () => {
   const [comment, setComment] = useState('')
@@ -52,6 +54,10 @@ const Topic = () => {
     topic?.comments.push(newComment)
     setTopic(topic) // addComment(topicName, newComment) api
     setComment('')
+  }
+
+  const insertEmoji = (emoji: string) => {
+    setComment(comment + emoji)
   }
 
   return topic ? (
@@ -97,6 +103,16 @@ const Topic = () => {
                 minRows={5}
                 value={comment}
                 onChange={onChangeComment}
+                sx={{ pr: 0.5, alignItems: 'start' }}
+                endAdornment={
+                  <InputAdornment sx={{ pt: '8.5px' }} position="end">
+                    <AddEmoji
+                      fontSize={1.4}
+                      horizontal={'left'}
+                      insertEmoji={insertEmoji}
+                    />
+                  </InputAdornment>
+                }
               />
               <Button type="submit">Ответить</Button>
             </FormControl>
