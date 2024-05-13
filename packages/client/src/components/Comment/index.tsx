@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { Avatar, Box, TableCell, TableRow, Typography } from '@mui/material'
 import { formatDate } from '../../utils/formatDate'
 import { TUser } from '../../models/TUser'
+import EmojisLine, { dbDATA } from '../EmojisLine'
 
 type OwnProps = {
   content: string
@@ -47,6 +48,7 @@ const Comment: FC<OwnProps> = ({ content, user, date, ordinalNumber }) => {
         <Typography variant="body2" m={2}>
           {content}
         </Typography>
+        <EmojisLine dbDATA={dbDATA} />
       </TableCell>
     </TableRow>
     // </Grid>

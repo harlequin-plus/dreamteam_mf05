@@ -17,7 +17,7 @@ export const emodjisList = [
   '\u{1F649}', //name: 'Hear-No-Evil Monkey', emoji: '🙉' },
   '\u{1F64A}', //name: 'Speak-No-Evil Monkey', emoji: '🙊' },
   '\u{1F648}', //name: 'See-No-Evil Monkey', emoji: '🙈' },
-  '\u{2764}', //name: 'red heart', emoji: '❤️' },
+  '\u{2764}', //name: 'red heart', emoji: '❤️' }, //из двух символов Юникода: «❤» (U+2764) и модифицирующего U+FE0F
   '\u{1F590}', //name: 'Raised Hand with Fingers Splayed', emoji: '🖐' },
   '\u{1F64F}', //name: 'Person with Folded Hands', emoji: '🙏' },
   '\u{1F91D}', //name: 'Handshake', emoji: '🤝' },
