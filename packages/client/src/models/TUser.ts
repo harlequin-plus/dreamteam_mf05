@@ -2,10 +2,10 @@ export type TUserDTO = {
   id: number
   first_name: string
   second_name: string
-  display_name: string | null
+  display_name: string | undefined
   phone: string
   login: string
-  avatar: string | null
+  avatar: string | undefined
   email: string
   password: string
 }
