@@ -1,6 +1,6 @@
 import {
   createEmoji,
-  getEmojisByCommentID,
+  getEmojisByCommentId,
   deleteUserByIds,
 } from '../services/emojis'
 
@@ -8,12 +8,12 @@ import express from 'express'
 
 export const EmojiRouter = express.Router()
 
-// ?commentID=1  query параметры
+// ?CommentId=1  query параметры
 EmojiRouter.get(``, async (req, res) => {
-  const commentID = Number(req.query.commentID)
-  if (!commentID) res.status(400).send({ reason: 'bad request' })
+  const CommentId = Number(req.query.CommentId)
+  if (!CommentId) res.status(400).send({ reason: 'bad request' })
 
-  const emojis = await getEmojisByCommentID({ commentID })
+  const emojis = await getEmojisByCommentId({ CommentId })
   if (emojis.length === 0)
     res.status(400).send({ reason: 'emojis does not exist' })
 
@@ -21,14 +21,14 @@ EmojiRouter.get(``, async (req, res) => {
 })
 
 EmojiRouter.post(``, async (req, res) => {
-  const { messageID, unicod, userID } = req.body
+  const { CommentId, unicod, UserId } = req.body
   if (
-    !messageID ||
+    !CommentId ||
     !unicod ||
-    !userID ||
-    typeof messageID !== 'number' ||
+    !UserId ||
+    typeof CommentId !== 'number' ||
     typeof unicod !== 'string' ||
-    typeof userID !== 'number'
+    typeof UserId !== 'number'
   )
     res.status(400).send({ reason: 'bad request' })
 
@@ -39,12 +39,12 @@ EmojiRouter.post(``, async (req, res) => {
 })
 
 EmojiRouter.delete(``, async (req, res) => {
-  const { commentID, userID } = req.body
+  const { CommentId, UserId } = req.body
   if (
-    !commentID ||
-    !userID ||
-    typeof commentID !== 'number' ||
-    typeof userID !== 'number'
+    !CommentId ||
+    !UserId ||
+    typeof CommentId !== 'number' ||
+    typeof UserId !== 'number'
   )
     res.status(400).send({ reason: 'bad request' })
 

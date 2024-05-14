@@ -50,13 +50,9 @@ Comments.hasMany(Replies, {
 })
 Replies.belongsTo(Comments)
 
-Users.hasMany(Emojis, {
-  foreignKey: 'userID',
-})
+Users.hasMany(Emojis)
 Emojis.belongsTo(Users)
-Comments.hasMany(Emojis, {
-  foreignKey: 'commentsID',
-})
+Comments.hasMany(Emojis)
 Emojis.belongsTo(Comments)
 
 export async function dbConnect() {

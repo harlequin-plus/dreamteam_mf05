@@ -36,7 +36,7 @@ export interface IReplies {
 }
 
 export interface IEmoji {
-  commentID: number
+  CommentId: number
   unicod: string
-  userID: number
+  UserId: number
 }
