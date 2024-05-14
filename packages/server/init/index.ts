@@ -3,6 +3,8 @@ import { Topics } from '../models/Topics'
 import { Users } from '../models/Users'
 import { Comments } from '../models/Comments'
 import { Replies } from '../models/Replies'
+import { UserTheme } from '../models/UserTheme'
+import { SiteTheme } from '../models/SiteTheme'
 import { Emojis } from '../models/Emojis'
 
 const {
@@ -29,7 +31,15 @@ const sequelizeOptions: SequelizeOptions = {
 export const sequelize = new Sequelize(sequelizeOptions)
 
 // Инициализируем модели
-sequelize.addModels([Users, Topics, Comments, Replies, Emojis])
+sequelize.addModels([
+  Users,
+  Topics,
+  Comments,
+  Replies,
+  UserTheme,
+  SiteTheme,
+  Emojis,
+])
 
 Users.hasMany(Topics)
 Topics.belongsTo(Users)
@@ -49,6 +59,12 @@ Comments.hasMany(Replies, {
   onDelete: 'CASCADE',
 })
 Replies.belongsTo(Comments)
+
+Users.hasOne(UserTheme)
+UserTheme.belongsTo(Users)
+
+UserTheme.hasOne(SiteTheme)
+UserTheme.belongsTo(SiteTheme)
 
 Users.hasMany(Emojis)
 Emojis.belongsTo(Users)

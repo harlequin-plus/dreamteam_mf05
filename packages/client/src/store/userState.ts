@@ -9,9 +9,9 @@ const defaultUser: TUser = {
   email: '',
   first_name: '',
   second_name: '',
-  display_name: null,
+  display_name: undefined,
   phone: '',
-  avatar: null,
+  avatar: undefined,
 }
 
 const initialState: UserState = {

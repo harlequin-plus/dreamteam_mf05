@@ -9,6 +9,19 @@ export interface IUser {
   email: string
 }
 
+export interface ITheme {
+  id: number
+  themeId: string
+  device: string
+  ownerId: string
+}
+
+export interface IThemes {
+  id: number
+  theme: string
+  description: string
+}
+
 export interface ITopic {
   id: number
   title: string

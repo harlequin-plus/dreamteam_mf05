@@ -43,7 +43,12 @@ const GameBoard: React.FC = () => {
           setFullscreenEnabled={setFullscreenEnabled}
         />
         <div> High Score: {highScore}</div>
-        <canvas ref={canvasRef} width={400} height={420} />
+        <canvas
+          ref={canvasRef}
+          width={395}
+          height={395}
+          style={{ backgroundColor: 'black' }}
+        />
       </div>
     </FullscreenProvider>
   )
