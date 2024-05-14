@@ -1,3 +1,5 @@
+/* REWORK DUE TO GameEngine update
+
 import { GameEngine } from './gameEngin'
 import 'jest-canvas-mock'
 

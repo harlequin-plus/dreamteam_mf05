@@ -15,4 +15,5 @@ export const styles: Record<string, string> = {
 
   justifyContent: 'center',
   alignItems: 'center',
+  textBaseline: 'middle',
 }

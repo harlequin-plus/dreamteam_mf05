@@ -3,7 +3,7 @@ import { TUser } from './TUser'
 export type TTopic = {
   id: number
   title: string
-  TS: string
+  User: string
   last_message: TLastMessage
 }
 

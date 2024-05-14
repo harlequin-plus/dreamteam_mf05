@@ -42,7 +42,7 @@ const GameForum = () => {
             {
               id: id,
               title: data.title,
-              TS: user.first_name + user.second_name,
+              User: user,
               last_message: {
                 user: user,
                 time: new Date().toISOString(),
@@ -114,7 +114,7 @@ const GameForum = () => {
                     <Link to={topic.id.toString()}>{topic.title}</Link>
                   </Typography>
                   <Typography variant="caption" color={'text.secondary'}>
-                    {topic.TS}
+                    {topic.User.first_name + topic.User.second_name}
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
