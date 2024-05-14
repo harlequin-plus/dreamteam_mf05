@@ -50,6 +50,15 @@ Comments.hasMany(Replies, {
 })
 Replies.belongsTo(Comments)
 
+Users.hasMany(Emojis, {
+  foreignKey: 'userID',
+})
+Emojis.belongsTo(Users)
+Comments.hasMany(Emojis, {
+  foreignKey: 'commentsID',
+})
+Emojis.belongsTo(Comments)
+
 export async function dbConnect() {
   try {
     await sequelize.authenticate() // Проверка аутентификации в БД

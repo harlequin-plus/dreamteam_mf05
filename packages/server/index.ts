@@ -5,8 +5,8 @@ dotenv.config()
 import express from 'express'
 import { dbConnect } from './init'
 import { TopicRouter } from './routes/TopicRouter'
-import { getUserFromApi } from './api/auth'
-import { createUserInDB, getUserByIdFromDB } from './services/users'
+// import { getUserFromApi } from './api/auth'
+// import { createUserInDB, getUserByIdFromDB } from './services/users'
 import CommentRouter from './routes/CommentRouter'
 import ReplyRouter from './routes/ReplyRouter'
 import { EmojiRouter } from './routes/EmojisRouter'
@@ -24,20 +24,20 @@ app.use(
   })
 )
 
-app.use('', async (req, res, next) => {
-  try {
-    const user = await getUserFromApi(req)
-    const userDB = await getUserByIdFromDB(user.id)
-    if (!userDB) {
-      await createUserInDB(user)
-    }
-    res.status(200)
-    next()
-  } catch (e) {
-    res.status(403).send({ reason: 'Forbidden' })
-    return
-  }
-})
+// app.use('', async (req, res, next) => {
+//   try {
+//     const user = await getUserFromApi(req)
+//     const userDB = await getUserByIdFromDB(user.id)
+//     if (!userDB) {
+//       await createUserInDB(user)
+//     }
+//     res.status(200)
+//     next()
+//   } catch (e) {
+//     res.status(403).send({ reason: 'Forbidden' })
+//     return
+//   }
+// })
 
 app.use(express.json())
 
