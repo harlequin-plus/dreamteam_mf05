@@ -11,7 +11,11 @@ services:
         CLIENT_PORT: ${CLIENT_PORT}
     restart: always
     ports:
+<<<<<<< HEAD
       - '${CLIENT_PORT}:${CLIENT_PORT}'
+=======
+      - '${CLIENT_PORT}:3000'
+>>>>>>> e037282ce89788114c72ae1f592fe072977771d5
     env_file: ./.env
     environment:
       - CLIENT_PORT=${CLIENT_PORT}

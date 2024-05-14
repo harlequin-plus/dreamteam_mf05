@@ -22,6 +22,22 @@ async function createServer() {
   const app = express()
   app.use(cors())
 
+  // ***************************************************************************
+  // Temporary solution to simulate the backend of the forum
+  // Do not change order with next app.use
+  // TODO remove or refactor when real backend will be implemented
+  app.use(
+    '/api/v2/forum',
+    createProxyMiddleware({
+      changeOrigin: true,
+      cookieDomainRewrite: {
+        '*': '',
+      },
+      target: 'http://localhost:3001/api/v2/forum',
+    })
+  )
+  // ***************************************************************************
+
   app.use(
     '/api/v2',
     createProxyMiddleware({

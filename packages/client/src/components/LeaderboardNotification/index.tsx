@@ -20,7 +20,6 @@ export function LeaderboardNotification() {
     }
 
     const timerId = setInterval(function () {
-      console.log('timer')
       if (user.id !== -1 && Notification.permission === 'granted') {
         getLeaderboardLite({
           cursor: 0,

@@ -41,7 +41,7 @@ app
 
 app
   .use(express.json())
-  .use('/topic', TopicRouter)
+  .use('/forum/topic', TopicRouter)
   .use('/forum/comment', CommentRouter)
   .use('/forum/reply', ReplyRouter)
   .use('/forum/emoji', EmojiRouter)

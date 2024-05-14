@@ -1,7 +1,7 @@
 import { TAPIError } from '../models/TAPIError'
 
 enum METHODS {
-  GET = 'c',
+  GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
   DELETE = 'DELETE',
