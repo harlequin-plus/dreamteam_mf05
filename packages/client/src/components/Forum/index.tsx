@@ -31,6 +31,7 @@ const GameForum = () => {
       .catch(error => {
         console.log('forum error', error)
       })
+    console.log(topics)
   }, [])
 
   const handleCreateTopic = useCallback(
@@ -43,10 +44,12 @@ const GameForum = () => {
               id: id,
               title: data.title,
               User: user,
-              last_message: {
-                user: user,
-                time: new Date().toISOString(),
-              },
+              Comments: [
+                {
+                  User: user,
+                  time: new Date().toISOString(),
+                },
+              ],
             },
           ])
         })
@@ -120,12 +123,12 @@ const GameForum = () => {
                 <TableCell align="right">
                   <Typography variant="caption" color={'text.secondary'}>
                     {format(
-                      parseISO(topic.last_message.time),
+                      parseISO(topic.Comments[0].time),
                       'dd.MM.yyyy hh:mm'
                     )}
                   </Typography>
                   <Typography variant="body2">
-                    {`Автор: ${topic.last_message.user.first_name}`}
+                    {`Автор: ${topic.Comments[0].User.first_name}`}
                   </Typography>
                 </TableCell>
                 <TableCell align="center">

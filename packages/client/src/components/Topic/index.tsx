@@ -73,7 +73,7 @@ const Topic = () => {
     (id: number) => {
       deleteCommentById(id)
         .then(() => {
-          setComments(comments.filter(comment => comment.commentId !== id))
+          setComments(comments.filter(comment => comment.id !== id))
         })
         .catch(error => {
           console.log('delete comment error', error)
@@ -91,10 +91,10 @@ const Topic = () => {
             setComments([
               ...comments,
               {
-                commentId: id,
+                id,
                 content: comment,
                 date: new Date().toISOString(),
-                author: user,
+                User: user,
               },
             ])
           })
@@ -127,14 +127,12 @@ const Topic = () => {
             <TableBody>
               {comments?.map((comment, index) => (
                 <Comment
-                  key={comment.commentId}
+                  key={comment.id}
                   content={comment.content}
                   date={comment.date}
-                  user={comment.author}
+                  User={comment.User}
                   ordinalNumber={index + 1}
-                  handleDeleteComment={() =>
-                    handleDeleteComment(comment.commentId)
-                  }
+                  handleDeleteComment={() => handleDeleteComment(comment.id)}
                 />
               ))}
             </TableBody>

@@ -3,12 +3,12 @@ import { TUser } from './TUser'
 export type TTopic = {
   id: number
   title: string
-  User: string
-  last_message: TLastMessage
+  User: TUser
+  Comments: TLastMessage[]
 }
 
 export type TLastMessage = {
-  user: TUser
+  User: TUser
   time: string
 }
 

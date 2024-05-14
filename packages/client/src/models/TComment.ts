@@ -1,10 +1,10 @@
 import { TUser } from './TUser'
 
 export type TComment = {
-  commentId: number // TODO rename to id
+  id: number
   content: string
   date: string
-  author: TUser
+  User: TUser
 }
 
 export type TComments = Array<TComment>

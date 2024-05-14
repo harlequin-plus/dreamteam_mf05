@@ -13,7 +13,7 @@ import { format, parseISO } from 'date-fns'
 
 type OwnProps = {
   content: string
-  user: TUser
+  User: TUser
   date: string
   ordinalNumber: number
   handleDeleteComment: () => void
@@ -21,15 +21,15 @@ type OwnProps = {
 
 const Comment: FC<OwnProps> = ({
   content,
-  user,
+  User,
   date,
   ordinalNumber,
   handleDeleteComment,
 }) => {
-  const avatar = user?.avatar ? `${user.avatar}` : ''
-  const display_name = user?.display_name
-    ? user?.display_name
-    : `Пользователь ${user.id}`
+  const avatar = User?.avatar ? `${User.avatar}` : ''
+  const display_name = User?.display_name
+    ? User?.display_name
+    : `Пользователь ${User.id}`
 
   const displayFullDate = format(parseISO(date), 'dd.MM.yyyy hh:mm')
 
