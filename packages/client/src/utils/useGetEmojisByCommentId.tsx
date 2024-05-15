@@ -11,7 +11,6 @@ export default function useGetEmojisByCommentId(commentId: number) {
 
   useEffect(() => {
     const allEmojisOfComment = async (id: number) => {
-      console.log('вызвали хук', id)
       try {
         const emojis = await getAllEmojisOfComment(id)
         if (emojis) setEmojis(emojis)
