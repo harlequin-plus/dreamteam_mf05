@@ -11,7 +11,7 @@ import { TUser } from '../../models/TUser'
 import EmojisLine from '../EmojisLine'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { format, parseISO } from 'date-fns'
-import { getAllEmojisOfComment } from '../../services/emoji'
+// import { getAllEmojisOfComment } from '../../services/emoji'
 import useGetEmojisByCommentId from '../../utils/useGetEmojisByCommentId'
 
 type OwnProps = {
@@ -31,8 +31,6 @@ const Comment: FC<OwnProps> = ({
   ordinalNumber,
   handleDeleteComment,
 }) => {
-  const { emojis, isEmojisLoading, emojisError } =
-    useGetEmojisByCommentId(commentId)
   const avatar = User?.avatar ? `${User.avatar}` : ''
   const display_name = User?.display_name
     ? User?.display_name
@@ -62,9 +60,7 @@ const Comment: FC<OwnProps> = ({
         <Typography variant="body2" m={2}>
           {content}
         </Typography>
-        {!isEmojisLoading && !emojisError && (
-          <EmojisLine emojis={emojis} CommentId={commentId} UserId={User.id} />
-        )}
+        <EmojisLine CommentId={commentId} UserId={User.id} />
       </TableCell>
       <TableCell width={'10%'} style={{ verticalAlign: 'top' }}>
         <Button
