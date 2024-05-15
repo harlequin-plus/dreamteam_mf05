@@ -10,7 +10,7 @@ export default class EmojiApi {
     const params = new URLSearchParams({
       CommentId: String(CommentId),
     }).toString()
-    return emojiApi.get<TEmojis>(`${serverURL}/forum/emoji${params}`)
+    return emojiApi.get<TEmojis>(`${serverURL}/forum/emoji?${params}`)
   }
 
   async addEmoji(data: TEmoji) {

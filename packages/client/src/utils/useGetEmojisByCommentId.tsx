@@ -5,27 +5,23 @@ import { getAllEmojisOfComment } from '../services/emoji'
 export default function useGetEmojisByCommentId(commentId: number) {
   const [emojis, setEmojis] = useState<TEmoji[]>([])
   const [isEmojisLoading, setIsEmojisLoading] = useState(true)
-  const [emojisError, setEmojisError] = useState(false)
+  const [renderHook, setRenderHook] = useState(false)
+
+  const render = () => setRenderHook(renderHook => !renderHook)
 
   useEffect(() => {
     const allEmojisOfComment = async (id: number) => {
-      const emojis = await getAllEmojisOfComment(id)
-      if (emojis) {
-        setEmojis(emojis)
+      console.log('вызвали хук', id)
+      try {
+        const emojis = await getAllEmojisOfComment(id)
+        if (emojis) setEmojis(emojis)
         setIsEmojisLoading(false)
-      } else {
-        setIsEmojisLoading(false)
+      } catch (error) {
+        console.log(error)
       }
     }
-    try {
-      allEmojisOfComment(commentId)
-    } catch (error: unknown) {
-      setEmojisError(true)
-      if (error instanceof Error) {
-        console.log(error.message)
-      }
-    }
-  }, [commentId])
+    allEmojisOfComment(commentId)
+  }, [renderHook])
 
-  return { emojis, isEmojisLoading, emojisError }
+  return { emojis, isEmojisLoading, render }
 }

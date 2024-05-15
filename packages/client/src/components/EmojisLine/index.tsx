@@ -3,7 +3,6 @@ import { Box, Tooltip, Typography } from '@mui/material'
 import { TEmojis, TEmoji } from '../../models/TEmoji'
 import { addNewEmoji } from '../../services/emoji'
 import useGetEmojisByCommentId from '../../utils/useGetEmojisByCommentId'
-import { useState } from 'react'
 
 type EmojisDTO = {
   [key in TEmoji['unicode']]: Array<TEmoji['UserId']>
@@ -27,15 +26,12 @@ type Props = {
   UserId: number
 }
 export default function EmojisLine({ CommentId, UserId }: Props) {
-  const [render, setRender] = useState(false)
-  const { emojis, isEmojisLoading, emojisError } =
-    useGetEmojisByCommentId(CommentId)
+  const { emojis, isEmojisLoading, render } = useGetEmojisByCommentId(CommentId)
 
   const insertEmoji = async (unicode: string) => {
     await addNewEmoji({ CommentId, unicode, UserId })
-      .then(emoji => {
-        console.log('send Emoji to DB, then rerender Emojis', emoji)
-        setRender(render => !render)
+      .then(() => {
+        render()
       })
       .catch(value => {
         console.log('error send newEmoji to DB', value)
@@ -45,7 +41,7 @@ export default function EmojisLine({ CommentId, UserId }: Props) {
   return (
     <Box sx={{ display: 'flex', gap: '5px' }}>
       <AddEmoji fontSize={1.4} horizontal={'right'} insertEmoji={insertEmoji} />
-      {!isEmojisLoading && !emojisError && emojis && (
+      {!isEmojisLoading && emojis && (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           {prepareData(emojis).map(([key, value], index) => (
             <Tooltip
