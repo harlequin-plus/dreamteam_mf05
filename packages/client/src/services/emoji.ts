@@ -4,16 +4,20 @@ import { TEmoji } from '../models/TEmoji'
 
 const emojiApi = new EmojiApi()
 
-const getAllEmojisOfComment = async (data: TEmoji['CommentId']) => {
+export const getAllEmojisOfComment = async (
+  data: TEmoji['CommentId']
+): Promise<TEmoji[]> => {
   const response = await emojiApi.getEmojis(data)
   if (responseHasError(response)) {
     throw Error(response.data.reason)
   }
+  return response.data
 }
 
-const addNewEmoji = async (data: TEmoji) => {
+export const addNewEmoji = async (data: TEmoji): Promise<TEmoji> => {
   const response = await emojiApi.addEmoji(data)
   if (responseHasError(response)) {
     throw Error(response.data.reason)
   }
+  return response.data
 }

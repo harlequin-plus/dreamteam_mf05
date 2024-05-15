@@ -14,7 +14,7 @@ export default class EmojiApi {
   }
 
   async addEmoji(data: TEmoji) {
-    return emojiApi.post<TEmojis>(`${baseURL}/forum/emoji`, {
+    return emojiApi.post<TEmoji>(`${baseURL}/forum/emoji`, {
       body: data,
     })
   }

@@ -134,6 +134,7 @@ const Topic = () => {
               {comments?.map((comment, index) => (
                 <Comment
                   key={comment.id}
+                  commentId={comment.id}
                   content={comment.content}
                   date={comment.date}
                   User={comment.User}
