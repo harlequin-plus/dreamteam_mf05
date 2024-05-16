@@ -47,3 +47,9 @@ export interface IReplies {
   CreatedAt: string
   UpdatedAt?: string
 }
+
+export interface IEmoji {
+  CommentId: number
+  unicode: string
+  UserId: number
+}

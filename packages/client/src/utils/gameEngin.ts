@@ -263,7 +263,7 @@ function drawTempCell(
   ctx.textAlign = <CanvasTextAlign>styles.alignItems
   ctx.textBaseline = <CanvasTextBaseline>styles.textBaseline
   ctx.fillText(
-    String(cell.value),
+    String(cell.value / 2),
     cell.getCoordinates().x + 45,
     cell.getCoordinates().y + 45
   )

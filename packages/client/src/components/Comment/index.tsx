@@ -8,10 +8,14 @@ import {
   Typography,
 } from '@mui/material'
 import { TUser } from '../../models/TUser'
+import EmojisLine from '../EmojisLine'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { format, parseISO } from 'date-fns'
+// import { getAllEmojisOfComment } from '../../services/emoji'
+import useGetEmojisByCommentId from '../../utils/useGetEmojisByCommentId'
 
 type OwnProps = {
+  commentId: number
   content: string
   User: TUser
   date: string
@@ -20,6 +24,7 @@ type OwnProps = {
 }
 
 const Comment: FC<OwnProps> = ({
+  commentId,
   content,
   User,
   date,
@@ -55,6 +60,7 @@ const Comment: FC<OwnProps> = ({
         <Typography variant="body2" m={2}>
           {content}
         </Typography>
+        <EmojisLine CommentId={commentId} UserId={User.id} />
       </TableCell>
       <TableCell width={'10%'} style={{ verticalAlign: 'top' }}>
         <Button

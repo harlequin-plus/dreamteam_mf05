@@ -5,6 +5,7 @@ import { Comments } from '../models/Comments'
 import { Replies } from '../models/Replies'
 import { UserTheme } from '../models/UserTheme'
 import { SiteTheme } from '../models/SiteTheme'
+import { Emojis } from '../models/Emojis'
 
 const {
   POSTGRES_USER,
@@ -30,7 +31,15 @@ const sequelizeOptions: SequelizeOptions = {
 export const sequelize = new Sequelize(sequelizeOptions)
 
 // Инициализируем модели
-sequelize.addModels([Users, Topics, Comments, Replies, UserTheme, SiteTheme])
+sequelize.addModels([
+  Users,
+  Topics,
+  Comments,
+  Replies,
+  UserTheme,
+  SiteTheme,
+  Emojis,
+])
 
 Users.hasMany(Topics)
 Topics.belongsTo(Users)
@@ -56,6 +65,11 @@ UserTheme.belongsTo(Users)
 
 UserTheme.hasOne(SiteTheme)
 UserTheme.belongsTo(SiteTheme)
+
+Users.hasMany(Emojis)
+Emojis.belongsTo(Users)
+Comments.hasMany(Emojis)
+Emojis.belongsTo(Comments)
 
 export async function dbConnect() {
   try {

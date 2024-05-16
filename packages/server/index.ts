@@ -9,6 +9,7 @@ import { getUserFromApi } from './api/auth'
 import { createUserInDB, getUserByIdFromDB } from './services/users'
 import CommentRouter from './routes/CommentRouter'
 import ReplyRouter from './routes/ReplyRouter'
+import { EmojiRouter } from './routes/EmojisRouter'
 import helmet from 'helmet'
 import ThemeRouter from './routes/ThemeRouter'
 
@@ -43,6 +44,7 @@ app
   .use('/forum/topic', TopicRouter)
   .use('/forum/comment', CommentRouter)
   .use('/forum/reply', ReplyRouter)
+  .use('/forum/emoji', EmojiRouter)
   .use('/theme', ThemeRouter)
 
 const port = Number(process.env.SERVER_PORT) || 3001

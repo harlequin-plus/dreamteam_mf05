@@ -23,6 +23,8 @@ import Comment from '../Comment'
 import { useAppSelector } from '../../hooks/reduxTsHook'
 import { useParams } from 'react-router-dom'
 import NotFoundPage from '../../pages/NotFoundPage'
+import AddEmoji from '../AddEmoji'
+import InputAdornment from '@mui/material/InputAdornment'
 import {
   createComment,
   deleteCommentById,
@@ -106,6 +108,10 @@ const Topic = () => {
     [comment, comments, topic, user]
   )
 
+  const insertEmoji = (emoji: string) => {
+    setComment(comment + emoji)
+  }
+
   return topic ? (
     <>
       <Container maxWidth="lg" style={{ flex: '1 1 auto' }}>
@@ -128,6 +134,7 @@ const Topic = () => {
               {comments?.map((comment, index) => (
                 <Comment
                   key={comment.id}
+                  commentId={comment.id}
                   content={comment.content}
                   date={comment.date}
                   User={comment.User}
@@ -150,6 +157,16 @@ const Topic = () => {
                 minRows={5}
                 value={comment}
                 onChange={onChangeComment}
+                sx={{ pr: 0.5, alignItems: 'start' }}
+                endAdornment={
+                  <InputAdornment sx={{ pt: '8.5px' }} position="end">
+                    <AddEmoji
+                      fontSize={1.4}
+                      horizontal={'left'}
+                      insertEmoji={insertEmoji}
+                    />
+                  </InputAdornment>
+                }
               />
               <Button type="submit">Ответить</Button>
             </FormControl>

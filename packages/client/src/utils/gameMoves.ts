@@ -258,11 +258,11 @@ export class Explosion {
     this.width = this.spriteWidth / 2.2
     this.height = this.spriteHeight / 2
     this.image = new Image()
-    this.image.src = '/src/utils/boom.png'
+    this.image.src = '/boom.png'
     this.frame = 0
     this.timer = 0
     this.sound = new Audio()
-    this.sound.src = '/src/utils/boom.wav'
+    this.sound.src = '/boom.wav'
   }
   update() {
     if (this.frame === 0) {
@@ -287,126 +287,3 @@ export class Explosion {
     )
   }
 }
-
-// ниже вариант с минимальными изменениями в смещениях:
-// moveUp = (): boolean => {
-//     let moved = false
-
-//     for (let j = 0; j < this.cellBoard[0].length; j++) {
-//       for (let i = 1; i < this.cellBoard.length; i++) {
-//         // const currentCell = this.cellBoard[i][j]
-//         if (this.cellBoard[i][j]) {
-//           let k = i
-//           while (k > 0 && this.cellBoard[k - 1][j] === null) {
-//             this.cellBoard[k - 1][j] = this.cellBoard[k][j]
-//             this.cellBoard[k][j] = null
-//             k--
-//             moved = true
-//           }
-//           if (
-//             k > 0 &&
-//             this.cellBoard[k - 1][j]?.value === this.cellBoard[k][j]?.value &&
-//             this.cellBoard[k][j]?.value
-//           ) {
-//             this.cellBoard[k - 1][j] = this.cellBoard[k][j].setBoom(true)
-//             this.cellBoard[k][j] = null
-//             moved = true
-//             this.setScore(this.score + this.cellBoard[k - 1][j].value)
-//           }
-//         }
-//       }
-//     }
-//     return moved
-//   }
-
-//   moveDown = (): boolean => {
-//     let moved = false
-//     for (let j = 0; j < this.cellBoard[0].length; j++) {
-//       for (let i = this.cellBoard.length - 2; i >= 0; i--) {
-//         if (this.cellBoard[i][j]) {
-//           let k = i
-//           while (
-//             k < this.cellBoard.length - 1 &&
-//             this.cellBoard[k + 1][j] === null
-//           ) {
-//             this.cellBoard[k + 1][j] = this.cellBoard[k][j]
-//             this.cellBoard[k][j] = null
-//             k++
-//             moved = true
-//           }
-//           if (
-//             k < this.cellBoard.length - 1 &&
-//             this.cellBoard[k + 1][j]?.value === this.cellBoard[k][j]?.value &&
-//             this.cellBoard[k][j]?.value
-//           ) {
-//             this.cellBoard[k + 1][j] = this.cellBoard[k][j].setBoom(true)
-//             this.cellBoard[k][j] = null
-//             moved = true
-//             this.setScore(this.score + this.cellBoard[k + 1][j].value)
-//           }
-//         }
-//       }
-//     }
-
-//     return moved
-//   }
-
-//   moveLeft = (): boolean => {
-//     let moved = false
-//     for (let i = 0; i < this.cellBoard.length; i++) {
-//       for (let j = 1; j < this.cellBoard[i].length; j++) {
-//         if (this.cellBoard[i][j]) {
-//           let k = j
-//           while (k > 0 && this.cellBoard[i][k - 1] === null) {
-//             this.cellBoard[i][k - 1] = this.cellBoard[i][k]
-//             this.cellBoard[i][k] = null
-//             k--
-//             moved = true
-//           }
-//           if (
-//             k > 0 &&
-//             this.cellBoard[i][k - 1]?.value === this.cellBoard[i][k]?.value &&
-//             this.cellBoard[i][k]?.value !== undefined
-//           ) {
-//             this.cellBoard[i][k - 1] = this.cellBoard[i][k].setBoom(true)
-//             this.cellBoard[i][k] = null
-//             moved = true
-//             this.setScore(this.score + this.cellBoard[i][k - 1].value)
-//           }
-//         }
-//       }
-//     }
-
-//     return moved
-//   }
-
-//   moveRight = (): boolean => {
-//     let moved = false
-//     for (let i = 0; i < this.cellBoard.length; i++) {
-//       for (let j = this.cellBoard[i].length - 2; j >= 0; j--) {
-//         if (this.cellBoard[i][j]) {
-//           let k = j
-//           while (
-//             k < this.cellBoard[i].length - 1 &&
-//             this.cellBoard[i][k + 1] === null
-//           ) {
-//             this.cellBoard[i][k + 1] = this.cellBoard[i][k]
-//             this.cellBoard[i][k] = null
-//             k++
-//             moved = true
-//           }
-//           if (
-//             k < this.cellBoard[i].length - 1 &&
-//             this.cellBoard[i][k + 1]?.value === this.cellBoard[i][k]?.value &&
-//             this.cellBoard[i][k]?.value !== undefined
-//           ) {
-//             this.cellBoard[i][k + 1] = this.cellBoard[i][k].setBoom(true)
-//             this.cellBoard[i][k] = null
-//             moved = true
-//             this.setScore(this.score + this.cellBoard[i][k + 1].value)
-//           }
-//         }
-//       }
-//     }
-//     return moved
-//   }
