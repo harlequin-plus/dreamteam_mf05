@@ -13,7 +13,8 @@ import { getTopicbyId } from '../services/topics'
 const CommentRouter = express.Router()
 
 CommentRouter.post('', async (req, res) => {
-  const UserId = await getUserIdFromApi(req)
+  const UserId = res.locals.user
+  console.log(res.locals.user)
   const { topicId, content } = req.body
   if (
     topicId &&
