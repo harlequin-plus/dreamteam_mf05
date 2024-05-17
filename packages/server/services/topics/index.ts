@@ -21,11 +21,11 @@ export const getTopicbyId = async (id: number) => {
 
 export const getTopics = async () => {
   const topics = await Topics.findAll({
-    attributes: ['id', 'title', ['UserId', 'TS']],
+    attributes: ['id', 'title'],
     include: [
       {
         model: Comments,
-        attributes: ['id', ['createdAt', 'time'], 'UserId'],
+        attributes: ['id', ['createdAt', 'time']],
         order: [['id', 'DESC']],
         limit: 1,
         required: true,
@@ -38,18 +38,21 @@ export const getTopics = async () => {
       },
       {
         model: Users,
-        attributes: [
-          'id',
-          'first_name',
-          'second_name',
-          'avatar',
-          'email',
-          'login',
-          'phone',
-        ],
       },
     ],
   })
+  for (let i = 0; i < topics.length; i++) {
+    if (
+      topics[i].dataValues.Comments &&
+      topics[i].dataValues.Comments?.length != 0
+    ) {
+      topics[i].dataValues.last_message = topics[i].dataValues.Comments?.[0]
+    } else {
+      topics[i].dataValues.last_message = undefined
+    }
+    delete topics[i].dataValues.Comments
+  }
+
   return topics
 }
 

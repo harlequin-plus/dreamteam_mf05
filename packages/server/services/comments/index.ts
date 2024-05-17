@@ -86,6 +86,7 @@ export const getCommentsByTopicId = async ({ id }: Pick<ITopic, 'id'>) => {
     where: {
       TopicId: id,
     },
+    order: ['id'],
     attributes: ['id', 'content', ['createdAt', 'date']],
     include: [
       {

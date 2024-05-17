@@ -4,7 +4,7 @@ export type TTopic = {
   id: number
   title: string
   User: TUser
-  Comments: TLastMessage[]
+  last_message: TLastMessage
 }
 
 export type TLastMessage = {

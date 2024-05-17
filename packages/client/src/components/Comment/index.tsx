@@ -10,6 +10,7 @@ import {
 import { TUser } from '../../models/TUser'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { format, parseISO } from 'date-fns'
+import { resourceURL } from '../../constants'
 
 type OwnProps = {
   content: string
@@ -26,7 +27,7 @@ const Comment: FC<OwnProps> = ({
   ordinalNumber,
   handleDeleteComment,
 }) => {
-  const avatar = User?.avatar ? `${User.avatar}` : ''
+  const avatar = User?.avatar ? `${resourceURL}${User.avatar}` : ''
   const display_name = User?.display_name
     ? User?.display_name
     : `Пользователь ${User.id}`

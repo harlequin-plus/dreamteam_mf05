@@ -44,12 +44,10 @@ const GameForum = () => {
               id: id,
               title: data.title,
               User: user,
-              Comments: [
-                {
-                  User: user,
-                  time: new Date().toISOString(),
-                },
-              ],
+              last_message: {
+                User: user,
+                time: new Date().toISOString(),
+              },
             },
           ])
         })
@@ -122,13 +120,19 @@ const GameForum = () => {
                 </TableCell>
                 <TableCell align="right">
                   <Typography variant="caption" color={'text.secondary'}>
-                    {format(
-                      parseISO(topic.Comments[0].time),
-                      'dd.MM.yyyy hh:mm'
-                    )}
+                    {topic.last_message
+                      ? format(
+                          parseISO(topic.last_message.time),
+                          'dd.MM.yyyy hh:mm'
+                        )
+                      : 'Нет комментариев'}
                   </Typography>
                   <Typography variant="body2">
-                    {`Автор: ${topic.Comments[0].User.first_name}`}
+                    {`Автор: ${
+                      topic.last_message
+                        ? topic.last_message.User.first_name
+                        : 'Нет автора'
+                    }`}
                   </Typography>
                 </TableCell>
                 <TableCell align="center">

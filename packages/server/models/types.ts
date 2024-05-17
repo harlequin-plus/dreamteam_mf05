@@ -28,6 +28,8 @@ export interface ITopic {
   UserId: number
   CreatedAt: string
   UpdatedAt?: string
+  last_message?: IComments
+  Comments?: IComments[]
 }
 
 export interface IComments {
@@ -37,6 +39,7 @@ export interface IComments {
   TopicId: number
   CreatedAt: string
   UpdatedAt: string
+  User?: IUser
 }
 
 export interface IReplies {

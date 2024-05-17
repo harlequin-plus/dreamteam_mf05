@@ -12,3 +12,11 @@ export const getUserByIdFromDB = async (id: number) => {
   })
   return user
 }
+
+export const updateUser = async (user: IUser) => {
+  await Users.update(user, {
+    where: {
+      id: user.id,
+    },
+  })
+}
