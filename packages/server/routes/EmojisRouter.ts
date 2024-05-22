@@ -11,20 +11,18 @@ export const EmojiRouter = express.Router()
 // ?CommentId=1  query параметры
 EmojiRouter.get(``, async (req, res) => {
   const CommentId = Number(req.query.CommentId)
-  console.log('CommentId из query param', CommentId) //************************************************
   if (!CommentId) {
     res.status(400).send({ reason: 'bad request' })
     return
   }
 
   const emojis = await getEmojisByCommentId({ CommentId })
-  console.log('emojis из EmojiRouter.get', emojis) //************************************************
-  if (emojis.length === 0) {
-    res.status(400).send({ reason: 'emojis does not exist' })
-    return
-  }
 
-  res.send(emojis)
+  if (Array.isArray(emojis)) {
+    res.send(emojis)
+  } else {
+    res.status(400).send({ reason: 'emojis does not exist' })
+  }
 })
 
 EmojiRouter.post(``, async (req, res) => {

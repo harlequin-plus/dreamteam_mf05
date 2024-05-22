@@ -11,8 +11,6 @@ import { TUser } from '../../models/TUser'
 import EmojisLine from '../EmojisLine'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { format, parseISO } from 'date-fns'
-// import { getAllEmojisOfComment } from '../../services/emoji'
-import useGetEmojisByCommentId from '../../utils/useGetEmojisByCommentId'
 
 type OwnProps = {
   commentId: number
