@@ -1,0 +1,27 @@
+.mobile-menu {
+  & a {
+    text-decoration: none;
+    color: var(--main-black);
+    text-transform: uppercase;
+  }
+}
+.BurgerWrapper {
+  margin-left: auto;
+  display: block;
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+.BurgerButton {
+  display: flex;
+  flex-flow: column;
+  gap: 5px;
+  padding: 10px;
+
+  &__item {
+    background: var(--main-black);
+    height: 2px;
+    width: 35px;
+  }
+}

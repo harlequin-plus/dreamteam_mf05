@@ -4,3 +4,10 @@ node_modules/
 .vscode
 dist
 tmp
+packages/client/server/index.js
+packages/client/tsconfig.server.tsbuildinfo
+packages/client/server/index.d.ts
+packages/client/server/repository/SsrYandexAPILeaderboardRepository.js
+packages/client/server/repository/SsrYandexAPILeaderboardRepository.d.ts
+packages/client/server/repository/SsrYandexApiUserRepository.js
+packages/client/server/repository/SsrYandexApiUserRepository.d.ts

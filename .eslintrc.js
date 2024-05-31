@@ -13,8 +13,14 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 11,
   },
-  plugins: ['@typescript-eslint'],
+  plugins: [
+    '@typescript-eslint',
+    'react-hooks'
+  ],
   rules: {
     '@typescript-eslint/ban-ts-comment': 1,
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    '@typescript-eslint/no-var-requires': 0
   },
 }
