@@ -7,28 +7,23 @@ import { UserTheme } from '../models/UserTheme'
 import { SiteTheme } from '../models/SiteTheme'
 import { Emojis } from '../models/Emojis'
 
-const {
-  POSTGRES_USER,
-  POSTGRES_PASSWORD,
-  POSTGRES_DB,
-  POSTGRES_PORT,
-  NODE_ENV,
-  POSTGRES_SERVICE_NAME,
-} = process.env
+//const {
+//  POSTGRES_USER,
+//  POSTGRES_PASSWORD,
+//  POSTGRES_DB,
+//  POSTGRES_PORT,
+//  NODE_ENV,
+//  POSTGRES_SERVICE_NAME,
+//} = process.env
 
-const hostname = NODE_ENV == 'production' ? POSTGRES_SERVICE_NAME : 'localhost'
+//const hostname = NODE_ENV == 'production' ? POSTGRES_SERVICE_NAME : 'localhost'
 
 const sequelizeOptions: SequelizeOptions = {
-  //username: POSTGRES_USER,
-  //password: POSTGRES_PASSWORD,
-  //database: POSTGRES_DB,
-  //host: hostname,
-  //port: Number(POSTGRES_PORT),
   username: 'postgres',
   password: 'postgres',
   database: 'postgres',
   host: 'postgres',
-  port: 5432,
+  port: Number('5432'),
   dialect: 'postgres',
 }
 
