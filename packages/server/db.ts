@@ -14,11 +14,11 @@ export const createClientAndConnect = async (): Promise<Client | null> => {
     const hostname =
       NODE_ENV == 'production' ? POSTGRES_SERVICE_NAME : 'localhost'
     const client = new Client({
-      user: POSTGRES_USER,
-      host: hostname,
-      database: POSTGRES_DB,
-      password: POSTGRES_PASSWORD,
-      port: Number(POSTGRES_PORT),
+      user: 'postgres',
+      host: 'postgres',
+      database: 'postgres',
+      password: 'postgres',
+      port: 5432,
     })
 
     await client.connect()

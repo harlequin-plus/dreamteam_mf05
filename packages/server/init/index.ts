@@ -19,11 +19,16 @@ const {
 const hostname = NODE_ENV == 'production' ? POSTGRES_SERVICE_NAME : 'localhost'
 
 const sequelizeOptions: SequelizeOptions = {
-  username: POSTGRES_USER,
-  password: POSTGRES_PASSWORD,
-  database: POSTGRES_DB,
-  host: hostname,
-  port: Number(POSTGRES_PORT),
+  //username: POSTGRES_USER,
+  //password: POSTGRES_PASSWORD,
+  //database: POSTGRES_DB,
+  //host: hostname,
+  //port: Number(POSTGRES_PORT),
+  username: 'postgres',
+  password: 'postgres',
+  database: 'postgres',
+  host: 'postgres',
+  port: 5432,
   dialect: 'postgres',
 }
 
