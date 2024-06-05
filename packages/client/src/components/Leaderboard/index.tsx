@@ -18,6 +18,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { resourceURL, scoreVariableName } from '../../constants'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxTsHook'
 import { setLeaderboardState } from '../../store/leaderboardState'
+import { FormWrapper } from '../FormWrapper'
 
 const paginationSize = 5
 
@@ -56,55 +57,61 @@ export function Leaderboard() {
   }, [dispatch])
 
   return (
-    <Container maxWidth="lg" style={{ flex: '1 1 auto' }}>
-      <Box display={'flex'} alignItems="center" flexDirection="column">
-        <Typography variant="h4" component="h1" m={5}>
-          Лучшие игроки
-        </Typography>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Место</TableCell>
-              <TableCell>Игрок</TableCell>
-              <TableCell>Очки</TableCell>
-              <TableCell align="right">Время в лучшей игре</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {displayedLeaders?.map((leader, index) => (
-              <TableRow key={leader.data.userId}>
-                <TableCell>{paginationSize * page + index + 1}</TableCell>
-                <TableCell>
-                  <CardHeader
-                    avatar={
-                      <Avatar
-                        alt="Leader Avatar"
-                        src={`${resourceURL}${leader.data.included?.user.avatar}`}
-                        sx={{ width: 75, height: 75 }}
-                      />
-                    }
-                    title={`${leader.data.included?.user.first_name} ${leader.data.included?.user.second_name}`}
-                  />
-                </TableCell>
-                <TableCell>{leader.data[scoreVariableName]}</TableCell>
-                <TableCell align="right">
-                  {secondsToString(
-                    leader.data.secondsInGame ? leader.data.secondsInGame : 0
-                  )}
-                </TableCell>
+    <FormWrapper>
+      <Container maxWidth="lg" style={{ flex: '1 1 auto', color: '#973232' }}>
+        <Box display={'flex'} alignItems="center" flexDirection="column">
+          <Typography variant="h4" component="h1" m={5}>
+            Лучшие игроки
+          </Typography>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Место</TableCell>
+                <TableCell>Игрок</TableCell>
+                <TableCell>Очки</TableCell>
+                <TableCell align="right">Время в лучшей игре</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          component="div"
-          rowsPerPageOptions={[]}
-          count={allLeaders?.length ?? 0}
-          page={page}
-          onPageChange={handleChangePage}
-          rowsPerPage={Math.min(allLeaders?.length ?? 0, paginationSize)}
-        />
-      </Box>
-    </Container>
+            </TableHead>
+            <TableBody>
+              {displayedLeaders?.map((leader, index) => (
+                <TableRow key={leader.data.userId}>
+                  <TableCell>{paginationSize * page + index + 1}</TableCell>
+                  <TableCell>
+                    <CardHeader
+                      avatar={
+                        <Avatar
+                          alt="Leader Avatar"
+                          src={`${resourceURL}${leader.data.included?.user.avatar}`}
+                          sx={{
+                            width: 75,
+                            height: 75,
+                            backgroundColor: '#973232',
+                          }}
+                        />
+                      }
+                      title={`${leader.data.included?.user.first_name} ${leader.data.included?.user.second_name}`}
+                    />
+                  </TableCell>
+                  <TableCell>{leader.data[scoreVariableName]}</TableCell>
+                  <TableCell align="right">
+                    {secondsToString(
+                      leader.data.secondsInGame ? leader.data.secondsInGame : 0
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            component="div"
+            rowsPerPageOptions={[]}
+            count={allLeaders?.length ?? 0}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={Math.min(allLeaders?.length ?? 0, paginationSize)}
+          />
+        </Box>
+      </Container>
+    </FormWrapper>
   )
 }

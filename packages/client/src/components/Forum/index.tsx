@@ -105,7 +105,7 @@ const GameForum = () => {
           <TableHead>
             <TableRow>
               <TableCell>Тема/Автор</TableCell>
-              <TableCell align="right">Последний сообщение</TableCell>
+              <TableCell align="right">Последнее сообщение</TableCell>
               <TableCell align="right"></TableCell>
             </TableRow>
           </TableHead>

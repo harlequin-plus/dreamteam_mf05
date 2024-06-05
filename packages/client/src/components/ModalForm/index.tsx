@@ -16,6 +16,7 @@ const style = {
 }
 
 type OwnProps = {
+  backgroundColor?: string
   modalTitle: string
   inputs: ModalInput[]
   handleSubmitForm: (data: DataModalForm) => Promise<boolean>
@@ -33,6 +34,7 @@ const ModalForm: Props = ({
   handleSubmitForm,
   submitButtonText = 'Изменить',
   cancelButtonText = 'Отмена',
+  backgroundColor: backGroundColor = 'black',
 }) => {
   const [openSuccess, setOpenSuccess] = useState(false)
   const [open, setOpen] = useState(false)
@@ -53,7 +55,10 @@ const ModalForm: Props = ({
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleOpen}>
+      <Button
+        sx={{ color: `${backGroundColor}`, borderColor: `${backGroundColor}` }}
+        variant="outlined"
+        onClick={handleOpen}>
         {modalTitle}
       </Button>
       <Modal

@@ -63,7 +63,7 @@ const ChangeAvatar: Props = ({ ...otherProps }) => {
         alt="avatar"
         src={avatar ? avatar : ''}
         onClick={handleOpen}
-        sx={{ width: 120, height: 120 }}
+        sx={{ width: 120, height: 120, backgroundColor: '#973232' }}
       />
       <Modal
         open={open}
