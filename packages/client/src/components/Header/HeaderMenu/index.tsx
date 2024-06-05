@@ -62,10 +62,10 @@ function HeaderMenu() {
           <Link to="/leaderboard">Страница таблицы лидеров</Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
-          <Link to="/forum">Сообщество</Link>
+          <Link to="/community">Сообщество</Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
-          <Link to="/mainpage">Лендинг презентация</Link>
+          <Link to="/game">Играть</Link>
         </MenuItem>
         {user == -1 ? (
           <MenuItem onClick={handleClose}>

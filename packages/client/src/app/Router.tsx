@@ -16,17 +16,17 @@ import { InternalServerError } from '../components/InternalServerError'
 const AppRouter: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<IndexPage />} />
+      <Route path="/" element={<MainPage />} />
       <Route path="/auth" element={<LoginPage />} />
 
       <Route element={<Protected redirect="/auth" />}>
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/forum" element={<ForumPage />} />
-        <Route path="/forum/:id" element={<Topic />} />
+        <Route path="/community" element={<ForumPage />} />
+        <Route path="/community/:id" element={<Topic />} />
         <Route path="/leaderboard" element={<LeaderboardPage />} />
       </Route>
 
-      <Route path="/mainpage" element={<MainPage />} />
+      <Route path="/game" element={<IndexPage />} />
 
       <Route path="*" element={<NotFoundPage />} />
       <Route path="/error/500" element={<InternalServerError />} />

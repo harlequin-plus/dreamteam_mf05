@@ -20,10 +20,10 @@ export function Footer() {
               <Link to="/leaderboard">Страница таблицы лидеров</Link>
             </li>
             <li className="footer-list__item">
-              <Link to="/forum">Сообщество</Link>
+              <Link to="/community">Сообщество</Link>
             </li>
             <li className="footer-list__item">
-              <Link to="/mainpage">Лендинг презентация</Link>
+              <Link to="/game">Играть</Link>
             </li>
           </ul>
           <span className="footer__copyright">© 2024</span>

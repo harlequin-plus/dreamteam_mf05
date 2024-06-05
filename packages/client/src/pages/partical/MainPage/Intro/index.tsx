@@ -113,7 +113,7 @@ function Intro() {
             и&nbsp;вычислений, где каждый ход может стать ключом к вашей победе.
           </p>
           <div className="intro-button-wrap">
-            <Link className="intro__button" to="/">
+            <Link className="intro__button" to="/game">
               ИГРАТЬ
             </Link>
           </div>

@@ -58,7 +58,7 @@ export function Leaderboard() {
   return (
     <Container maxWidth="lg" style={{ flex: '1 1 auto' }}>
       <Box display={'flex'} alignItems="center" flexDirection="column">
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h4" component="h1" m={5}>
           Лучшие игроки
         </Typography>
         <Table>

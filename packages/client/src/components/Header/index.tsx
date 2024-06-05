@@ -40,10 +40,10 @@ export function Header() {
               <Link to="/leaderboard">Страница таблицы лидеров</Link>
             </li>
             <li className="header-list__item" style={row}>
-              <Link to="/forum">Сообщество</Link>
+              <Link to="/community">Сообщество</Link>
             </li>
             <li className="header-list__item" style={row}>
-              <Link to="/mainpage">Лендинг презентация</Link>
+              <Link to="/game">Играть</Link>
             </li>
           </ul>
           <HeaderMenu />

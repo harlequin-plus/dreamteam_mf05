@@ -20,7 +20,7 @@ export const container: Record<string, string> = {
   justifyContent: 'center',
   alignItems: 'center',
 
-  backgroundColor: generalCss.background,
+  backgroundColor: 'rgb(205, 193, 180)',
   font: generalCss.font,
 }
 
