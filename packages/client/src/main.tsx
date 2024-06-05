@@ -43,6 +43,18 @@ function startServiceWorker() {
     console.log('ServiceWorker не поддерживается в режиме разработчика')
     return
   }
+  // Список страниц, на которых не нужно запускать Service Worker
+  const pagesToExclude = ['/community', '/profile', '/leaderboard']
+
+  const currentPath = window.location.pathname
+  if (pagesToExclude.includes(currentPath)) {
+    console.log(
+      'ServiceWorker не будет зарегистрирован для этой страницы:',
+      currentPath
+    )
+    return
+  }
+
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('/sw.js', { scope: '/' })
